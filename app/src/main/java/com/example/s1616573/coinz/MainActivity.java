@@ -1,11 +1,12 @@
 package com.example.s1616573.coinz;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineListener;
@@ -23,6 +24,10 @@ import com.mapbox.mapboxsdk.plugins.locationlayer.LocationLayerPlugin;
 import com.mapbox.mapboxsdk.plugins.locationlayer.modes.CameraMode;
 import com.mapbox.mapboxsdk.plugins.locationlayer.modes.RenderMode;
 
+import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener, LocationEngineListener {
@@ -35,6 +40,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LocationLayerPlugin locationLayerPlugin;
     private Location originLocation;
     private final String ACCESS_TOKEN = "pk.eyJ1IjoiY2Q2IiwiYSI6ImNqbXowNzYxMDE2bWcza3FsMXRpNG1xaGkifQ.-rbujzxJSMehxZ-v63eULA";
+    private String downloadDate = ""; // Format: YYYY/MM/DD
+    private final String preferencesFile = "MyPrefsFile"; // for storing preferences
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +59,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onStart() {
         super.onStart();
+
+        // Restore preferences
+        SharedPreferences settings = getSharedPreferences(preferencesFile, Context.MODE_PRIVATE);
+
+        // use "" as the default value (this might be the first time the app is run)
+        downloadDate = settings.getString("lastDownloadDate", "");
+        Log.d(tag, "[onStart Recalled lastDownloadDate is '" + downloadDate + "'");
+
         mapView.onStart();
     }
 
@@ -69,6 +85,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onStop() {
         super.onStop();
+
+        Log.d(tag, "[onStop] Storing lastDownloadDate of " + downloadDate);
+        // All objects are from android.context.Context
+        SharedPreferences settings = getSharedPreferences(preferencesFile, Context.MODE_PRIVATE);
+        // We need an Editor object to make preference changes.
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("lastDownloadDate", downloadDate);
+        // Apply the edits
+        editor.apply();
+
         mapView.onStop();
     }
 
@@ -188,6 +214,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         else {
             // Open a dialogue with the user
+        }
+    }
+
+    private void getCoinMap() {
+        // download map if it has not already been downloaded
+        LocalDate date = LocalDate.now();
+        if (!date.isEqual(LocalDate.parse(downloadDate))) {
+            downloadDate = date.toString();
+            DownloadFileTask dft = new DownloadFileTask();
+            dft.doInBackground("http://homepages.inf.ed.ac.uk/stg/coinz/".concat(downloadDate));
         }
     }
 
