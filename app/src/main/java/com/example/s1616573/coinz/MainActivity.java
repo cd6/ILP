@@ -14,7 +14,13 @@ import com.mapbox.android.core.location.LocationEnginePriority;
 import com.mapbox.android.core.location.LocationEngineProvider;
 import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.geojson.Feature;
+import com.mapbox.geojson.FeatureCollection;
+import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.annotations.Icon;
+import com.mapbox.mapboxsdk.annotations.IconFactory;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
@@ -23,14 +29,13 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.plugins.locationlayer.LocationLayerPlugin;
 import com.mapbox.mapboxsdk.plugins.locationlayer.modes.CameraMode;
 import com.mapbox.mapboxsdk.plugins.locationlayer.modes.RenderMode;
+import com.mapbox.mapboxsdk.style.layers.LineLayer;
+import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 
 import java.time.LocalDate;
-import java.time.chrono.ChronoLocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener, LocationEngineListener {
+public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener, LocationEngineListener, DownloadCompleteListener {
 
     private String tag = "MainActivity";
     private MapView mapView;
@@ -43,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private String downloadDate = ""; // Format: YYYY/MM/DD
     private final String preferencesFile = "MyPrefsFile"; // for storing preferences
 
+    private DownloadFileTask downloadFileTask = new DownloadFileTask();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +73,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         downloadDate = settings.getString("lastDownloadDate", "");
         Log.d(tag, "[onStart Recalled lastDownloadDate is '" + downloadDate + "'");
 
+
         mapView.onStart();
+
+       // getCoinMap();
+
     }
 
     @Override
@@ -127,6 +137,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             map.getUiSettings().setZoomControlsEnabled(true);
             // Make location information available
             enableLocation();
+            getCoinMap();
+
         }
     }
 
@@ -214,16 +226,62 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         else {
             // Open a dialogue with the user
+
         }
     }
 
     private void getCoinMap() {
         // download map if it has not already been downloaded
         LocalDate date = LocalDate.now();
-        if (!date.isEqual(LocalDate.parse(downloadDate))) {
+        if (downloadDate.equals("") || !date.isEqual(LocalDate.parse(downloadDate))) {
             downloadDate = date.toString();
-            DownloadFileTask dft = new DownloadFileTask();
-            dft.doInBackground("http://homepages.inf.ed.ac.uk/stg/coinz/".concat(downloadDate));
+            String[] yearMonthDay = downloadDate.split("-");
+            String mapURL = "http://homepages.inf.ed.ac.uk/stg/coinz/" + yearMonthDay[0] + "/" + yearMonthDay[1] + "/" + yearMonthDay[2] + "/coinzmap.geojson";
+
+            downloadFileTask.listener = this;
+            downloadFileTask.execute(mapURL);
+
+            /*
+                        GeoJsonSource gjSource = new GeoJsonSource("coinsJson", result);
+            Log.d(tag,"[downloadComplete] gjSource == " + gjSource);
+            map.addSource(gjSource);
+            map.addLayer((new LineLayer("coinsJson", "coinsJson")));
+
+
+
+
+
+            FeatureCollection featureCollection = FeatureCollection.fromJson(sourceString);
+            List<Feature> features = featureCollection.features();
+
+            Log.d(sourceString ,"printed");
+
+            for (Feature f : features) {
+                if (f.geometry() instanceof Point) {
+                    LatLng coordinates = new LatLng(((Point) f.geometry()).latitude(), ((Point) f.geometry()).longitude());
+                    map.addMarker(new MarkerOptions().position(coordinates));
+                }
+            }
+            */
+        }
+    }
+
+    public void downloadComplete(String result) {
+        // https://stackoverflow.com/questions/9963691/android-asynctask-sending-callbacks-to-ui
+        if (result != null) {
+
+            FeatureCollection featureCollection = FeatureCollection.fromJson(result);
+            List<Feature> features = featureCollection.features();
+
+//            Log.d(result ,"printed");
+
+            for (Feature f : features) {
+                if (f.geometry() instanceof Point) {
+                    LatLng coordinates = new LatLng(((Point) f.geometry()).latitude(), ((Point) f.geometry()).longitude());
+                    Log.d(tag,"[downloadComplete] coordinates == " + coordinates);
+                    map.addMarker(new MarkerOptions().position(coordinates));
+                }
+            }
         }
     }
 

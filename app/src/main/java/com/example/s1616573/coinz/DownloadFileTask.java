@@ -2,6 +2,7 @@ package com.example.s1616573.coinz;
 
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,6 +14,8 @@ import java.util.stream.Collectors;
 
 
 public class DownloadFileTask extends AsyncTask<String, Void, String> {
+    public DownloadCompleteListener listener = null;
+
     @Override
     protected String doInBackground(String... urls) {
         try {
@@ -50,5 +53,7 @@ public class DownloadFileTask extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
         DownloadCompleteRunner.downloadComplete(result);
+        listener.downloadComplete(result);
+        Log.d("DownloadFileTask","Coinz Map downloaded" + DownloadCompleteRunner.result);
     }
 }
