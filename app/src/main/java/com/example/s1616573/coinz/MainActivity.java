@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
+import com.google.gson.JsonElement;
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineListener;
 import com.mapbox.android.core.location.LocationEnginePriority;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private final String ACCESS_TOKEN = "pk.eyJ1IjoiY2Q2IiwiYSI6ImNqbXowNzYxMDE2bWcza3FsMXRpNG1xaGkifQ.-rbujzxJSMehxZ-v63eULA";
     private String downloadDate = ""; // Format: YYYY/MM/DD
     private final String preferencesFile = "MyPrefsFile"; // for storing preferences
+    private String geoJsonCoins;
 
     private DownloadFileTask downloadFileTask = new DownloadFileTask();
 
@@ -71,13 +73,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // use "" as the default value (this might be the first time the app is run)
         downloadDate = settings.getString("lastDownloadDate", "");
+        geoJsonCoins = settings.getString("coinMap", "");
         Log.d(tag, "[onStart Recalled lastDownloadDate is '" + downloadDate + "'");
 
-
         mapView.onStart();
-
-       // getCoinMap();
-
     }
 
     @Override
@@ -102,6 +101,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // We need an Editor object to make preference changes.
         SharedPreferences.Editor editor = settings.edit();
         editor.putString("lastDownloadDate", downloadDate);
+        editor.putString("coinMap", geoJsonCoins);
         // Apply the edits
         editor.apply();
 
@@ -138,7 +138,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             // Make location information available
             enableLocation();
             getCoinMap();
-
         }
     }
 
@@ -226,7 +225,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         else {
             // Open a dialogue with the user
-
         }
     }
 
@@ -240,49 +238,33 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             downloadFileTask.listener = this;
             downloadFileTask.execute(mapURL);
-
-            /*
-                        GeoJsonSource gjSource = new GeoJsonSource("coinsJson", result);
-            Log.d(tag,"[downloadComplete] gjSource == " + gjSource);
-            map.addSource(gjSource);
-            map.addLayer((new LineLayer("coinsJson", "coinsJson")));
-
-
-
-
-
-            FeatureCollection featureCollection = FeatureCollection.fromJson(sourceString);
-            List<Feature> features = featureCollection.features();
-
-            Log.d(sourceString ,"printed");
-
-            for (Feature f : features) {
-                if (f.geometry() instanceof Point) {
-                    LatLng coordinates = new LatLng(((Point) f.geometry()).latitude(), ((Point) f.geometry()).longitude());
-                    map.addMarker(new MarkerOptions().position(coordinates));
-                }
-            }
-            */
+        }
+        else {
+            // if the map has already been downloaded today, go straight to adding coins to the map
+            addCoinsToMap();
         }
     }
 
     public void downloadComplete(String result) {
         // https://stackoverflow.com/questions/9963691/android-asynctask-sending-callbacks-to-ui
         if (result != null) {
-
-            FeatureCollection featureCollection = FeatureCollection.fromJson(result);
-            List<Feature> features = featureCollection.features();
-
-//            Log.d(result ,"printed");
-
-            for (Feature f : features) {
-                if (f.geometry() instanceof Point) {
-                    LatLng coordinates = new LatLng(((Point) f.geometry()).latitude(), ((Point) f.geometry()).longitude());
-                    Log.d(tag,"[downloadComplete] coordinates == " + coordinates);
-                    map.addMarker(new MarkerOptions().position(coordinates));
-                }
-            }
+            geoJsonCoins = result;
+            addCoinsToMap();
         }
     }
 
+    private void addCoinsToMap() {
+        FeatureCollection featureCollection = FeatureCollection.fromJson(geoJsonCoins);
+        List<Feature> features = featureCollection.features();
+
+        for (Feature f : features) {
+            if (f.geometry() instanceof Point) {
+                LatLng coordinates = new LatLng(((Point) f.geometry()).latitude(), ((Point) f.geometry()).longitude());
+                Log.d(tag,"[downloadComplete] coordinates == " + coordinates);
+                JsonElement symbol = f.properties().get("marker-symbol");
+                map.addMarker(new MarkerOptions().position(coordinates));
+
+            }
+        }
+    }
 }
