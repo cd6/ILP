@@ -30,8 +30,10 @@ import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.plugins.locationlayer.LocationLayerPlugin;
 import com.mapbox.mapboxsdk.plugins.locationlayer.modes.CameraMode;
 import com.mapbox.mapboxsdk.plugins.locationlayer.modes.RenderMode;
+import com.mapbox.mapboxsdk.style.layers.Layer;
 import com.mapbox.mapboxsdk.style.layers.LineLayer;
 import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
+import com.mapbox.mapboxsdk.style.sources.Source;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -62,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapView = findViewById(R.id.mapboxMapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
+        LoginActivity loginActivity = new LoginActivity();
+        loginActivity.onCreate(savedInstanceState);
     }
 
     @Override
@@ -257,6 +261,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         FeatureCollection featureCollection = FeatureCollection.fromJson(geoJsonCoins);
         List<Feature> features = featureCollection.features();
 
+        /*
+        Source geoJsonSource = new GeoJsonSource("coin_source", featureCollection);
+        map.addSource(geoJsonSource);
+        Layer coinLayer = new LineLayer("coinLayer", "coin-source");
+        map.addLayer(coinLayer);
+        */
+
         for (Feature f : features) {
             if (f.geometry() instanceof Point) {
                 LatLng coordinates = new LatLng(((Point) f.geometry()).latitude(), ((Point) f.geometry()).longitude());
@@ -266,5 +277,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             }
         }
+
     }
 }
