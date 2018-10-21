@@ -19,7 +19,9 @@
         mapbox:mapbox_cameraTargetLng="-3.188396"
         mapbox:mapbox_cameraZoom="15"
         mapbox:mapbox_styleUrl="@string/mapbox_style_mapbox_streets"
-    />
+    >
+
+    </com.mapbox.mapboxsdk.maps.MapView>
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -32,6 +34,12 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        <Button
+            android:id="@+id/sign_out_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/action_sign_out" />
 
     </android.support.design.widget.AppBarLayout>
 

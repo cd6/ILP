@@ -1,13 +1,17 @@
 package com.example.s1616573.coinz;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonElement;
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineListener;
@@ -51,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private String downloadDate = ""; // Format: YYYY/MM/DD
     private final String preferencesFile = "MyPrefsFile"; // for storing preferences
     private String geoJsonCoins;
+    private FirebaseAuth mAuth;
 
     private DownloadFileTask downloadFileTask = new DownloadFileTask();
 
@@ -64,8 +69,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapView = findViewById(R.id.mapboxMapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
-        LoginActivity loginActivity = new LoginActivity();
-        loginActivity.onCreate(savedInstanceState);
+
+        Intent loginIntent = new Intent(this, LoginActivity.class);
+        startActivity(loginIntent);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        Button mSignOutButton = findViewById(R.id.sign_out_button);
+        mSignOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAuth.signOut();
+                startActivity(loginIntent);
+            }
+        });
     }
 
     @Override
