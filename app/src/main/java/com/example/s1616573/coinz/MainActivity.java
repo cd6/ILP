@@ -70,18 +70,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
-        Intent loginIntent = new Intent(this, LoginActivity.class);
-        startActivity(loginIntent);
-
         mAuth = FirebaseAuth.getInstance();
 
         Button mSignOutButton = findViewById(R.id.sign_out_button);
-        mSignOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mAuth.signOut();
-                startActivity(loginIntent);
-            }
+        mSignOutButton.setOnClickListener(view -> {
+            mAuth.signOut();
+            Intent loginIntent = new Intent(this, LoginActivity.class);
+            startActivity(loginIntent);
+            this.finish();
         });
     }
 

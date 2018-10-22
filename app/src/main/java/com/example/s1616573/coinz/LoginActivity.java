@@ -3,28 +3,15 @@ package com.example.s1616573.coinz;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,11 +19,6 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static android.Manifest.permission.READ_CONTACTS;
 
 /**
  * A login screen that offers login via email/password.
@@ -61,34 +43,28 @@ public class LoginActivity extends AppCompatActivity{
         // Set up the login form.
         mEmailView = findViewById(R.id.email);
 
+        // enter key to log in
         mPasswordView = findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mLoginError.setVisibility(View.INVISIBLE);
+        mPasswordView.setOnEditorActionListener((textView, id, keyEvent) -> {
+            if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
                 attemptLogin();
+                return true;
             }
+            return false;
         });
 
+        // pressing sign in button attempts login
+        Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
+        mEmailSignInButton.setOnClickListener(view -> {
+            mLoginError.setVisibility(View.INVISIBLE);
+            attemptLogin();
+        });
+
+        // pressing create account button attempts to create a new account
         Button mCreateAccountButton = findViewById(R.id.create_account_button);
-        mCreateAccountButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mLoginError.setVisibility(View.INVISIBLE);
-                attemptCreateAccount();
-            }
+        mCreateAccountButton.setOnClickListener(view -> {
+            mLoginError.setVisibility(View.INVISIBLE);
+            attemptCreateAccount();
         });
 
         mLoginFormView = findViewById(R.id.login_form);
@@ -105,6 +81,7 @@ public class LoginActivity extends AppCompatActivity{
         // Check if user is signed in (non-null) and update UI
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
+            openMainActivity();
             this.finish();
         }
     }
@@ -131,12 +108,13 @@ public class LoginActivity extends AppCompatActivity{
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            //mAuthTask = new UserLoginTask(email, password);
-            //mAuthTask.execute((Void) null);
+
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
                 if (task.isSuccessful()) {
                     // Sign in success, update UI with user info
                     Log.d(tag, "[attemptLogin] success");
+                    Intent loginIntent = new Intent(this, LoginActivity.class);
+                    openMainActivity();
                     this.finish();
                 } else {
                     // Sign in failed, display a message to the user
@@ -165,12 +143,12 @@ public class LoginActivity extends AppCompatActivity{
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            //mAuthTask = new UserLoginTask(email, password);
-            //mAuthTask.execute((Void) null);
+
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, task -> {
                 if (task.isSuccessful()) {
                     // Create account success, update UI with user info
                     Log.d(tag, "[attemptCreation] success");
+                    openMainActivity();
                     this.finish();
                 } else {
                     // Create account failed, display a message to the user
@@ -226,8 +204,12 @@ public class LoginActivity extends AppCompatActivity{
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 4;
+        return password.length() > 6;
+    }
+
+    private void openMainActivity() {
+        Intent mainIntent = new Intent(this, MainActivity.class);
+        startActivity(mainIntent);
     }
 
     /**
@@ -265,7 +247,6 @@ public class LoginActivity extends AppCompatActivity{
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
-
 
 }
 
