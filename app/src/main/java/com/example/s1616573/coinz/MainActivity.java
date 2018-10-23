@@ -25,6 +25,7 @@ import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.annotations.Icon;
 import com.mapbox.mapboxsdk.annotations.IconFactory;
+import com.mapbox.mapboxsdk.annotations.Marker;
 import com.mapbox.mapboxsdk.annotations.MarkerOptions;
 import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
 import com.mapbox.mapboxsdk.geometry.LatLng;
@@ -215,6 +216,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Log.d(tag, "[onLocationChanged] location is not null");
             originLocation = location;
             setCameraPosition(location);
+            inRangeOfCoin();
         }
     }
 
@@ -274,22 +276,35 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         FeatureCollection featureCollection = FeatureCollection.fromJson(geoJsonCoins);
         List<Feature> features = featureCollection.features();
 
-        /*
-        Source geoJsonSource = new GeoJsonSource("coin_source", featureCollection);
-        map.addSource(geoJsonSource);
-        Layer coinLayer = new LineLayer("coinLayer", "coin-source");
-        map.addLayer(coinLayer);
-        */
-
         for (Feature f : features) {
             if (f.geometry() instanceof Point) {
+                // Create an Icon object for the marker to use
+                Icon icon = IconFactory.getInstance(this).fromResource(R.drawable.mapbox_marker_icon_default);
                 LatLng coordinates = new LatLng(((Point) f.geometry()).latitude(), ((Point) f.geometry()).longitude());
-                Log.d(tag,"[downloadComplete] coordinates == " + coordinates);
+                Log.d(tag, "[downloadComplete] coordinates == " + coordinates);
                 JsonElement symbol = f.properties().get("marker-symbol");
-                map.addMarker(new MarkerOptions().position(coordinates));
+                map.addMarker(new MarkerOptions().position(coordinates).icon(icon));
 
             }
         }
+    }
 
+    private void inRangeOfCoin() {
+        List<Marker> markers = map.getMarkers();
+        double latAngleUser = Math.toRadians(originLocation.getLatitude());
+        double longAngleUser = Math.toRadians(originLocation.getLongitude());
+        double radius = 6378100; // radius of the earth
+        for(Marker m:markers) {
+            LatLng markerPosition = m.getPosition();
+            // Equirectangular approximation is a suitable formula to find small distances between points
+            double latAngleMarker = Math.toRadians(markerPosition.getLatitude());
+            double longAngleMarker = Math.toRadians(markerPosition.getLongitude());
+            double x = (longAngleUser-longAngleMarker) * Math.cos((latAngleUser+latAngleMarker)/2.0);
+            double y = latAngleUser - latAngleMarker;
+            double dist = Math.sqrt(x*x + y*y) * radius;
+            if (dist < 25) {
+                map.removeMarker(m);
+            }
+        }
     }
 }
