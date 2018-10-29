@@ -3,14 +3,26 @@ package com.example.s1616573.coinz;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
+import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationServices;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.JsonElement;
 import com.mapbox.android.core.location.LocationEngine;
@@ -72,7 +84,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapView.getMapAsync(this);
 
         mAuth = FirebaseAuth.getInstance();
-
         Button mSignOutButton = findViewById(R.id.sign_out_button);
         mSignOutButton.setOnClickListener(view -> {
             mAuth.signOut();
@@ -123,7 +134,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Apply the edits
         editor.apply();
 
+        locationEngine.deactivate(); // stops app crashing when activity is stopped due to location being checked after map has been closed
         mapView.onStop();
+        locationLayerPlugin.onStop();
     }
 
     @Override
@@ -155,6 +168,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             map.getUiSettings().setZoomControlsEnabled(true);
             // Make location information available
             enableLocation();
+            // Don't load coins onto map until map is ready
             getCoinMap();
         }
     }
@@ -276,17 +290,34 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         FeatureCollection featureCollection = FeatureCollection.fromJson(geoJsonCoins);
         List<Feature> features = featureCollection.features();
 
+        //Icon iconQuid = IconFactory.getInstance(this).fromResource(R.drawable.mapbox_marker_icon_default);
+
         for (Feature f : features) {
             if (f.geometry() instanceof Point) {
                 // Create an Icon object for the marker to use
-                Icon icon = IconFactory.getInstance(this).fromResource(R.drawable.mapbox_marker_icon_default);
+                Drawable iconDrawable = ResourcesCompat.getDrawable(getResources(), R.drawable.mapbox_marker_icon_default, null);
+                iconDrawable = DrawableCompat.wrap(iconDrawable);
+                DrawableCompat.setTint(iconDrawable, Color.BLUE);
+                Icon icon = drawableToIcon(f.properties().get("marker-color").getAsString());
+
                 LatLng coordinates = new LatLng(((Point) f.geometry()).latitude(), ((Point) f.geometry()).longitude());
                 Log.d(tag, "[downloadComplete] coordinates == " + coordinates);
                 JsonElement symbol = f.properties().get("marker-symbol");
-                map.addMarker(new MarkerOptions().position(coordinates).icon(icon));
-
+                JsonElement id = f.properties().get("id");
+                map.addMarker(new MarkerOptions().position(coordinates).icon(icon).setTitle(id.getAsString()));
             }
         }
+    }
+
+    // https://github.com/mapbox/mapbox-gl-native/issues/7897
+    public Icon drawableToIcon(String colorRes) {
+        Drawable vectorDrawable = ResourcesCompat.getDrawable(getResources(), R.drawable.mapbox_marker_icon_default, null);
+        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        DrawableCompat.setTint(vectorDrawable, Color.parseColor(colorRes));
+        vectorDrawable.draw(canvas);
+        return IconFactory.getInstance(this).fromBitmap(bitmap);
     }
 
     private void inRangeOfCoin() {
@@ -304,6 +335,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             double dist = Math.sqrt(x*x + y*y) * radius;
             if (dist < 25) {
                 map.removeMarker(m);
+                String id = m.getTitle();
+                // TODO remove marker from geojson string
             }
         }
     }
