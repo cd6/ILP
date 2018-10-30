@@ -13,13 +13,17 @@ import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
@@ -54,6 +58,7 @@ import com.mapbox.mapboxsdk.style.sources.Source;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener, LocationEngineListener, DownloadCompleteListener {
 
@@ -84,12 +89,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapView.getMapAsync(this);
 
         mAuth = FirebaseAuth.getInstance();
-        Button mSignOutButton = findViewById(R.id.sign_out_button);
-        mSignOutButton.setOnClickListener(view -> {
-            mAuth.signOut();
-            Intent loginIntent = new Intent(this, LoginActivity.class);
-            startActivity(loginIntent);
-            this.finish();
+
+        FloatingActionButton mCoinButton = findViewById(R.id.fab_coin);
+        mCoinButton.setOnClickListener(view -> {
+
         });
     }
 
@@ -134,7 +137,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Apply the edits
         editor.apply();
 
-        locationEngine.deactivate(); // stops app crashing when activity is stopped due to location being checked after map has been closed
+        if (locationEngine != null) {
+            locationEngine.deactivate(); // stops app crashing when activity is stopped due to location being checked after map has been closed
+        }
         mapView.onStop();
         locationLayerPlugin.onStop();
     }
@@ -261,6 +266,31 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.sign_out_item) {
+            mAuth.signOut();
+            Intent loginIntent = new Intent(this, LoginActivity.class);
+            startActivity(loginIntent);
+            this.finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
     private void getCoinMap() {
         // download map if it has not already been downloaded
         LocalDate date = LocalDate.now();
@@ -290,14 +320,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         FeatureCollection featureCollection = FeatureCollection.fromJson(geoJsonCoins);
         List<Feature> features = featureCollection.features();
 
-        //Icon iconQuid = IconFactory.getInstance(this).fromResource(R.drawable.mapbox_marker_icon_default);
-
         for (Feature f : features) {
             if (f.geometry() instanceof Point) {
                 // Create an Icon object for the marker to use
                 Drawable iconDrawable = ResourcesCompat.getDrawable(getResources(), R.drawable.mapbox_marker_icon_default, null);
                 iconDrawable = DrawableCompat.wrap(iconDrawable);
-                DrawableCompat.setTint(iconDrawable, Color.BLUE);
+                DrawableCompat.setTint(iconDrawable, Color.BLUE); // use drawable to dynamically set the colour
                 Icon icon = drawableToIcon(f.properties().get("marker-color").getAsString());
 
                 LatLng coordinates = new LatLng(((Point) f.geometry()).latitude(), ((Point) f.geometry()).longitude());
@@ -327,7 +355,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         double radius = 6378100; // radius of the earth
         for(Marker m:markers) {
             LatLng markerPosition = m.getPosition();
-            // Equirectangular approximation is a suitable formula to find small distances between points
+            // Equirectangular approximation is a suitable formula to find small distances between points on earth
             double latAngleMarker = Math.toRadians(markerPosition.getLatitude());
             double longAngleMarker = Math.toRadians(markerPosition.getLongitude());
             double x = (longAngleUser-longAngleMarker) * Math.cos((latAngleUser+latAngleMarker)/2.0);
