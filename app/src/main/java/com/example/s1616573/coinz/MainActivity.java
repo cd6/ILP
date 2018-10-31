@@ -96,14 +96,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
 
         FloatingActionButton mBankButton = findViewById(R.id.fab_bank);
-        mCoinButton.setOnClickListener(view -> {
+        mBankButton.setOnClickListener(view -> {
 
         });
 
         FloatingActionButton mWalletButton = findViewById(R.id.fab_wallet);
-        mCoinButton.setOnClickListener(view -> {
-            Intent walletIntent = new Intent(this, WalletActivity.class);
-            startActivity(walletIntent);
+        mWalletButton.setOnClickListener(view -> {
+           // Intent walletIntent = new Intent(this, WalletActivity.class);
+           // startActivity(walletIntent);
         });
     }
 
@@ -148,11 +148,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Apply the edits
         editor.apply();
 
-        if (locationEngine != null) {
-            locationEngine.deactivate(); // stops app crashing when activity is stopped due to location being checked after map has been closed
-        }
+        if (locationEngine != null) locationEngine.deactivate(); // stops app crashing when activity is stopped due to location being checked after map has been closed
         mapView.onStop();
-        locationLayerPlugin.onStop();
+        if (locationLayerPlugin != null) locationLayerPlugin.onStop();
     }
 
     @Override
@@ -340,7 +338,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Icon icon = drawableToIcon(f.properties().get("marker-color").getAsString());
 
                 LatLng coordinates = new LatLng(((Point) f.geometry()).latitude(), ((Point) f.geometry()).longitude());
-                Log.d(tag, "[downloadComplete] coordinates == " + coordinates);
                 JsonElement symbol = f.properties().get("marker-symbol");
                 JsonElement id = f.properties().get("id");
                 map.addMarker(new MarkerOptions().position(coordinates).icon(icon).setTitle(id.getAsString()));
