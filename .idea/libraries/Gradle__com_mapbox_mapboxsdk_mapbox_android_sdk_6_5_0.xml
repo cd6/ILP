@@ -1,8 +1,11 @@
 <component name="libraryTable">
   <library name="Gradle: com.mapbox.mapboxsdk:mapbox-android-sdk-6.5.0">
+    <ANNOTATIONS>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/mapbox-android-sdk-6.5.0.aar/f6e1307b9faf1e9ff2c97228772cb38b/annotations.zip!/" />
+    </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/mapbox-android-sdk-6.5.0.aar/5bf9b4f99512e0355b2e03717e381922/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/mapbox-android-sdk-6.5.0.aar/5bf9b4f99512e0355b2e03717e381922/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/mapbox-android-sdk-6.5.0.aar/f6e1307b9faf1e9ff2c97228772cb38b/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/mapbox-android-sdk-6.5.0.aar/f6e1307b9faf1e9ff2c97228772cb38b/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

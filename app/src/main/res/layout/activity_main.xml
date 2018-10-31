@@ -13,39 +13,46 @@
         layout="@layout/content_map"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="384dp"
-        tools:layout_editor_absoluteY="39dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout2" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_coin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:clickable="true"
         app:backgroundTint="@color/colorPrimaryDark"
-        mapbox:srcCompat="@drawable/coin"
-        tools:layout_editor_absoluteX="352dp"
-        tools:layout_editor_absoluteY="419dp" />
+        app:layout_constraintBottom_toTopOf="@+id/fab_bank"
+        app:layout_constraintEnd_toEndOf="parent"
+        mapbox:srcCompat="@drawable/coin" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_bank"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:clickable="true"
-        mapbox:srcCompat="@drawable/banks"
-        tools:layout_editor_absoluteX="352dp"
-        tools:layout_editor_absoluteY="447dp" />
+        app:backgroundTint="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toTopOf="@+id/fab_wallet"
+        app:layout_constraintEnd_toEndOf="parent"
+        mapbox:srcCompat="@drawable/banks" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_wallet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
         android:clickable="true"
+        app:backgroundTint="@color/colorPrimaryDark"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fab_bank"
-        mapbox:srcCompat="@drawable/wallet"
-        tools:layout_editor_absoluteX="352dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        mapbox:srcCompat="@drawable/wallet" />
 
     <com.mapbox.mapboxsdk.maps.MapView
         android:id="@+id/mapboxMapView"
@@ -70,13 +77,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="0dp">
+        app:layout_constraintTop_toTopOf="parent">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
+            android:background="@color/colorPrimaryDark"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
