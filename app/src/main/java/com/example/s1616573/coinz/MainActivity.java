@@ -102,8 +102,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         FloatingActionButton mWalletButton = findViewById(R.id.fab_wallet);
         mWalletButton.setOnClickListener(view -> {
-           // Intent walletIntent = new Intent(this, WalletActivity.class);
-           // startActivity(walletIntent);
+            //Intent walletIntent = new Intent(this, WalletActivity.class);
+            //startActivity(walletIntent);
         });
     }
 
