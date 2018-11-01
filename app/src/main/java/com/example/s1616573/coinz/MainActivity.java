@@ -57,6 +57,7 @@ import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.mapbox.mapboxsdk.style.sources.Source;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -74,8 +75,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private final String preferencesFile = "MyPrefsFile"; // for storing preferences
     private String geoJsonCoins;
     private FirebaseAuth mAuth;
-
     private DownloadFileTask downloadFileTask = new DownloadFileTask();
+    private HashMap<Marker, Coin> coinMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -328,7 +329,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void addCoinsToMap() {
         FeatureCollection featureCollection = FeatureCollection.fromJson(geoJsonCoins);
         List<Feature> features = featureCollection.features();
-
+        // Create hashmap to link coins to their marker
+        coinMap = new HashMap<>();
         for (Feature f : features) {
             if (f.geometry() instanceof Point) {
                 // Create an Icon object for the marker to use
@@ -337,10 +339,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 DrawableCompat.setTint(iconDrawable, Color.BLUE); // use drawable to dynamically set the colour
                 Icon icon = drawableToIcon(f.properties().get("marker-color").getAsString());
 
+                // Get marker details from feature
                 LatLng coordinates = new LatLng(((Point) f.geometry()).latitude(), ((Point) f.geometry()).longitude());
                 JsonElement symbol = f.properties().get("marker-symbol");
-                JsonElement id = f.properties().get("id");
-                map.addMarker(new MarkerOptions().position(coordinates).icon(icon).setTitle(id.getAsString()));
+                MarkerOptions m = new MarkerOptions().position(coordinates).icon(icon);
+                // Add marker and coin to hashmap then put marker on map
+                coinMap.put(new Marker(m), new Coin(f.properties().get("id").getAsString(),f.properties().get("value").getAsDouble(),f.properties().get("currency").getAsString()));
+                map.addMarker(m);
             }
         }
     }
@@ -371,9 +376,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             double dist = Math.sqrt(x*x + y*y) * radius;
             if (dist < 25) {
                 map.removeMarker(m);
-                String id = m.getTitle();
-                // TODO remove marker from geojson string
+                pickUp(m);
             }
         }
+    }
+
+    private void pickUp(Marker m) {
     }
 }
