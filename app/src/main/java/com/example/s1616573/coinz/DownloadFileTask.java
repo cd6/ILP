@@ -54,6 +54,5 @@ public class DownloadFileTask extends AsyncTask<String, Void, String> {
         super.onPostExecute(result);
         DownloadCompleteRunner.downloadComplete(result);
         listener.downloadComplete(result);
-        Log.d("DownloadFileTask","Coinz Map downloaded" + DownloadCompleteRunner.result);
     }
 }

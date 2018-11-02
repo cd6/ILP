@@ -27,7 +27,16 @@ import android.widget.Toast;
 
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.gson.JsonElement;
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineListener;
@@ -37,6 +46,7 @@ import com.mapbox.android.core.permissions.PermissionsListener;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.geojson.Feature;
 import com.mapbox.geojson.FeatureCollection;
+import com.mapbox.geojson.GeoJson;
 import com.mapbox.geojson.Point;
 import com.mapbox.mapboxsdk.Mapbox;
 import com.mapbox.mapboxsdk.annotations.Icon;
@@ -57,6 +67,9 @@ import com.mapbox.mapboxsdk.style.sources.GeoJsonSource;
 import com.mapbox.mapboxsdk.style.sources.Source;
 
 import java.time.LocalDate;
+import java.time.Year;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -77,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private FirebaseAuth mAuth;
     private DownloadFileTask downloadFileTask = new DownloadFileTask();
     private HashMap<Marker, Coin> coinMap;
+    private UserFirestore userFirestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapView.getMapAsync(this);
 
         mAuth = FirebaseAuth.getInstance();
+        userFirestore = new UserFirestore(mAuth);
 
         FloatingActionButton mCoinButton = findViewById(R.id.fab_coin);
         mCoinButton.setOnClickListener(view -> {
@@ -342,10 +357,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 // Get marker details from feature
                 LatLng coordinates = new LatLng(((Point) f.geometry()).latitude(), ((Point) f.geometry()).longitude());
                 JsonElement symbol = f.properties().get("marker-symbol");
-                MarkerOptions m = new MarkerOptions().position(coordinates).icon(icon);
+                Marker m = map.addMarker(new MarkerOptions().position(coordinates).icon(icon));
                 // Add marker and coin to hashmap then put marker on map
-                coinMap.put(new Marker(m), new Coin(f.properties().get("id").getAsString(),f.properties().get("value").getAsDouble(),f.properties().get("currency").getAsString()));
-                map.addMarker(m);
+                coinMap.put(m, new Coin(f.properties().get("id").getAsString(),f.properties().get("value").getAsDouble(),f.properties().get("currency").getAsString()));
+
             }
         }
     }
@@ -382,5 +397,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void pickUp(Marker m) {
+        userFirestore.pickUp(coinMap.get(m));
     }
+
+
 }

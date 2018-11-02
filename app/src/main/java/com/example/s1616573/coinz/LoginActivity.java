@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Build;
@@ -17,8 +18,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Objects;
 
 /**
  * A login screen that offers login via email/password.
@@ -26,6 +33,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class LoginActivity extends AppCompatActivity{
 
     private FirebaseAuth mAuth;
+    private FirebaseFirestore db;
 
     // UI references.
     private AutoCompleteTextView mEmailView;
@@ -72,6 +80,7 @@ public class LoginActivity extends AppCompatActivity{
         mLoginError = findViewById(R.id.text_login_error);
 
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
     }
 
 
@@ -148,6 +157,10 @@ public class LoginActivity extends AppCompatActivity{
                 if (task.isSuccessful()) {
                     // Create account success, update UI with user info
                     Log.d(tag, "[attemptCreation] success");
+                    // Add collection for user on Firestore to store their progress
+                    db.collection("users").add(Objects.requireNonNull(mAuth.getUid()))
+                            .addOnSuccessListener(documentReference -> Log.d(tag, "DocumentSnapshot added with ID: " + documentReference.getId()))
+                            .addOnFailureListener(e -> Log.w(tag, "Error adding document", e));
                     openMainActivity();
                     this.finish();
                 } else {
