@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -66,6 +67,8 @@ public class UserFirestore {
                 Log.d(tag, "get failed with ", task.getException());
             }
         });
+        docRef.update("lastLogin", Timestamp.now());
+
     }
 
     private void resetPickedUpCoins() {
