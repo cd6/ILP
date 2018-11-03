@@ -103,9 +103,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
-        mAuth = FirebaseAuth.getInstance();
-        userFirestore = new UserFirestore(mAuth);
-
         FloatingActionButton mCoinButton = findViewById(R.id.fab_coin);
         mCoinButton.setOnClickListener(view -> {
 
@@ -118,8 +115,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         FloatingActionButton mWalletButton = findViewById(R.id.fab_wallet);
         mWalletButton.setOnClickListener(view -> {
-            //Intent walletIntent = new Intent(this, WalletActivity.class);
-            //startActivity(walletIntent);
+            Intent walletIntent = new Intent(this, WalletActivity.class);
+            startActivity(walletIntent);
         });
     }
 
@@ -134,6 +131,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         downloadDate = settings.getString("lastDownloadDate", "");
         geoJsonCoins = settings.getString("coinMap", "");
         Log.d(tag, "[onStart Recalled lastDownloadDate is '" + downloadDate + "'");
+
+        mAuth = FirebaseAuth.getInstance();
+        userFirestore = new UserFirestore(mAuth);
 
         mapView.onStart();
     }
@@ -347,7 +347,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Create hashmap to link coins to their marker
         coinMap = new HashMap<>();
         for (Feature f : features) {
-            if (f.geometry() instanceof Point) {
+            String id = f.properties().get("id").getAsString();
+            Double value = f.properties().get("value").getAsDouble();
+            String currency = f.properties().get("currency").getAsString();
+            if (f.geometry() instanceof Point && !userFirestore.userHasCollected(id)) {
                 // Create an Icon object for the marker to use
                 Drawable iconDrawable = ResourcesCompat.getDrawable(getResources(), R.drawable.mapbox_marker_icon_default, null);
                 iconDrawable = DrawableCompat.wrap(iconDrawable);
@@ -359,8 +362,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 JsonElement symbol = f.properties().get("marker-symbol");
                 Marker m = map.addMarker(new MarkerOptions().position(coordinates).icon(icon));
                 // Add marker and coin to hashmap then put marker on map
-                coinMap.put(m, new Coin(f.properties().get("id").getAsString(),f.properties().get("value").getAsDouble(),f.properties().get("currency").getAsString()));
-
+                coinMap.put(m, new Coin(id, value, currency));
             }
         }
     }
@@ -391,14 +393,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             double dist = Math.sqrt(x*x + y*y) * radius;
             if (dist < 25) {
                 map.removeMarker(m);
-                pickUp(m);
+                userFirestore.pickUp(coinMap.get(m));
             }
         }
     }
-
-    private void pickUp(Marker m) {
-        userFirestore.pickUp(coinMap.get(m));
-    }
-
 
 }

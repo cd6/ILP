@@ -158,9 +158,11 @@ public class LoginActivity extends AppCompatActivity{
                     // Create account success, update UI with user info
                     Log.d(tag, "[attemptCreation] success");
                     // Add collection for user on Firestore to store their progress
-                    db.collection("users").add(Objects.requireNonNull(mAuth.getUid()))
+                    String userID = mAuth.getUid();
+                    db.collection("users").add(Objects.requireNonNull(userID))
                             .addOnSuccessListener(documentReference -> Log.d(tag, "DocumentSnapshot added with ID: " + documentReference.getId()))
                             .addOnFailureListener(e -> Log.w(tag, "Error adding document", e));
+                    db.collection("users").document(userID).update("userID", userID);
                     openMainActivity();
                     this.finish();
                 } else {
