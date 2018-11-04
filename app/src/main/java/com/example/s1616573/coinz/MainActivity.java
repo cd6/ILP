@@ -124,6 +124,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onStart() {
         super.onStart();
 
+        mAuth = FirebaseAuth.getInstance();
+        userFirestore = new UserFirestore(mAuth);
+
         // Restore preferences
         SharedPreferences settings = getSharedPreferences(preferencesFile, Context.MODE_PRIVATE);
 
@@ -131,9 +134,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         downloadDate = settings.getString("lastDownloadDate", "");
         geoJsonCoins = settings.getString("coinMap", "");
         Log.d(tag, "[onStart Recalled lastDownloadDate is '" + downloadDate + "'");
-
-        mAuth = FirebaseAuth.getInstance();
-        userFirestore = new UserFirestore(mAuth);
 
         mapView.onStart();
     }

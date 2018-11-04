@@ -22,6 +22,7 @@ import org.w3c.dom.Document;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +38,7 @@ public class UserFirestore {
     private DocumentReference docRef;
     private String userID;
     private DocumentSnapshot document;
+    private ArrayList<String> pickedUpCoins;
 
     public UserFirestore(FirebaseAuth mAuth) {
         // Access a Cloud Firestore instance from your Activity
@@ -59,7 +61,7 @@ public class UserFirestore {
             if (task.isSuccessful()) {
                 document = task.getResult();
                 if (document.exists()) {
-                    Log.d(tag, "DocumentSnapshot data: " + document.getData());
+                    Log.d(tag, "checkFirstLoginToday: DocumentSnapshot data: " + document.getData());
                     Date lastLoginDate = document.getDate("lastLogin");
                     LocalDate today = LocalDate.now();
                     Date todayDate = Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant());
@@ -67,15 +69,21 @@ public class UserFirestore {
                     if (lastLoginDate != null && lastLoginDate.compareTo(todayDate) < 0) {
                         // Empty list of coins picked up by the user
                         resetPickedUpCoins();
+                    } else {
+                        setPickedUpCoins((ArrayList<String>) document.get("pickedUpCoins"));
                     }
                 } else {
-                    Log.d(tag, "No such document");
+                    Log.d(tag, "checkFirstLoginToday: No such document");
                 }
             } else {
                 Log.d(tag, "get failed with ", task.getException());
             }
             docRef.update("lastLogin", Timestamp.now());
         });
+    }
+
+    private void setPickedUpCoins(ArrayList<String> pickedUpCoins) {
+        this.pickedUpCoins = pickedUpCoins;
     }
 
     private void resetPickedUpCoins() {
@@ -99,7 +107,7 @@ public class UserFirestore {
     }
 
     public boolean userHasCollected(String coinId) {
-        return false;
+        return (pickedUpCoins != null && pickedUpCoins.contains(coinId));
     }
 
     public void getCoinsInWallet(WalletActivity walletActivity) {
