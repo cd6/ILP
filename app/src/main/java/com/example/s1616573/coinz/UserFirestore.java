@@ -1,12 +1,8 @@
 package com.example.s1616573.coinz;
 
-import android.support.annotation.NonNull;
+import android.content.Context;
 import android.util.Log;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -15,20 +11,15 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import org.w3c.dom.Document;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class UserFirestore {
 
@@ -39,6 +30,7 @@ public class UserFirestore {
     private String userID;
     private DocumentSnapshot document;
     private ArrayList<String> pickedUpCoins;
+    public DownloadCompleteListener listener = null;
 
     public UserFirestore(FirebaseAuth mAuth) {
         // Access a Cloud Firestore instance from your Activity
@@ -55,7 +47,6 @@ public class UserFirestore {
     }
 
     private void checkFirstLoginToday() {
-        AtomicBoolean first = new AtomicBoolean(false);
         docRef = db.collection("users").document(Objects.requireNonNull(userID));
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -79,6 +70,7 @@ public class UserFirestore {
                 Log.d(tag, "get failed with ", task.getException());
             }
             docRef.update("lastLogin", Timestamp.now());
+            listener.downloadComplete(pickedUpCoins);
         });
     }
 

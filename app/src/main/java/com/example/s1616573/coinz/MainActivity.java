@@ -14,6 +14,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -69,6 +70,7 @@ import com.mapbox.mapboxsdk.style.sources.Source;
 import java.time.LocalDate;
 import java.time.Year;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -91,6 +93,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private DownloadFileTask downloadFileTask = new DownloadFileTask();
     private HashMap<Marker, Coin> coinMap;
     private UserFirestore userFirestore;
+    private boolean done = false;
+    private ArrayList<String> pickedUpCoins;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mAuth = FirebaseAuth.getInstance();
         userFirestore = new UserFirestore(mAuth);
+        userFirestore.listener = this;
 
         // Restore preferences
         SharedPreferences settings = getSharedPreferences(preferencesFile, Context.MODE_PRIVATE);
@@ -266,22 +271,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     @SuppressWarnings("MissingPermission")
-    public void onConnected()
-    {
+    public void onConnected() {
         Log.d(tag,"[onConnected] requesting location updates");
         locationEngine.requestLocationUpdates();
     }
 
     @Override
-    public void onExplanationNeeded(List<String> permissionsToExplain)
-    {
+    public void onExplanationNeeded(List<String> permissionsToExplain) {
         Log.d(tag,"Permissions: " + permissionsToExplain.toString());
         // Present toast or dialog.
+        Snackbar mySnackbar = Snackbar.make(findViewById(android.R.id.content), permissionsToExplain.toString(), Snackbar.LENGTH_LONG);
+        mySnackbar.show();
     }
 
     @Override
-    public void onPermissionResult(boolean granted)
-    {
+    public void onPermissionResult(boolean granted) {
         Log.d(tag,"[onPermissionResult] granted == " + granted);
         if (granted) {
             enableLocation();
@@ -338,32 +342,46 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (result != null) {
             geoJsonCoins = result;
             addCoinsToMap();
+        } else {
+            Snackbar mySnackbar = Snackbar.make(findViewById(android.R.id.content), "Could not download map", Snackbar.LENGTH_LONG);
+            mySnackbar.show();
         }
     }
 
-    private void addCoinsToMap() {
-        FeatureCollection featureCollection = FeatureCollection.fromJson(geoJsonCoins);
-        List<Feature> features = featureCollection.features();
-        // Create hashmap to link coins to their marker
-        coinMap = new HashMap<>();
-        for (Feature f : features) {
-            String id = f.properties().get("id").getAsString();
-            Double value = f.properties().get("value").getAsDouble();
-            String currency = f.properties().get("currency").getAsString();
-            if (f.geometry() instanceof Point && !userFirestore.userHasCollected(id)) {
-                // Create an Icon object for the marker to use
-                Drawable iconDrawable = ResourcesCompat.getDrawable(getResources(), R.drawable.mapbox_marker_icon_default, null);
-                iconDrawable = DrawableCompat.wrap(iconDrawable);
-                DrawableCompat.setTint(iconDrawable, Color.BLUE); // use drawable to dynamically set the colour
-                Icon icon = drawableToIcon(f.properties().get("marker-color").getAsString());
+    public void downloadComplete(ArrayList<String> result) {
+        pickedUpCoins = result;
+        addCoinsToMap();
+    }
 
-                // Get marker details from feature
-                LatLng coordinates = new LatLng(((Point) f.geometry()).latitude(), ((Point) f.geometry()).longitude());
-                JsonElement symbol = f.properties().get("marker-symbol");
-                Marker m = map.addMarker(new MarkerOptions().position(coordinates).icon(icon));
-                // Add marker and coin to hashmap then put marker on map
-                coinMap.put(m, new Coin(id, value, currency));
+    private void addCoinsToMap() {
+        if (done) {
+            FeatureCollection featureCollection = FeatureCollection.fromJson(geoJsonCoins);
+            List<Feature> features = featureCollection.features();
+            // Create hashmap to link coins to their marker
+            coinMap = new HashMap<>();
+            for (Feature f : features) {
+                String id = f.properties().get("id").getAsString();
+                Double value = f.properties().get("value").getAsDouble();
+                String currency = f.properties().get("currency").getAsString();
+                // add marker if it is not in the list of coins already picked up today
+                if (f.geometry() instanceof Point && (pickedUpCoins == null || !pickedUpCoins.contains(id))) {
+                    // Create an Icon object for the marker to use
+                    Drawable iconDrawable = ResourcesCompat.getDrawable(getResources(), R.drawable.mapbox_marker_icon_default, null);
+                    iconDrawable = DrawableCompat.wrap(iconDrawable);
+                    DrawableCompat.setTint(iconDrawable, Color.BLUE); // use drawable to dynamically set the colour
+                    Icon icon = drawableToIcon(f.properties().get("marker-color").getAsString());
+
+                    // Get marker details from feature
+                    LatLng coordinates = new LatLng(((Point) f.geometry()).latitude(), ((Point) f.geometry()).longitude());
+                    JsonElement symbol = f.properties().get("marker-symbol");
+                    Marker m = map.addMarker(new MarkerOptions().position(coordinates).icon(icon));
+                    // Add marker and coin to hashmap then put marker on map
+                    coinMap.put(m, new Coin(id, value, currency));
+                }
             }
+        }
+        else {
+            done = true;
         }
     }
 
