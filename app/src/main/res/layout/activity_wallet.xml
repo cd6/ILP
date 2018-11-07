@@ -6,4 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".WalletActivity">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_coins"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 </android.support.constraint.ConstraintLayout>

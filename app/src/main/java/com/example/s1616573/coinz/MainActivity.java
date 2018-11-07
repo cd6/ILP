@@ -131,6 +131,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mAuth = FirebaseAuth.getInstance();
         userFirestore = new UserFirestore(mAuth);
         userFirestore.listener = this;
+        // check if this is the first time the user has logged in today
+        userFirestore.checkFirstLoginToday();
 
         // Restore preferences
         SharedPreferences settings = getSharedPreferences(preferencesFile, Context.MODE_PRIVATE);

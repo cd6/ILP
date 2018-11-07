@@ -41,12 +41,9 @@ public class UserFirestore {
                 .setTimestampsInSnapshotsEnabled(true)
                 .build();
         db.setFirestoreSettings(settings);
-
-        // check if this is the first time the user has logged in today
-        checkFirstLoginToday();
     }
 
-    private void checkFirstLoginToday() {
+    public void checkFirstLoginToday() {
         docRef = db.collection("users").document(Objects.requireNonNull(userID));
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
