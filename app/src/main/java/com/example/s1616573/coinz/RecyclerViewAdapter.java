@@ -2,24 +2,30 @@ package com.example.s1616573.coinz;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     // https://stackoverflow.com/questions/40584424/simple-android-recyclerview-example
 
-    private List<String> data;
+    private List<Coin> coins;
     private LayoutInflater inflater;
     private ItemClickListener clickListener;
+    SparseBooleanArray storeChecked = new SparseBooleanArray();
 
     // data is passed into the constructor
-    RecyclerViewAdapter(Context context, List<String> data) {
+    RecyclerViewAdapter(Context context, List<Coin> coins) {
         this.inflater = LayoutInflater.from(context);
-        this.data = data;
+        this.coins = coins;
     }
 
     // inflates the row layout from xml when needed
@@ -32,36 +38,63 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     // binds the data to the TextView in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String coin = data.get(position);
-        holder.textView.setText(coin);
+        final Coin coin = coins.get(position);
+        holder.tvCurrency.setText("Currency: " + coin.getCurrency());
+        holder.tvValue.setText("Value: " + coin.getValue());
+        if(storeChecked.get(position, true)){
+            holder.itemView.setSelected(false);
+        }else{
+            holder.itemView.setSelected(true);
+        }
     }
 
     // total number of rows
     @Override
     public int getItemCount() {
-        return data.size();
+        return coins.size();
     }
 
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView textView;
+        TextView tvCurrency;
+        TextView tvValue;
+
 
         ViewHolder(View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.tv_coin);
+            tvCurrency = itemView.findViewById(R.id.tv_currency);
+            tvValue = itemView.findViewById(R.id.tv_value);
             itemView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            if (clickListener != null) clickListener.onItemClick(view, getAdapterPosition());
+            if (clickListener != null) {
+                clickListener.onItemClick(view, getAdapterPosition());
+               if (storeChecked.get(getAdapterPosition(), true)) {
+                   storeChecked.put(getAdapterPosition(), false);
+               } else {
+                   storeChecked.put(getAdapterPosition(), true);
+               }
+                notifyDataSetChanged();
+            }
         }
     }
 
     // convenience method for getting data at click position
-    String getItem(int id) {
-        return data.get(id);
+    Coin getItem(int pos) {
+        return coins.get(pos);
+    }
+
+    void removeItems(Set<Integer> pos) {
+        List<Integer> posSorted = new ArrayList<Integer>(pos);
+        Collections.sort(posSorted, Collections.reverseOrder());
+        for (int i : posSorted) {
+            coins.remove(i);
+            notifyItemRemoved(i);
+        }
+        storeChecked.clear();
     }
 
     // allows clicks events to be caught

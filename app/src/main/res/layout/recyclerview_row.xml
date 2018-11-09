@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+    android:background="@drawable/background_selector"
     android:padding="10dp">
 
     <TextView
-        android:id="@+id/tv_coin"
+        android:id="@+id/tv_currency"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"/>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/tv_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_currency"
+        android:layout_alignStart="@+id/tv_currency"
+        android:textSize="20sp"/>
+
+</RelativeLayout>

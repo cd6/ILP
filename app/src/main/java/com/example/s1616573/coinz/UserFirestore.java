@@ -18,6 +18,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -95,9 +96,6 @@ public class UserFirestore {
                 .addOnFailureListener(e -> Log.w(tag, "pickUp: Error writing document", e));
     }
 
-    public boolean userHasCollected(String coinId) {
-        return (pickedUpCoins != null && pickedUpCoins.contains(coinId));
-    }
 
     public void getCoinsInWallet(WalletActivity walletActivity) {
         db.collection("users").document(userID).collection("wallet")
@@ -115,5 +113,27 @@ public class UserFirestore {
                         Log.d(tag, "getCoinsInWallet: Error getting documents: ", task.getException());
                     }
                 });
+    }
+
+    public void depositGold(double gold){
+        docRef = db.collection("users").document(userID);
+        docRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                document = task.getResult();
+                if (document.exists()) {
+                    Log.d(tag, "depositGold: DocumentSnapshot data: " + document.getData());
+                    double goldInBank = 0;
+                    if (document.contains("gold")) {
+                        goldInBank = document.getDouble("gold");
+                    }
+                    goldInBank += gold;
+                    docRef.update("gold", goldInBank);
+                } else {
+                    Log.d(tag, "depositGold: No such document");
+                }
+            } else {
+                Log.d(tag, "get failed with ", task.getException());
+            }
+        });
     }
 }
