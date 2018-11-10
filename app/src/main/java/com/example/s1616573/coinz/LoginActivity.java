@@ -25,6 +25,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -159,10 +161,10 @@ public class LoginActivity extends AppCompatActivity{
                     Log.d(tag, "[attemptCreation] success");
                     // Add collection for user on Firestore to store their progress
                     String userID = mAuth.getUid();
-                    db.collection("users").add(Objects.requireNonNull(userID))
-                            .addOnSuccessListener(documentReference -> Log.d(tag, "DocumentSnapshot added with ID: " + documentReference.getId()))
-                            .addOnFailureListener(e -> Log.w(tag, "Error adding document", e));
-                    db.collection("users").document(userID).update("userID", userID);
+                    Map<String, Object> m = new HashMap<>();
+                    db.collection("users").document(Objects.requireNonNull(userID)).set(m)
+                            .addOnSuccessListener(aVoid -> Log.d(tag, "DocumentSnapshot successfully written!"))
+                            .addOnFailureListener(e -> Log.w(tag, "Error writing document", e));
                     openMainActivity();
                     this.finish();
                 } else {

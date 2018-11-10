@@ -1,8 +1,10 @@
 package com.example.s1616573.coinz;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -18,6 +20,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -134,6 +137,22 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onStart() {
         super.onStart();
 
+        if (locationEngine != null && !locationEngine.isConnected()) {
+            locationEngine.activate();
+        }
+        if (locationLayerPlugin != null) {
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            locationLayerPlugin.onStart();
+        }
         mAuth = FirebaseAuth.getInstance();
         userFirestore = new UserFirestore(mAuth);
         userFirestore.listener = this;
@@ -365,7 +384,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void addCoinsToMap() {
         // don't add coins until map has been downloaded from DownloadFileTask and picked up coins have been gotten from FireStore
-        if (done) {
+        if (done && map.getMarkers().size() == 0) {
             FeatureCollection featureCollection = FeatureCollection.fromJson(geoJsonCoins);
             List<Feature> features = featureCollection.features();
             int[] markers = new int[] {R.drawable.marker0, R.drawable.marker0, R.drawable.marker1,
@@ -402,13 +421,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     // https://github.com/mapbox/mapbox-gl-native/issues/7897
     public Icon drawableToIcon(String colorRes, int marker) {
         // dynamically change colour of marker
-
         Drawable vectorDrawable = ResourcesCompat.getDrawable(getResources(), marker, null);
         Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         vectorDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         DrawableCompat.setTint(vectorDrawable, Color.parseColor(colorRes));
-
+        //DrawableCompat.setTintMode(vectorDrawable, PorterDuff.Mode.DST_OVER);
         vectorDrawable.draw(canvas);
         return IconFactory.getInstance(this).fromBitmap(bitmap);
     }
