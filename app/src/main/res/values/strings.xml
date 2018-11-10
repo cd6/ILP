@@ -20,4 +20,5 @@
     <string name="login_failed">The email or password is incorrect</string>
     <string name="action_sign_out">Sign out</string>
     <string name="deposit_coins">Deposit</string>
+    <string name="title_activity_bank">BankActivity</string>
 </resources>

@@ -27,6 +27,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".WalletActivity" />
+        <activity
+            android:name=".BankActivity"
+            android:label="@string/title_activity_bank"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

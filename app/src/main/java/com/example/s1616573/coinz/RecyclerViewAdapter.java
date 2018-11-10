@@ -39,8 +39,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Coin coin = coins.get(position);
-        holder.tvCurrency.setText("Currency: " + coin.getCurrency());
-        holder.tvValue.setText("Value: " + coin.getValue());
+        holder.textCurrency.setText(String.format("Currency: %s", coin.getCurrency()));
+        holder.textValue.setText(String.format("Value: %s", coin.getValue()));
         if(storeChecked.get(position, true)){
             holder.itemView.setSelected(false);
         }else{
@@ -57,14 +57,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tvCurrency;
-        TextView tvValue;
+        TextView textCurrency;
+        TextView textValue;
 
 
         ViewHolder(View itemView) {
             super(itemView);
-            tvCurrency = itemView.findViewById(R.id.tv_currency);
-            tvValue = itemView.findViewById(R.id.tv_value);
+            textCurrency = itemView.findViewById(R.id.text_currency);
+            textValue = itemView.findViewById(R.id.text_value);
             itemView.setOnClickListener(this);
         }
 
@@ -89,7 +89,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     void removeItems(Set<Integer> pos) {
         List<Integer> posSorted = new ArrayList<Integer>(pos);
-        Collections.sort(posSorted, Collections.reverseOrder());
+        posSorted.sort(Collections.reverseOrder());
         for (int i : posSorted) {
             coins.remove(i);
             notifyItemRemoved(i);

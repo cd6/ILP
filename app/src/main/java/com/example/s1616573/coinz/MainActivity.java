@@ -7,6 +7,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
@@ -114,11 +117,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         FloatingActionButton mBankButton = findViewById(R.id.fab_bank);
         mBankButton.setOnClickListener(view -> {
-
+            // open bank
+            Intent bankIntent = new Intent(this, BankActivity.class);
+            startActivity(bankIntent);
         });
 
         FloatingActionButton mWalletButton = findViewById(R.id.fab_wallet);
         mWalletButton.setOnClickListener(view -> {
+            // open wallet
             Intent walletIntent = new Intent(this, WalletActivity.class);
             startActivity(walletIntent);
         });
@@ -341,6 +347,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void downloadComplete(String result) {
         // https://stackoverflow.com/questions/9963691/android-asynctask-sending-callbacks-to-ui
+        // get result when async task completes
         if (result != null) {
             geoJsonCoins = result;
             addCoinsToMap();
@@ -351,14 +358,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void downloadComplete(ArrayList<String> result) {
+        // gets list of picked up coins when firestore query completes
         pickedUpCoins = result;
         addCoinsToMap();
     }
 
     private void addCoinsToMap() {
+        // don't add coins until map has been downloaded from DownloadFileTask and picked up coins have been gotten from FireStore
         if (done) {
             FeatureCollection featureCollection = FeatureCollection.fromJson(geoJsonCoins);
             List<Feature> features = featureCollection.features();
+            int[] markers = new int[] {R.drawable.marker0, R.drawable.marker0, R.drawable.marker1,
+                    R.drawable.marker2, R.drawable.marker3, R.drawable.marker4, R.drawable.marker5,
+                    R.drawable.marker6, R.drawable.marker7, R.drawable.marker8, R.drawable.marker9};
             // Create hashmap to link coins to their marker
             coinMap = new HashMap<>();
             for (Feature f : features) {
@@ -368,10 +380,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 // add marker if it is not in the list of coins already picked up today
                 if (f.geometry() instanceof Point && (pickedUpCoins == null || !pickedUpCoins.contains(id))) {
                     // Create an Icon object for the marker to use
-                    Drawable iconDrawable = ResourcesCompat.getDrawable(getResources(), R.drawable.mapbox_marker_icon_default, null);
-                    iconDrawable = DrawableCompat.wrap(iconDrawable);
-                    DrawableCompat.setTint(iconDrawable, Color.BLUE); // use drawable to dynamically set the colour
-                    Icon icon = drawableToIcon(f.properties().get("marker-color").getAsString());
+                    String markerColour = f.properties().get("marker-color").getAsString();
+                    int markerSymbol = f.properties().get("marker-symbol").getAsInt();
+                    Icon icon = drawableToIcon(markerColour, markers[markerSymbol]);
 
                     // Get marker details from feature
                     LatLng coordinates = new LatLng(((Point) f.geometry()).latitude(), ((Point) f.geometry()).longitude());
@@ -383,22 +394,27 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
         else {
+            // coins will be added the second time the method has been called
             done = true;
         }
     }
 
     // https://github.com/mapbox/mapbox-gl-native/issues/7897
-    public Icon drawableToIcon(String colorRes) {
-        Drawable vectorDrawable = ResourcesCompat.getDrawable(getResources(), R.drawable.mapbox_marker_icon_default, null);
+    public Icon drawableToIcon(String colorRes, int marker) {
+        // dynamically change colour of marker
+
+        Drawable vectorDrawable = ResourcesCompat.getDrawable(getResources(), marker, null);
         Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(), vectorDrawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         vectorDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         DrawableCompat.setTint(vectorDrawable, Color.parseColor(colorRes));
+
         vectorDrawable.draw(canvas);
         return IconFactory.getInstance(this).fromBitmap(bitmap);
     }
 
     private void inRangeOfCoin() {
+        // pick up coin when the user is within 25 metres
         List<Marker> markers = map.getMarkers();
         double latAngleUser = Math.toRadians(originLocation.getLatitude());
         double longAngleUser = Math.toRadians(originLocation.getLongitude());

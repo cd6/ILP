@@ -1,5 +1,6 @@
 package com.example.s1616573.coinz;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -83,8 +84,8 @@ public class WalletActivity extends AppCompatActivity implements RecyclerViewAda
         } else {
             selectedCoins.put(position, clicked);
         }
-
-        depositButton.setEnabled(!selectedCoins.isEmpty());
+        // change 25 to 25-number deposited that day
+        depositButton.setEnabled(!selectedCoins.isEmpty() && selectedCoins.size() <=25);
     }
 
     public void getRates(String geoJson) throws JSONException {
@@ -102,6 +103,7 @@ public class WalletActivity extends AppCompatActivity implements RecyclerViewAda
         for (Integer p : selectedCoins.keySet()) {
             Coin c = selectedCoins.get(p);
             gold += c.getValue()*rates.get(c.getCurrency());
+            userFirestore.removeCoinFromWallet(c);
         }
         userFirestore.depositGold(gold);
         adapter.removeItems(selectedCoins.keySet());

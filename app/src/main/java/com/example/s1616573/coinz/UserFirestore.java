@@ -1,8 +1,11 @@
 package com.example.s1616573.coinz;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -18,7 +21,6 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -115,6 +117,24 @@ public class UserFirestore {
                 });
     }
 
+    public void removeCoinFromWallet(Coin coin) {
+        db.collection("users").document(userID)
+                .collection("wallet").document(coin.getId())
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(tag, "DocumentSnapshot successfully deleted!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(tag, "Error deleting document", e);
+                    }
+                });
+    }
+
     public void depositGold(double gold){
         docRef = db.collection("users").document(userID);
         docRef.get().addOnCompleteListener(task -> {
@@ -128,6 +148,27 @@ public class UserFirestore {
                     }
                     goldInBank += gold;
                     docRef.update("gold", goldInBank);
+                } else {
+                    Log.d(tag, "depositGold: No such document");
+                }
+            } else {
+                Log.d(tag, "get failed with ", task.getException());
+            }
+        });
+    }
+
+    public void getGoldInBank(BankActivity bankActivity) {
+        docRef = db.collection("users").document(userID);
+        docRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                document = task.getResult();
+                if (document.exists()) {
+                    Log.d(tag, "depositGold: DocumentSnapshot data: " + document.getData());
+                    double goldInBank = 0;
+                    if (document.contains("gold")) {
+                        goldInBank = document.getDouble("gold");
+                    }
+                    bankActivity.showGold(goldInBank);
                 } else {
                     Log.d(tag, "depositGold: No such document");
                 }
