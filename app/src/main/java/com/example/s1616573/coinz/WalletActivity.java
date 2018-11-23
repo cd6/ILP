@@ -3,6 +3,7 @@ package com.example.s1616573.coinz;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -108,6 +109,11 @@ public class WalletActivity extends AppCompatActivity implements RecyclerViewAda
         userFirestore.depositGold(gold);
         adapter.removeItems(selectedCoins.keySet());
         selectedCoins.clear();
+    }
+
+    private void errorMessage(String errorText) {
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), errorText, Snackbar.LENGTH_LONG);
+        snackbar.show();
     }
 
 }

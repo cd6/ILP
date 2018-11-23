@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private HashMap<Marker, Coin> coinMap;
     private UserFirestore userFirestore;
     private boolean done = false;
-    private ArrayList<String> pickedUpCoins;
+    private ArrayList<String> pickedUpCoins = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onStart() {
         super.onStart();
+        done = false;
 
         if (locationEngine != null && !locationEngine.isConnected()) {
             locationEngine.activate();
@@ -350,7 +351,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void getCoinMap() {
         // download map if it has not already been downloaded
         LocalDate date = LocalDate.now();
-        if (downloadDate.equals("") || !date.isEqual(LocalDate.parse(downloadDate))) {
+        // need to check if geoJsonCoins is empty in case user previously opened the app with no internet connection
+        if (downloadDate.equals("") || !date.isEqual(LocalDate.parse(downloadDate)) || geoJsonCoins.equals("")) {
             downloadDate = date.toString();
             String[] yearMonthDay = downloadDate.split("-");
             String mapURL = "http://homepages.inf.ed.ac.uk/stg/coinz/" + yearMonthDay[0] + "/" + yearMonthDay[1] + "/" + yearMonthDay[2] + "/coinzmap.geojson";
@@ -371,15 +373,22 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             geoJsonCoins = result;
             addCoinsToMap();
         } else {
-            Snackbar mySnackbar = Snackbar.make(findViewById(android.R.id.content), "Could not download map", Snackbar.LENGTH_LONG);
-            mySnackbar.show();
+            errorMessage("Could not download map");
         }
     }
 
+    // TODO: decide if users can see coins with no internet by loading from shared preferences
     public void downloadComplete(ArrayList<String> result) {
         // gets list of picked up coins when firestore query completes
-        pickedUpCoins = result;
+        if (result != null) {
+            pickedUpCoins = result;
+        }
         addCoinsToMap();
+    }
+
+    private void errorMessage(String errorText) {
+        Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), errorText, Snackbar.LENGTH_LONG);
+        snackbar.show();
     }
 
     private void addCoinsToMap() {
@@ -387,7 +396,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (done && map.getMarkers().size() == 0) {
             FeatureCollection featureCollection = FeatureCollection.fromJson(geoJsonCoins);
             List<Feature> features = featureCollection.features();
-            int[] markers = new int[] {R.drawable.marker0, R.drawable.marker0, R.drawable.marker1,
+            int[] markers = new int[] { R.drawable.marker0, R.drawable.marker1,
                     R.drawable.marker2, R.drawable.marker3, R.drawable.marker4, R.drawable.marker5,
                     R.drawable.marker6, R.drawable.marker7, R.drawable.marker8, R.drawable.marker9};
             // Create hashmap to link coins to their marker

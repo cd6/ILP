@@ -171,9 +171,11 @@ public class UserFirestore {
                     bankActivity.showGold(goldInBank);
                 } else {
                     Log.d(tag, "depositGold: No such document");
+                    bankActivity.showGold(0);
                 }
             } else {
                 Log.d(tag, "get failed with ", task.getException());
+                bankActivity.showGold(-1);
             }
         });
     }
