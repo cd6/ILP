@@ -1,7 +1,11 @@
 package com.example.s1616573.coinz;
 
 import android.Manifest;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.arch.lifecycle.Lifecycle;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -23,9 +27,11 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -113,11 +119,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
 
-        FloatingActionButton mCoinButton = findViewById(R.id.fab_coin);
-        mCoinButton.setOnClickListener(view -> {
-
-        });
-
         FloatingActionButton mBankButton = findViewById(R.id.fab_bank);
         mBankButton.setOnClickListener(view -> {
             // open bank
@@ -139,7 +140,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         done = false;
 
         if (locationEngine != null && !locationEngine.isConnected()) {
-            locationEngine.activate();
+            try {
+                locationEngine.requestLocationUpdates();
+            } catch(SecurityException ignored) {}
+            locationEngine.addLocationEngineListener(this);
         }
         if (locationLayerPlugin != null) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -256,6 +260,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         locationEngine.setPriority(LocationEnginePriority.HIGH_ACCURACY);
         locationEngine.activate();
         Location lastLocation = locationEngine.getLastLocation();
+
         if (lastLocation != null) {
             originLocation = lastLocation;
             setCameraPosition(lastLocation);
@@ -339,13 +344,42 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.sign_out_item) {
-            mAuth.signOut();
-            Intent loginIntent = new Intent(this, LoginActivity.class);
-            startActivity(loginIntent);
-            this.finish();
+            confirmSignout();
+        }
+
+        if (id == R.id.exchange_rate_item) {
+
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    // https://stackoverflow.com/questions/2115758/how-do-i-display-an-alert-dialog-on-android
+    private void confirmSignout() {
+        AlertDialog.Builder signOutBuilder = new AlertDialog.Builder(this);
+        signOutBuilder.setMessage("Are you sure you want to sign out?");
+        signOutBuilder.setCancelable(true);
+
+        signOutBuilder.setPositiveButton(
+                "Yes",
+                (dialog, id) -> {
+                    signOut();
+                    dialog.cancel();
+                });
+
+        signOutBuilder.setNegativeButton(
+                "No",
+                (dialog, id) -> dialog.cancel());
+
+        AlertDialog alert = signOutBuilder.create();
+        alert.show();
+    }
+
+    public void signOut() {
+        mAuth.signOut();
+        Intent loginIntent = new Intent(this, LoginActivity.class);
+        startActivity(loginIntent);
+        this.finish();
     }
 
     private void getCoinMap() {
@@ -461,4 +495,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+
+
 }
+

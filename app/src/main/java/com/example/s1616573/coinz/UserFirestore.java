@@ -12,19 +12,24 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Transaction;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 public class UserFirestore {
+
+    // TODO: check internet connection before accessing to avoid crash
 
     private String tag = "UserFirestore";
     private FirebaseAuth mAuth;
@@ -125,36 +130,48 @@ public class UserFirestore {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Log.d(tag, "DocumentSnapshot successfully deleted!");
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.w(tag, "Error deleting document", e);
+
                     }
                 });
     }
 
-    public void depositGold(double gold){
+    public void depositCoins(WalletActivity walletActivity, Collection<Coin> coins, double gold){
         docRef = db.collection("users").document(userID);
-        docRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                document = task.getResult();
-                if (document.exists()) {
-                    Log.d(tag, "depositGold: DocumentSnapshot data: " + document.getData());
-                    double goldInBank = 0;
-                    if (document.contains("gold")) {
-                        goldInBank = document.getDouble("gold");
-                    }
-                    goldInBank += gold;
-                    docRef.update("gold", goldInBank);
-                } else {
-                    Log.d(tag, "depositGold: No such document");
-                }
-            } else {
-                Log.d(tag, "get failed with ", task.getException());
+        db.runTransaction((Transaction.Function<Void>) transaction -> {
+            DocumentSnapshot snapshot = transaction.get(docRef);
+            double goldInBank = 0;
+            if (snapshot.contains("gold")) {
+                goldInBank = snapshot.getDouble("gold");
             }
-        });
+            goldInBank += gold;
+            transaction.update(docRef, "gold", goldInBank);
+            for(Coin c : coins) {
+                   docRef.collection("wallet").document(c.getId())
+                           .delete();
+            }
+            // Success
+            return null;
+        }).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(tag, "[depositCoins] Transaction success!");
+                walletActivity.depositSucceeded(true);
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(tag, "[depositCoins] Transaction failure.", e);
+                        walletActivity.depositSucceeded(false);
+                    }
+                });
     }
 
     public void getGoldInBank(BankActivity bankActivity) {

@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/exchange_rate_item"
+        android:title="@string/action_exchange_rate"
+        android:icon="@drawable/exchange_rate"
+        app:showAsAction="ifRoom"
+        />
 
     <item
         android:id="@+id/sign_out_item"
-        android:title="@string/action_sign_out" />
+        android:title="@string/action_sign_out"
+        app:showAsAction="never"
+        />
 </menu>
