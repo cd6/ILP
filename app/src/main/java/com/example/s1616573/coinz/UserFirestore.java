@@ -37,7 +37,14 @@ public class UserFirestore {
     private DocumentReference docRef;
     private String userID;
     private DocumentSnapshot document;
+
+    private final String USER_COLLECTION = "users";
+    private final String WALLET_COLLECTION = "wallet";
+    private final String PICKED_UP_COINS_FIELD = "pickedUpCoins";
+    private final String GOLD_FIELD = "gold";
+
     private ArrayList<String> pickedUpCoins;
+
     public DownloadCompleteListener listener = null;
 
     public UserFirestore(FirebaseAuth mAuth) {
@@ -51,13 +58,13 @@ public class UserFirestore {
         db.setFirestoreSettings(settings);
     }
 
-    public void checkFirstLoginToday() {
-        docRef = db.collection("users").document(Objects.requireNonNull(userID));
+    public void getPickedUpCoins() {
+        docRef = db.collection(USER_COLLECTION).document(Objects.requireNonNull(userID));
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 document = task.getResult();
                 if (document.exists()) {
-                    Log.d(tag, "checkFirstLoginToday: DocumentSnapshot data: " + document.getData());
+                    Log.d(tag, "[checkFirstLoginToday] DocumentSnapshot data: " + document.getData());
                     Date lastLoginDate = document.getDate("lastLogin");
                     LocalDate today = LocalDate.now();
                     Date todayDate = Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant());
@@ -66,10 +73,10 @@ public class UserFirestore {
                         // Empty list of coins picked up by the user
                         resetPickedUpCoins();
                     } else {
-                        setPickedUpCoins((ArrayList<String>) document.get("pickedUpCoins"));
+                        setPickedUpCoins((ArrayList<String>) document.get(PICKED_UP_COINS_FIELD));
                     }
                 } else {
-                    Log.d(tag, "checkFirstLoginToday: No such document");
+                    Log.d(tag, "[checkFirstLoginToday] No such document");
                 }
             } else {
                 Log.d(tag, "get failed with ", task.getException());
@@ -87,73 +94,53 @@ public class UserFirestore {
         // Remove all coin IDs from array of coins picked up from the map
         // Remove the 'capital' field from the document
         Map<String,Object> updates = new HashMap<>();
-        updates.put("pickedUpCoins", FieldValue.delete());
+        updates.put(PICKED_UP_COINS_FIELD, FieldValue.delete());
 
-        docRef.update(updates).addOnCompleteListener(aVoid -> Log.d(tag, "resetPickedUpCoins: Update successful"));
+        docRef.update(updates).addOnCompleteListener(aVoid -> Log.d(tag, "[resetPickedUpCoins] Update successful"));
     }
 
     public void pickUp(Coin coin) {
         // pickedUpCoins stores ID of coins for the map of the current day that the user has picked up
-        docRef.update("pickedUpCoins", FieldValue.arrayUnion(coin.getId()));
+        docRef.update(PICKED_UP_COINS_FIELD, FieldValue.arrayUnion(coin.getId()));
         // Store when the coin was collected to order them in wallet by when the coins were picked up
         coin.setDate(Timestamp.now());
-        db.collection("users").document(Objects.requireNonNull(userID))
-                .collection("wallet").document(coin.getId()).set(coin)
-                .addOnSuccessListener(aVoid -> Log.d(tag, "pickUp: DocumentSnapshot successfully written!"))
-                .addOnFailureListener(e -> Log.w(tag, "pickUp: Error writing document", e));
+        db.collection(USER_COLLECTION).document(Objects.requireNonNull(userID))
+                .collection(WALLET_COLLECTION).document(coin.getId()).set(coin)
+                .addOnSuccessListener(aVoid -> Log.d(tag, "[pickUp] DocumentSnapshot successfully written!"))
+                .addOnFailureListener(e -> Log.w(tag, "[pickUp] Error writing document", e));
     }
 
 
     public void getCoinsInWallet(WalletActivity walletActivity) {
-        db.collection("users").document(userID).collection("wallet")
+        db.collection(USER_COLLECTION).document(userID).collection("wallet")
                 .orderBy("dateCollected", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         QuerySnapshot walletDocument = task.getResult();
-                        if (!walletDocument.isEmpty()) {
+                        if (walletDocument != null && !walletDocument.isEmpty()) {
                             walletActivity.showCoins(task.getResult().toObjects(Coin.class));
                         } else {
-                            Log.d(tag, "getCoinsInWallet: Wallet is empty: ", task.getException());
+                            Log.d(tag, "[getCoinsInWallet] Wallet is empty: ", task.getException());
                         }
                     } else {
-                        Log.d(tag, "getCoinsInWallet: Error getting documents: ", task.getException());
-                    }
-                });
-    }
-
-    public void removeCoinFromWallet(Coin coin) {
-        db.collection("users").document(userID)
-                .collection("wallet").document(coin.getId())
-                .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(tag, "DocumentSnapshot successfully deleted!");
-
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(tag, "Error deleting document", e);
-
+                        Log.d(tag, "[getCoinsInWallet] Error getting documents: ", task.getException());
                     }
                 });
     }
 
     public void depositCoins(WalletActivity walletActivity, Collection<Coin> coins, double gold){
-        docRef = db.collection("users").document(userID);
+        docRef = db.collection(USER_COLLECTION).document(userID);
         db.runTransaction((Transaction.Function<Void>) transaction -> {
             DocumentSnapshot snapshot = transaction.get(docRef);
             double goldInBank = 0;
-            if (snapshot.contains("gold")) {
-                goldInBank = snapshot.getDouble("gold");
+            if (snapshot.contains(GOLD_FIELD)) {
+                goldInBank = snapshot.getDouble(GOLD_FIELD);
             }
             goldInBank += gold;
-            transaction.update(docRef, "gold", goldInBank);
+            transaction.update(docRef, GOLD_FIELD, goldInBank);
             for(Coin c : coins) {
-                   docRef.collection("wallet").document(c.getId())
+                   docRef.collection(WALLET_COLLECTION).document(c.getId())
                            .delete();
             }
             // Success
@@ -175,19 +162,19 @@ public class UserFirestore {
     }
 
     public void getGoldInBank(BankActivity bankActivity) {
-        docRef = db.collection("users").document(userID);
+        docRef = db.collection(USER_COLLECTION).document(userID);
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 document = task.getResult();
                 if (document.exists()) {
-                    Log.d(tag, "depositGold: DocumentSnapshot data: " + document.getData());
+                    Log.d(tag, "[depositGold] DocumentSnapshot data: " + document.getData());
                     double goldInBank = 0;
-                    if (document.contains("gold")) {
-                        goldInBank = document.getDouble("gold");
+                    if (document.contains(GOLD_FIELD)) {
+                        goldInBank = document.getDouble(GOLD_FIELD);
                     }
                     bankActivity.showGold(goldInBank);
                 } else {
-                    Log.d(tag, "depositGold: No such document");
+                    Log.d(tag, "[depositGold] No such document");
                     bankActivity.showGold(0);
                 }
             } else {

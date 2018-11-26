@@ -25,10 +25,10 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:clickable="true"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorAccent"
         app:layout_constraintBottom_toTopOf="@+id/fab_wallet"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/bank" />
+        app:srcCompat="@drawable/baseline_account_balance_white_18dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab_wallet"
@@ -37,10 +37,10 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:clickable="true"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/wallet" />
+        app:srcCompat="@drawable/baseline_account_balance_wallet_white_18dp" />
 
     <com.mapbox.mapboxsdk.maps.MapView
         android:id="@+id/mapboxMapView"

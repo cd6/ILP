@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -29,15 +30,19 @@ public class WalletActivity extends AppCompatActivity implements RecyclerViewAda
     private String tag = "WalletActivity";
     private UserFirestore userFirestore;
     private FirebaseAuth mAuth;
+
     private RecyclerView walletView;
     private RecyclerViewAdapter adapter;
-    private Button depositButton;
+    private FloatingActionButton depositButton;
+    private FloatingActionButton sendButton;
+    private Toolbar toolbar;
+    private View progressView;
+
     private final String preferencesFile = "MyPrefsFile";
     private int noSelected = 0;
     private HashMap<String, Double> rates;
     private HashMap<Integer, Coin> selectedCoins;
-    private Toolbar toolbar;
-    private View progressView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +50,17 @@ public class WalletActivity extends AppCompatActivity implements RecyclerViewAda
         setContentView(R.layout.activity_wallet);
         walletView = findViewById(R.id.rv_coins);
         walletView.setLayoutManager(new LinearLayoutManager(this));
-        depositButton = findViewById(R.id.deposit_button);
-        depositButton.setEnabled(false);
+        depositButton = findViewById(R.id.fab_deposit);
+        depositButton.setClickable(false);
+        sendButton = findViewById(R.id.fab_send);
+        sendButton.setClickable(false);
         toolbar = findViewById(R.id.toolbar_wallet);
         setSupportActionBar(toolbar);
         ActionBar aBar = getSupportActionBar();
-        aBar.setDisplayHomeAsUpEnabled(true);
+
+        if (aBar != null) {
+            aBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         progressView = findViewById(R.id.deposit_progress);
 
@@ -58,6 +68,10 @@ public class WalletActivity extends AppCompatActivity implements RecyclerViewAda
 
         depositButton.setOnClickListener(view -> {
             deposit();
+        });
+
+        sendButton.setOnClickListener(view -> {
+            send();
         });
     }
 
@@ -96,7 +110,7 @@ public class WalletActivity extends AppCompatActivity implements RecyclerViewAda
             selectedCoins.put(position, clicked);
         }
         // change 25 to 25-number deposited that day
-        depositButton.setEnabled(!selectedCoins.isEmpty() && selectedCoins.size() <=25);
+        depositButton.setClickable(!selectedCoins.isEmpty() && selectedCoins.size() <=25);
     }
 
     public void getRates(String geoJson) throws JSONException {
@@ -128,6 +142,10 @@ public class WalletActivity extends AppCompatActivity implements RecyclerViewAda
         } else {
             errorMessage("Unable to connect to network");
         }
+    }
+
+    public void send() {
+
     }
 
     private void errorMessage(String errorText) {
