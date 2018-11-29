@@ -4,8 +4,10 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -17,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -39,6 +42,8 @@ public class UserFirestore {
     private DocumentSnapshot document;
 
     private final String USER_COLLECTION = "users";
+    private final String USER_PRIVATE = "user";
+    private final String USER_DOCUMENT = "userDoc";
     private final String WALLET_COLLECTION = "wallet";
     private final String PICKED_UP_COINS_FIELD = "pickedUpCoins";
     private final String GOLD_FIELD = "gold";
@@ -56,13 +61,14 @@ public class UserFirestore {
                 .setTimestampsInSnapshotsEnabled(true)
                 .build();
         db.setFirestoreSettings(settings);
+        docRef = db.collection(USER_COLLECTION).document(Objects.requireNonNull(userID)).collection(USER_PRIVATE).document(USER_DOCUMENT);
     }
 
     public void getPickedUpCoins() {
-        docRef = db.collection(USER_COLLECTION).document(Objects.requireNonNull(userID));
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 document = task.getResult();
+                assert document != null;
                 if (document.exists()) {
                     Log.d(tag, "[checkFirstLoginToday] DocumentSnapshot data: " + document.getData());
                     Date lastLoginDate = document.getDate("lastLogin");
@@ -104,15 +110,14 @@ public class UserFirestore {
         docRef.update(PICKED_UP_COINS_FIELD, FieldValue.arrayUnion(coin.getId()));
         // Store when the coin was collected to order them in wallet by when the coins were picked up
         coin.setDate(Timestamp.now());
-        db.collection(USER_COLLECTION).document(Objects.requireNonNull(userID))
-                .collection(WALLET_COLLECTION).document(coin.getId()).set(coin)
+        docRef.collection(WALLET_COLLECTION).document(coin.getId()).set(coin)
                 .addOnSuccessListener(aVoid -> Log.d(tag, "[pickUp] DocumentSnapshot successfully written!"))
                 .addOnFailureListener(e -> Log.w(tag, "[pickUp] Error writing document", e));
     }
 
 
     public void getCoinsInWallet(WalletActivity walletActivity) {
-        db.collection(USER_COLLECTION).document(userID).collection("wallet")
+        docRef.collection("wallet")
                 .orderBy("dateCollected", Query.Direction.ASCENDING)
                 .get()
                 .addOnCompleteListener(task -> {
@@ -130,7 +135,6 @@ public class UserFirestore {
     }
 
     public void depositCoins(WalletActivity walletActivity, Collection<Coin> coins, double gold){
-        docRef = db.collection(USER_COLLECTION).document(userID);
         db.runTransaction((Transaction.Function<Void>) transaction -> {
             DocumentSnapshot snapshot = transaction.get(docRef);
             double goldInBank = 0;
@@ -145,24 +149,42 @@ public class UserFirestore {
             }
             // Success
             return null;
-        }).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d(tag, "[depositCoins] Transaction success!");
-                walletActivity.depositSucceeded(true);
-            }
+        }).addOnSuccessListener(aVoid -> {
+            Log.d(tag, "[depositCoins] Transaction success!");
+            walletActivity.transactionSucceeded(true);
         })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(tag, "[depositCoins] Transaction failure.", e);
-                        walletActivity.depositSucceeded(false);
-                    }
+                .addOnFailureListener(e -> {
+                    Log.w(tag, "[depositCoins] Transaction failure.", e);
+                    walletActivity.transactionSucceeded(false);
                 });
     }
 
+    public void sendCoins(WalletActivity walletActivity, String userTo, Collection<Coin> coins, double gold){
+        // Get a new write batch
+        WriteBatch batch = db.batch();
+
+        DocumentReference sendRef = db.collection(USER_COLLECTION).document(userTo).collection("sent").document();
+        Map<String, Double> sentGold = new HashMap<>();
+        // TODO: change to username save in sharedprefs when logging in remove when log out?
+        sentGold.put(userID, gold);
+        batch.set(sendRef,sentGold);
+
+        for(Coin c : coins) {
+            batch.delete(docRef.collection(WALLET_COLLECTION).document(c.getId()));
+        }
+        // Commit the batch
+        batch.commit().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Log.d(tag, "[sendCoins] Batch success!");
+                walletActivity.transactionSucceeded(true);
+            } else {
+                Log.w(tag, "[sendCoins] Batch failure.");
+                walletActivity.transactionSucceeded(false);
+            }
+        });
+    }
+
     public void getGoldInBank(BankActivity bankActivity) {
-        docRef = db.collection(USER_COLLECTION).document(userID);
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 document = task.getResult();

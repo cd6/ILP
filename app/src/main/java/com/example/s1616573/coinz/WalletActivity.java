@@ -4,26 +4,39 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class WalletActivity extends AppCompatActivity implements RecyclerViewAdapter.ItemClickListener {
 
@@ -39,9 +52,11 @@ public class WalletActivity extends AppCompatActivity implements RecyclerViewAda
     private View progressView;
 
     private final String preferencesFile = "MyPrefsFile";
+    private final String USER_COLLECTION = "users";
     private int noSelected = 0;
     private HashMap<String, Double> rates;
     private HashMap<Integer, Coin> selectedCoins;
+    private String userTo;
 
 
     @Override
@@ -71,7 +86,7 @@ public class WalletActivity extends AppCompatActivity implements RecyclerViewAda
         });
 
         sendButton.setOnClickListener(view -> {
-            send();
+            chooseUser();
         });
     }
 
@@ -113,7 +128,7 @@ public class WalletActivity extends AppCompatActivity implements RecyclerViewAda
         depositButton.setClickable(!selectedCoins.isEmpty() && selectedCoins.size() <=25);
     }
 
-    public void getRates(String geoJson) throws JSONException {
+    private void getRates(String geoJson) throws JSONException {
         JSONObject obj = new JSONObject(geoJson);
         rates = new HashMap<>();
         String[] currencies = new String[]{"SHIL","DOLR","QUID","PENY"};
@@ -123,18 +138,14 @@ public class WalletActivity extends AppCompatActivity implements RecyclerViewAda
         }
     }
 
-    public void deposit() {
+    private void deposit() {
         // TODO: Try to deposit with no internet
-        double gold = 0;
-        for (Integer p : selectedCoins.keySet()) {
-            Coin c = selectedCoins.get(p);
-            gold += c.getValue()*rates.get(c.getCurrency());
-        }
+        double gold = calculateGold();
         showProgress(true);
         userFirestore.depositCoins(this, selectedCoins.values(), gold);
     }
 
-    public void depositSucceeded(Boolean success) {
+    public void transactionSucceeded(Boolean success) {
         showProgress(false);
         if (success) {
             adapter.removeItems(selectedCoins.keySet());
@@ -144,8 +155,69 @@ public class WalletActivity extends AppCompatActivity implements RecyclerViewAda
         }
     }
 
-    public void send() {
+    private void send() {
+        double gold = calculateGold();
+        showProgress(true);
+        userFirestore.sendCoins(this, userTo, selectedCoins.values(), gold);
+    }
 
+    private double calculateGold() {
+        double gold = 0;
+        for (Integer p : selectedCoins.keySet()) {
+            Coin c = selectedCoins.get(p);
+            gold += c.getValue()*rates.get(c.getCurrency());
+        }
+        return gold;
+    }
+
+    // TODO: make usernames lowercase
+    //https://stackoverflow.com/questions/10903754/input-text-dialog-android
+    private void chooseUser() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        // Set up the input
+        final EditText input = new EditText(this);
+        // Specify the type of input expected
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+
+        // create dialog
+        AlertDialog dialog = new AlertDialog.Builder(this).setTitle("Who do you want to send coins to?")
+                .setView(input)
+                .setPositiveButton("Send",null)
+                .setNegativeButton("Cancel", (d, which) -> d.cancel())
+                .show();
+
+        Button pButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+        pButton.setOnClickListener(view -> {
+            String uName = input.getText().toString();
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            db.collection(USER_COLLECTION)
+                    .whereEqualTo("username", uName)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            QuerySnapshot qs = task.getResult();
+                            if (!Objects.requireNonNull(qs).isEmpty()) {
+                                if (!qs.equals(mAuth.getUid())) {
+                                    for (DocumentSnapshot document : Objects.requireNonNull(qs)) {
+                                        userTo = document.getId();
+                                        Log.d(tag, "[chooseUser] " + userTo);
+                                        send();
+                                        dialog.dismiss();
+                                    }
+                                } else {
+                                    builder.setMessage("[chooseUser] You can't send coins to yourself");
+                                    Log.d(tag, "[chooseUser] Send to self");
+                                }
+                            } else {
+                                builder.setMessage("[chooseUser] User does not exist");
+                                Log.d(tag, "[chooseUser] user does not exist");
+                            }
+                        } else {
+                            Log.d(tag, "[chooseUser] Error getting documents: ", task.getException());
+                        }
+                    });
+        });
     }
 
     private void errorMessage(String errorText) {

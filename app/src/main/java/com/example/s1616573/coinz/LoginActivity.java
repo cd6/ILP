@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -32,6 +33,9 @@ public class LoginActivity extends AppCompatActivity{
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+    private final String USER_COLLECTION = "users";
+    private final String USER_PRIVATE = "user";
+    private final String USER_DOCUMENT = "userDoc";
 
     // UI references.
     private AutoCompleteTextView emailView;
@@ -120,7 +124,6 @@ public class LoginActivity extends AppCompatActivity{
                 if (task.isSuccessful()) {
                     // Sign in success, update UI with user info
                     Log.d(tag, "[attemptLogin] success");
-                    Intent loginIntent = new Intent(this, LoginActivity.class);
                     openMainActivity();
                     this.finish();
                 } else {
@@ -157,8 +160,9 @@ public class LoginActivity extends AppCompatActivity{
                     Log.d(tag, "[attemptCreation] success");
                     // Add collection for user on Firestore to store their progress
                     String userID = mAuth.getUid();
+                    DocumentReference docRef = db.collection(USER_COLLECTION).document(Objects.requireNonNull(userID)).collection(USER_PRIVATE).document(USER_DOCUMENT);
                     Map<String, Object> m = new HashMap<>();
-                    db.collection("users").document(Objects.requireNonNull(userID)).set(m)
+                    docRef.set(m)
                             .addOnSuccessListener(aVoid -> Log.d(tag, "DocumentSnapshot successfully written!"))
                             .addOnFailureListener(e -> Log.w(tag, "Error writing document", e));
                     openMainActivity();
