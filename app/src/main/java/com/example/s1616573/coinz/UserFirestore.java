@@ -134,6 +134,10 @@ public class UserFirestore {
                 });
     }
 
+    public void emptyWallet() {
+        // TODO: add
+    }
+
     public void depositCoins(WalletActivity walletActivity, Collection<Coin> coins, double gold){
         db.runTransaction((Transaction.Function<Void>) transaction -> {
             DocumentSnapshot snapshot = transaction.get(docRef);

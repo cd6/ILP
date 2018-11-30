@@ -70,6 +70,7 @@ public class BankActivity extends AppCompatActivity {
     public void showGold(double gold) {
         if(gold !=-1) {
             textGold.setText(String.format("You have\n\n%s\n\ngold", gold));
+            lastGoldValue = "" + gold;
         } else {
             textGold.setText(String.format("You have\n\n%s\n\ngold", lastGoldValue.equals("")?0.0:lastGoldValue));
             errorMessage("Could not connect to bank");

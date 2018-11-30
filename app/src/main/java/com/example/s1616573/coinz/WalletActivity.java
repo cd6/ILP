@@ -53,7 +53,6 @@ public class WalletActivity extends AppCompatActivity implements RecyclerViewAda
 
     private final String preferencesFile = "MyPrefsFile";
     private final String USER_COLLECTION = "users";
-    private int noSelected = 0;
     private HashMap<String, Double> rates;
     private HashMap<Integer, Coin> selectedCoins;
     private String userTo;
