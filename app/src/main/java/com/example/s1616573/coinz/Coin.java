@@ -8,6 +8,7 @@ public class Coin {
     private double value;
     private String currency;
     private Timestamp dateCollected;
+    private double goldValue;
 
     public Coin(String id, double value, String currency) {
         this.id = id;
@@ -41,5 +42,13 @@ public class Coin {
 
     public Timestamp getDateCollected() {
         return dateCollected;
+    }
+
+    public double getGoldValue() {
+        return goldValue;
+    }
+
+    public void setGoldValue(double goldValue) {
+        this.goldValue = goldValue;
     }
 }

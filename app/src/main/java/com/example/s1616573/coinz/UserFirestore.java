@@ -1,20 +1,13 @@
 package com.example.s1616573.coinz;
 
-import android.content.Context;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -47,6 +40,7 @@ public class UserFirestore {
     private final String WALLET_COLLECTION = "wallet";
     private final String PICKED_UP_COINS_FIELD = "pickedUpCoins";
     private final String GOLD_FIELD = "gold";
+    private final String NO_BANKED_FIELD = "noBanked";
 
     private ArrayList<String> pickedUpCoins;
 
@@ -62,6 +56,16 @@ public class UserFirestore {
                 .build();
         db.setFirestoreSettings(settings);
         docRef = db.collection(USER_COLLECTION).document(Objects.requireNonNull(userID)).collection(USER_PRIVATE).document(USER_DOCUMENT);
+    }
+
+    public void realtimeUpdateListener() {
+        docRef.addSnapshotListener(((documentSnapshot, e) -> {
+            if(e != null) {
+                Log.e(tag, e.getMessage());
+            } else if (documentSnapshot != null && documentSnapshot.exists()) {
+
+            }
+        }));
     }
 
     public void getPickedUpCoins() {
@@ -101,6 +105,9 @@ public class UserFirestore {
         // Remove the 'capital' field from the document
         Map<String,Object> updates = new HashMap<>();
         updates.put(PICKED_UP_COINS_FIELD, FieldValue.delete());
+
+        // set number of coins banked today to 0
+        updates.replace(NO_BANKED_FIELD, 0);
 
         docRef.update(updates).addOnCompleteListener(aVoid -> Log.d(tag, "[resetPickedUpCoins] Update successful"));
     }
@@ -147,6 +154,11 @@ public class UserFirestore {
             }
             goldInBank += gold;
             transaction.update(docRef, GOLD_FIELD, goldInBank);
+            int noDeposited = 0;
+            if (snapshot.contains(NO_BANKED_FIELD)) {
+                noDeposited = (int) Math.floor(snapshot.getDouble(NO_BANKED_FIELD));
+            }
+            transaction.update(docRef, NO_BANKED_FIELD, noDeposited + coins.size());
             for(Coin c : coins) {
                    docRef.collection(WALLET_COLLECTION).document(c.getId())
                            .delete();
@@ -192,6 +204,7 @@ public class UserFirestore {
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 document = task.getResult();
+                assert document != null;
                 if (document.exists()) {
                     Log.d(tag, "[depositGold] DocumentSnapshot data: " + document.getData());
                     double goldInBank = 0;
@@ -206,6 +219,29 @@ public class UserFirestore {
             } else {
                 Log.d(tag, "get failed with ", task.getException());
                 bankActivity.showGold(-1);
+            }
+        });
+    }
+
+    public void getNumberDeposited(WalletActivity walletActivity) {
+        docRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                document = task.getResult();
+                assert document != null;
+                if (document.exists()) {
+                    Log.d(tag, "[getNumberDeposited] DocumentSnapshot data: " + document.getData());
+                    int noDeposited = 0;
+                    if (document.contains(NO_BANKED_FIELD)) {
+                        noDeposited = (int)Math.floor(document.getDouble(NO_BANKED_FIELD));
+                    }
+                    walletActivity.setNoDeposited(noDeposited);
+                } else {
+                    Log.d(tag, "[depositGold] No such document");
+                    walletActivity.setNoDeposited(0);
+                }
+            } else {
+                Log.d(tag, "get failed with ", task.getException());
+                walletActivity.setNoDeposited(-1);
             }
         });
     }

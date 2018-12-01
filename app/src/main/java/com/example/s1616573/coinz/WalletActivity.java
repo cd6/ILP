@@ -4,10 +4,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
@@ -23,12 +21,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import org.json.JSONException;
@@ -57,6 +52,8 @@ public class WalletActivity extends AppCompatActivity implements RecyclerViewAda
     private HashMap<Integer, Coin> selectedCoins;
     private String userTo;
 
+    private int noSelected;
+    private int noDeposited;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,9 +101,17 @@ public class WalletActivity extends AppCompatActivity implements RecyclerViewAda
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        userFirestore.getNumberDeposited(this);
+        noSelected = 0;
     }
 
     public void showCoins(List<Coin> coins) {
+        for(Coin c : coins) {
+            double value = c.getValue();
+            double goldValue = value * rates.get(c.getCurrency());
+            c.setGoldValue(goldValue);
+        }
         adapter = new RecyclerViewAdapter(this, coins);
         adapter.setClickListener(this);
         walletView.setAdapter(adapter);
@@ -116,15 +121,33 @@ public class WalletActivity extends AppCompatActivity implements RecyclerViewAda
     public void onItemClick(View view, int position) {
         // toggle selection
         view.setSelected(!view.isSelected());
-
+        noSelected = view.isSelected()?noSelected+1:noSelected-1;
         Coin clicked = adapter.getItem(position);
         if (selectedCoins.containsKey(position)) {
             selectedCoins.remove(position);
         } else {
             selectedCoins.put(position, clicked);
         }
-        // change 25 to 25-number deposited that day
-        depositButton.setClickable(!selectedCoins.isEmpty() && selectedCoins.size() <=25);
+        showButtons();
+    }
+
+    // if less than 25 coins have been deposited, show deposit button else send
+    private void showButtons() {
+        Log.d(tag, "[showButtons] noSelected = " + noSelected);
+        Log.d(tag, "[showButtons] noDeposited = " + noDeposited);
+        if(noSelected > 0) {
+            // show deposit button if some coins are selected and less than 25 have been deposited
+            if(noDeposited + noSelected <= 25) {
+                depositButton.show();
+                sendButton.hide();
+            } else if(noDeposited >= 25){
+                depositButton.hide();
+                sendButton.show();
+            }
+        } else {
+            depositButton.hide();
+            sendButton.hide();
+        }
     }
 
     private void getRates(String geoJson) throws JSONException {
@@ -134,6 +157,15 @@ public class WalletActivity extends AppCompatActivity implements RecyclerViewAda
         for (String c : currencies) {
             String rate = obj.getJSONObject("rates").getString(c);
             rates.put(c, Double.parseDouble(rate));
+        }
+    }
+
+    public void setNoDeposited(int n) {
+        noDeposited = n;
+        if(noDeposited == -1) {
+            errorMessage("Unable to connect to bank");
+        } else {
+            showButtons();
         }
     }
 
@@ -147,24 +179,30 @@ public class WalletActivity extends AppCompatActivity implements RecyclerViewAda
     public void transactionSucceeded(Boolean success) {
         showProgress(false);
         if (success) {
+            // if coins are depositted at to the number of coins depositted today
+            noDeposited = noDeposited <25? noDeposited +selectedCoins.size():25;
+            showButtons();
             adapter.removeItems(selectedCoins.keySet());
             selectedCoins.clear();
+            noSelected = 0;
         } else {
             errorMessage("Unable to connect to network");
         }
     }
 
+    // Send gold to the selected user
     private void send() {
         double gold = calculateGold();
         showProgress(true);
         userFirestore.sendCoins(this, userTo, selectedCoins.values(), gold);
     }
 
+    // calculate total value of coins selected in gold
     private double calculateGold() {
         double gold = 0;
         for (Integer p : selectedCoins.keySet()) {
             Coin c = selectedCoins.get(p);
-            gold += c.getValue()*rates.get(c.getCurrency());
+            gold += c.getGoldValue();
         }
         return gold;
     }

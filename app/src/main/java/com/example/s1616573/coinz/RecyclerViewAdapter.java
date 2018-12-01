@@ -1,6 +1,7 @@
 package com.example.s1616573.coinz;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -8,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -20,7 +20,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private List<Coin> coins;
     private LayoutInflater inflater;
     private ItemClickListener clickListener;
-    SparseBooleanArray storeChecked = new SparseBooleanArray();
+    private SparseBooleanArray storeChecked = new SparseBooleanArray();
 
     // data is passed into the constructor
     RecyclerViewAdapter(Context context, List<Coin> coins) {
@@ -29,18 +29,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     // inflates the row layout from xml when needed
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.recyclerview_row, parent, false);
         return new ViewHolder(view);
     }
 
     // binds the data to the TextView in each row
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Coin coin = coins.get(position);
         holder.textCurrency.setText(String.format("Currency: %s", coin.getCurrency()));
         holder.textValue.setText(String.format("Value: %s", coin.getValue()));
+        holder.textGoldValue.setText(String.format("Gold: %s", coin.getGoldValue()));
         if(storeChecked.get(position, true)){
             holder.itemView.setSelected(false);
         }else{
@@ -59,12 +61,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView textCurrency;
         TextView textValue;
+        TextView textGoldValue;
 
 
         ViewHolder(View itemView) {
             super(itemView);
             textCurrency = itemView.findViewById(R.id.text_currency);
             textValue = itemView.findViewById(R.id.text_value);
+            textGoldValue = itemView.findViewById(R.id.text_gold_value);
             itemView.setOnClickListener(this);
         }
 
@@ -88,7 +92,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     void removeItems(Set<Integer> pos) {
-        List<Integer> posSorted = new ArrayList<Integer>(pos);
+        List<Integer> posSorted = new ArrayList<>(pos);
         posSorted.sort(Collections.reverseOrder());
         for (int i : posSorted) {
             coins.remove(i);

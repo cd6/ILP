@@ -21,4 +21,12 @@
         android:layout_alignStart="@+id/text_currency"
         android:textSize="20sp"/>
 
+    <TextView
+        android:id="@+id/text_gold_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_value"
+        android:layout_alignStart="@+id/text_value"
+        android:textSize="20sp"/>
+
 </RelativeLayout>
