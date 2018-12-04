@@ -1,11 +1,12 @@
 package com.example.s1616573.coinz;
 
+import android.content.Context;
 import android.util.Log;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -41,13 +43,16 @@ public class UserFirestore {
     private final String USER_PRIVATE = "user";
     private final String USER_DOCUMENT = "userDoc";
     private final String WALLET_COLLECTION = "wallet";
+    private final String SENT_COLLECTION = "sent";
     private final String PICKED_UP_COINS_FIELD = "pickedUpCoins";
     private final String GOLD_FIELD = "gold";
     private final String NO_BANKED_FIELD = "noBanked";
+    private final String USER_FROM_FIELD = "userFrom";
 
     private ArrayList<String> pickedUpCoins;
 
-    public DownloadCompleteListener listener = null;
+    public DownloadCompleteListener downloadCompleteListener = null;
+    public ReceivedCoinsListener receivedCoinsListener = null;
 
     public UserFirestore(FirebaseAuth mAuth) {
         // Access a Cloud Firestore instance from your Activity
@@ -61,14 +66,23 @@ public class UserFirestore {
         docRef = db.collection(USER_COLLECTION).document(Objects.requireNonNull(userID)).collection(USER_PRIVATE).document(USER_DOCUMENT);
     }
 
-    public void realtimeUpdateListener() {
-        docRef.addSnapshotListener(((documentSnapshot, e) -> {
-            if(e != null) {
-                Log.e(tag, e.getMessage());
-            } else if (documentSnapshot != null && documentSnapshot.exists()) {
-
-            }
-        }));
+    public void realtimeUpdateListener(Context context) {
+        DocumentReference docRefRealtime = db.collection(USER_COLLECTION).document(Objects.requireNonNull(userID));
+        docRefRealtime.collection(SENT_COLLECTION)
+                .addSnapshotListener((snapshots, e) -> {
+                    if (e != null) {
+                        Log.w(tag, "[realtimeUpdateListener] Listen failed.", e);
+                        return;
+                    }
+                    List<DocumentChange> docChanges = snapshots.getDocumentChanges();
+                    String sender;
+                    double gold;
+                    for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                        DocumentSnapshot d = dc.getDocument();
+                        sender = d.getString(USER_FROM_FIELD);
+                        gold = d.getDouble(GOLD_FIELD);
+                    }
+                });
     }
 
     public void getPickedUpCoins() {
@@ -95,7 +109,7 @@ public class UserFirestore {
                 Log.d(tag, "get failed with ", task.getException());
             }
             docRef.update("lastLogin", Timestamp.now());
-            listener.downloadComplete(pickedUpCoins);
+            downloadCompleteListener.downloadComplete(pickedUpCoins);
         });
     }
 

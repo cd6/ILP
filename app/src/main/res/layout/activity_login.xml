@@ -34,6 +34,20 @@
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/prompt_username"
+                    android:inputType="textCapCharacters"
+                    android:maxLines="1"
+                    android:singleLine="true"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <AutoCompleteTextView
@@ -66,7 +80,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="fill_vertical|fill_horizontal"
+                    android:gravity="end|fill_vertical"
                     android:orientation="horizontal">
 
                     <Button
@@ -88,12 +102,21 @@
                         android:layout_weight="1"
                         android:text="@string/action_create_account"
                         android:textStyle="bold" />
+
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:gravity="end"
                     android:orientation="vertical">
+
+                    <Switch
+                        android:id="@+id/switch_create"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="@string/action_create_account" />
 
                     <TextView
                         android:id="@+id/text_login_error"
@@ -101,6 +124,15 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/login_failed"
+                        android:textColor="?attr/colorError"
+                        android:visibility="invisible" />
+
+                    <TextView
+                        android:id="@+id/text_username_taken"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/username_taken"
                         android:textColor="?attr/colorError"
                         android:visibility="invisible" />
                 </LinearLayout>

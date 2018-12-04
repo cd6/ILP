@@ -1,11 +1,9 @@
 package com.example.s1616573.coinz;
 
-import android.Manifest;
 import android.arch.lifecycle.Lifecycle;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,7 +12,6 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AlertDialog;
@@ -25,8 +22,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineListener;
 import com.mapbox.android.core.location.LocationEnginePriority;
@@ -119,7 +114,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mAuth = FirebaseAuth.getInstance();
         userFirestore = new UserFirestore(mAuth);
-        userFirestore.listener = this;
+        userFirestore.downloadCompleteListener = this;
 
         // check if this is the first time the user has logged in today and get the coins on the map
         // that they've already picked up
@@ -458,7 +453,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             lat = minLat + Math.random() * latDif;
             lng = minLng + Math.random() * lngDif;
 
-            // this marker will be stored in sharedpreferences to be used on the device for the rest of the day
+            // this marker will be stored in shared preferences to be used on the device for the rest of the day
             storedBomb = "{\"marker\":{\"lat\":\"" + lat + "\",\"lng\":\"" + lng + "\",\"colour\":\"" + colour + "\",\"image\":\"" + markerImages[s] + "\"}}";
         } else {
             JSONObject obj = new JSONObject(storedBomb);
