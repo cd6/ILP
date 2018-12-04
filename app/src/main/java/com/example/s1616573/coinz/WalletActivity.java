@@ -77,6 +77,8 @@ public class WalletActivity extends AppCompatActivity implements RecyclerViewAda
 
         selectedCoins = new HashMap<>();
 
+        showButtons();
+
         depositButton.setOnClickListener(view -> {
             deposit();
         });

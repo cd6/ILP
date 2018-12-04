@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         FloatingActionButton mBankButton = findViewById(R.id.fab_bank);
         mBankButton.setOnClickListener(view -> {
             // open bank
+            savePrefs();
             Intent bankIntent = new Intent(this, BankActivity.class);
             startActivity(bankIntent);
         });
@@ -105,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         FloatingActionButton mWalletButton = findViewById(R.id.fab_wallet);
         mWalletButton.setOnClickListener(view -> {
             // open wallet
+            savePrefs();
             Intent walletIntent = new Intent(this, WalletActivity.class);
             startActivity(walletIntent);
         });
@@ -156,6 +158,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onStop() {
         super.onStop();
 
+        savePrefs();
+
+        // stop location services to prevent app crashing when activity is stopped due to
+        // location being checked after map has been closed
+        if(locationEngine != null){
+            locationEngine.removeLocationEngineListener(this);
+            locationEngine.removeLocationUpdates();
+        }
+    }
+
+    private void savePrefs() {
         Log.d(tag, "[onStop] Storing lastDownloadDate of " + downloadDate);
         // All objects are from android.context.Context
         SharedPreferences settings = getSharedPreferences(preferencesFile, Context.MODE_PRIVATE);
@@ -167,13 +180,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         editor.putString("bomb", storedBomb);
         // Apply the edits
         editor.apply();
-
-        // stop location services to prevent app crashing when activity is stopped due to
-        // location being checked after map has been closed
-        if(locationEngine != null){
-            locationEngine.removeLocationEngineListener(this);
-            locationEngine.removeLocationUpdates();
-        }
     }
 
     @Override
@@ -300,7 +306,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-
     private void getCoinMap() {
         // download map if it has not already been downloaded
         LocalDate date = LocalDate.now();
@@ -381,7 +386,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
                 }
                 try {
-                    addBomb(markerImages, markerColours);
+                    if(!pickedUpCoins.contains("bomb")) {
+                        addBomb(markerImages, markerColours);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.d(tag, "[addCoinsToMap] bomb failed");
@@ -464,6 +471,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         bombIcon = drawableToIcon(colour, image);
         bombOptions = new MarkerOptions().position(coordinates).icon(bombIcon);
         bomb = map.addMarker(bombOptions);
+        coinMap.put(bomb, new Coin("bomb"));
         Log.d(tag, "[addBomb] Added");
     }
 
@@ -485,12 +493,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             //double dist = Math.sqrt(x*x + y*y) * radius;
             double dist = markerPosition.distanceTo(latLngUser);
             if (dist < 25) {
-                if(m==bomb){
+                if(m==bomb) {
                     userFirestore.emptyWallet();
                     errorMessage("Oh no you picked up the bomb!");
                 }
-                map.removeMarker(m);
                 userFirestore.pickUp(coinMap.get(m));
+                map.removeMarker(m);
             }
         }
     }

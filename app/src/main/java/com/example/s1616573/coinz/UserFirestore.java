@@ -2,6 +2,8 @@ package com.example.s1616573.coinz;
 
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -10,6 +12,7 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
 import com.google.firebase.firestore.WriteBatch;
@@ -107,7 +110,7 @@ public class UserFirestore {
         updates.put(PICKED_UP_COINS_FIELD, FieldValue.delete());
 
         // set number of coins banked today to 0
-        updates.replace(NO_BANKED_FIELD, 0);
+        updates.put(NO_BANKED_FIELD,  FieldValue.delete());
 
         docRef.update(updates).addOnCompleteListener(aVoid -> Log.d(tag, "[resetPickedUpCoins] Update successful"));
     }
@@ -142,7 +145,26 @@ public class UserFirestore {
     }
 
     public void emptyWallet() {
-        // TODO: add
+        Task qs = docRef.collection(WALLET_COLLECTION)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        WriteBatch batch = db.batch();
+                        for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                            batch.delete(docRef.collection(WALLET_COLLECTION).document(document.getId()));
+                        }
+                        // Commit the batch
+                        batch.commit().addOnCompleteListener(task2 -> {
+                            if (task2.isSuccessful()) {
+                                Log.d(tag, "[emptyWallet] Batch success!");
+                            } else {
+                                Log.w(tag, "[emptyWallet] Batch failure.");
+                            }
+                        });
+                    } else {
+                        Log.d(tag, "[emptyWallet] Error getting documents: ", task.getException());
+                    }
+                });
     }
 
     public void depositCoins(WalletActivity walletActivity, Collection<Coin> coins, double gold){

@@ -22,6 +22,11 @@ public class Coin {
         this.currency = currency;
         this.dateCollected = dateCollected;
     }
+
+    public Coin(String id) {
+        this.id = id;
+    }
+
     public Coin() { }
 
     public String getCurrency() {
