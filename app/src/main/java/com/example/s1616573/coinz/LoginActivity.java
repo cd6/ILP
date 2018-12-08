@@ -34,10 +34,6 @@ import java.util.Objects;
 public class LoginActivity extends AppCompatActivity{
 
     private FirebaseAuth mAuth;
-    private FirebaseFirestore db;
-    private final String USER_COLLECTION = "users";
-    private final String USER_PRIVATE = "user";
-    private final String USER_DOCUMENT = "userDoc";
 
     // UI references.
     private AutoCompleteTextView emailView;
@@ -105,7 +101,6 @@ public class LoginActivity extends AppCompatActivity{
         usernameError = findViewById(R.id.text_username_taken);
 
         mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
 
         showLogin();
     }
@@ -209,13 +204,8 @@ public class LoginActivity extends AppCompatActivity{
                         // Create account success, update UI with user info
                         Log.d(tag, "[attemptCreation] success");
                         // Add collection for user on Firestore to store their progress
-                        String userID = mAuth.getUid();
-                        DocumentReference docRef = db.collection(USER_COLLECTION).document(Objects.requireNonNull(userID)).collection(USER_PRIVATE).document(USER_DOCUMENT);
-                        Map<String, Object> m = new HashMap<>();
-                        m.put("username", username);
-                        docRef.set(m)
-                                .addOnSuccessListener(aVoid -> Log.d(tag, "DocumentSnapshot successfully written!"))
-                                .addOnFailureListener(e -> Log.w(tag, "Error writing document", e));
+                        LoginFirestore loginFirestore = new LoginFirestore(mAuth);
+                        loginFirestore.createUser(username);
                         openMainActivity();
                         this.finish();
                     } else {

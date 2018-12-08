@@ -1,27 +1,20 @@
 package com.example.s1616573.coinz;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.TestLooperManager;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class BankActivity extends AppCompatActivity {
+public class BankActivity extends AppCompatActivity implements BankCompleteListener{
 
     private String tag = "BankActivity";
-    private UserFirestore userFirestore;
+    private BankFirestore bankFirestore;
     private FirebaseAuth mAuth;
     private TextView textGold;
     private String preferencesFile = "";
@@ -44,8 +37,9 @@ public class BankActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         mAuth = FirebaseAuth.getInstance();
-        userFirestore = new UserFirestore(mAuth);
-        userFirestore.getGoldInBank(this);
+        bankFirestore = new BankFirestore(mAuth);
+        bankFirestore.bankCompleteListener = this;
+        bankFirestore.getGoldInBank();
 
         preferencesFile = mAuth.getUid();
 
@@ -67,7 +61,8 @@ public class BankActivity extends AppCompatActivity {
         editor.apply();
     }
 
-    public void showGold(double gold) {
+
+    public void getGoldComplete(double gold) {
         if(gold !=-1) {
             textGold.setText(String.format("You have\n\n%s\n\ngold", gold));
             lastGoldValue = "" + gold;

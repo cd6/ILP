@@ -51,10 +51,8 @@ import org.json.JSONObject;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, PermissionsListener, LocationEngineListener, DownloadCompleteListener {
 
@@ -73,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private FirebaseAuth mAuth;
     private DownloadFileTask downloadFileTask = new DownloadFileTask();
     private HashMap<Marker, Coin> coinMap;
-    private UserFirestore userFirestore;
+    private MainFirestore mainFirestore;
     private boolean done = false;
     private ArrayList<String> pickedUpCoins = new ArrayList<>();
     private Marker bomb;
@@ -113,12 +111,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         done = false;
 
         mAuth = FirebaseAuth.getInstance();
-        userFirestore = new UserFirestore(mAuth);
-        userFirestore.downloadCompleteListener = this;
+        mainFirestore = new MainFirestore(mAuth);
+        mainFirestore.downloadCompleteListener = this;
 
         // check if this is the first time the user has logged in today and get the coins on the map
         // that they've already picked up
-        userFirestore.getPickedUpCoins();
+        mainFirestore.getPickedUpCoins();
 
         // Restore preferences
         SharedPreferences settings = getSharedPreferences(preferencesFile, Context.MODE_PRIVATE);
@@ -163,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    // Store data in shared preferences
     private void savePrefs() {
         Log.d(tag, "[onStop] Storing lastDownloadDate of " + downloadDate);
         // All objects are from android.context.Context
@@ -298,8 +297,31 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         else {
             // Open a dialogue with the user
+            permissionDialog();
         }
     }
+
+    // Inform the user that location is required and ask to allow again
+    public void permissionDialog() {
+        AlertDialog.Builder permissionBuilder = new AlertDialog.Builder(this);
+        permissionBuilder.setMessage("Map functionality will not work if location permissions are not granted.");
+        permissionBuilder.setCancelable(true);
+
+        permissionBuilder.setPositiveButton(
+                "Enable location",
+                (dialog, id) -> {
+                    enableLocation();
+                    dialog.cancel();
+                });
+
+        permissionBuilder.setNegativeButton(
+                "Cancel",
+                (dialog, id) -> dialog.cancel());
+
+        AlertDialog alert = permissionBuilder.create();
+        alert.show();
+    }
+
 
     private void getCoinMap() {
         // download map if it has not already been downloaded
@@ -355,7 +377,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             int[] markerImages = new int[] { R.drawable.marker0, R.drawable.marker1,
                     R.drawable.marker2, R.drawable.marker3, R.drawable.marker4, R.drawable.marker5,
                     R.drawable.marker6, R.drawable.marker7, R.drawable.marker8, R.drawable.marker9};
-            Set<String> markerColours = new HashSet<>();
+            HashMap<String, String> markerColours = new HashMap<>();
             // Create hashmap to link coins to their marker
             coinMap = new HashMap<>();
             if (features != null) {
@@ -368,7 +390,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     if (f.geometry() instanceof Point && (pickedUpCoins == null || !pickedUpCoins.contains(id))) {
                         // Create an Icon object for the marker to use
                         String markerColour = Objects.requireNonNull(f.properties()).get("marker-color").getAsString();
-                        markerColours.add(markerColour);
+                        markerColours.put(currency, markerColour);
                         int markerSymbol = Objects.requireNonNull(f.properties()).get("marker-symbol").getAsInt();
                         Icon icon = drawableToIcon(markerColour, markerImages[markerSymbol]);
 
@@ -414,10 +436,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     // add bomb marker to map
-    private void addBomb(int[] markerImages, Set<String> markerColours) throws JSONException {
+    private void addBomb(int[] markerImages, HashMap<String, String> markerColours) throws JSONException {
         LatLng coordinates;
         Icon bombIcon;
-        String colour;
+        String colour = "";
+        String currency = "";
+        double value;
         double lat;
         double lng;
         int image;
@@ -434,18 +458,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             // choose random colour from set of possible marker colours
             int c = (int) (Math.random() * markerColours.size());
-            colour = "";
             int i = 0;
-            for (String cl : markerColours) {
+            for (String cur : markerColours.keySet()) {
                 if (i == c) {
-                    colour = cl;
+                    colour = markerColours.get(cur);
+                    currency = cur;
                     break;
                 }
                 i++;
             }
 
             // choose random marker image from array
-            int s = (int) (Math.random() * markerImages.length);
+            value = (Math.random() * markerImages.length);
+            int s = (int) value;
             image = markerImages[s];
 
 
@@ -454,19 +479,23 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             lng = minLng + Math.random() * lngDif;
 
             // this marker will be stored in shared preferences to be used on the device for the rest of the day
-            storedBomb = "{\"marker\":{\"lat\":\"" + lat + "\",\"lng\":\"" + lng + "\",\"colour\":\"" + colour + "\",\"image\":\"" + markerImages[s] + "\"}}";
+            storedBomb = "{\"bombMarker\":{\"lat\":\"" + lat + "\",\"lng\":\"" + lng + "\",\"colour\":\""
+                    + colour + "\",\"image\":\"" + image + "\",\"value\":\"" + value + "\",\"currency\":\"" + currency +"\"}}";
         } else {
             JSONObject obj = new JSONObject(storedBomb);
-            lat = Double.parseDouble(obj.getJSONObject("marker").getString("lat"));
-            lng = Double.parseDouble(obj.getJSONObject("marker").getString("lng"));
-            colour = obj.getJSONObject("marker").getString("colour");
-            image = Integer.parseInt(obj.getJSONObject("marker").getString("image"));
+            JSONObject bombObject = obj.getJSONObject("bombMarker");
+            lat = Double.parseDouble(bombObject.getString("lat"));
+            lng = Double.parseDouble(bombObject.getString("lng"));
+            colour = bombObject.getString("colour");
+            image = Integer.parseInt(bombObject.getString("image"));
+            value = Double.parseDouble(bombObject.getString("value"));
+            currency = bombObject.getString("currency");
         }
         coordinates = new LatLng(lat, lng);
         bombIcon = drawableToIcon(colour, image);
         bombOptions = new MarkerOptions().position(coordinates).icon(bombIcon);
         bomb = map.addMarker(bombOptions);
-        coinMap.put(bomb, new Coin("bomb"));
+        coinMap.put(bomb, new Coin("bomb", value, currency));
         Log.d(tag, "[addBomb] Added");
     }
 
@@ -488,14 +517,39 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             //double dist = Math.sqrt(x*x + y*y) * radius;
             double dist = markerPosition.distanceTo(latLngUser);
             if (dist < 25) {
-                if(m==bomb) {
-                    userFirestore.emptyWallet();
-                    errorMessage("Oh no you picked up the bomb!");
-                }
-                userFirestore.pickUp(coinMap.get(m));
-                map.removeMarker(m);
+                Coin c  = coinMap.get(m);
+                pickUpCoinDialog(c, m);
             }
         }
+    }
+
+    public void pickUpCoinDialog(Coin c, Marker m) {
+        AlertDialog.Builder pickUpCoinBuilder = new AlertDialog.Builder(this);
+        pickUpCoinBuilder.setMessage("Pick up " + c.getCurrency() + "\nValue:" + c.getValue());
+        pickUpCoinBuilder.setCancelable(true);
+
+        pickUpCoinBuilder.setPositiveButton(
+                "Yes",
+                (dialog, id) -> {
+                    pickUp(c, m);
+                    dialog.cancel();
+                });
+
+        pickUpCoinBuilder.setNegativeButton(
+                "No",
+                (dialog, id) -> dialog.cancel());
+
+        AlertDialog alert = pickUpCoinBuilder.create();
+        alert.show();
+    }
+
+    public void pickUp(Coin c, Marker m) {
+        if(m==bomb) {
+            mainFirestore.emptyWallet();
+            errorMessage("Oh no you picked up the bomb!");
+        }
+        mainFirestore.pickUp(c);
+        map.removeMarker(m);
     }
 
     @Override
