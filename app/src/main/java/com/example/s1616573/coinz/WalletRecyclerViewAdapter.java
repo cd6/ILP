@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class WalletRecyclerViewAdapter extends RecyclerView.Adapter<WalletRecyclerViewAdapter.ViewHolder> {
     // https://stackoverflow.com/questions/40584424/simple-android-recyclerview-example
 
     private List<Coin> coins;
@@ -23,7 +23,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private SparseBooleanArray storeChecked = new SparseBooleanArray();
 
     // data is passed into the constructor
-    RecyclerViewAdapter(Context context, List<Coin> coins) {
+    WalletRecyclerViewAdapter(Context context, List<Coin> coins) {
         this.inflater = LayoutInflater.from(context);
         this.coins = coins;
     }
@@ -32,7 +32,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.recyclerview_row, parent, false);
+        View view = inflater.inflate(R.layout.wallet_recyclerview_row, parent, false);
         return new ViewHolder(view);
     }
 
@@ -58,7 +58,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
     // stores and recycles views as they are scrolled off screen
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView textCurrency;
         TextView textValue;
         TextView textGoldValue;

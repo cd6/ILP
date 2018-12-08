@@ -6,10 +6,15 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.List;
 
 public class BankActivity extends AppCompatActivity implements BankCompleteListener{
 
@@ -17,6 +22,10 @@ public class BankActivity extends AppCompatActivity implements BankCompleteListe
     private BankFirestore bankFirestore;
     private FirebaseAuth mAuth;
     private TextView textGold;
+    private RecyclerView bankView;
+    private BankRecyclerViewAdapter adapter;
+    private Button btnClear;
+
     private String preferencesFile = "";
     private String lastGoldValue = "";
 
@@ -24,6 +33,9 @@ public class BankActivity extends AppCompatActivity implements BankCompleteListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bank);
+        bankView = findViewById(R.id.rv_messages);
+        bankView.setLayoutManager(new LinearLayoutManager(this));
+        btnClear = findViewById(R.id.btn_clear_messages);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -31,6 +43,10 @@ public class BankActivity extends AppCompatActivity implements BankCompleteListe
         aBar.setDisplayHomeAsUpEnabled(true);
 
         textGold = findViewById(R.id.text_gold);
+
+        btnClear.setOnClickListener(view -> {
+            bankFirestore.clearMessages();
+        });
     }
 
     @Override
@@ -48,6 +64,8 @@ public class BankActivity extends AppCompatActivity implements BankCompleteListe
 
         // use "" as the default value (this might be the first time the app is run)
         lastGoldValue = settings.getString("lastGoldValue", "");
+
+        bankFirestore.realtimeUpdateListener();
     }
 
     @Override
@@ -70,6 +88,11 @@ public class BankActivity extends AppCompatActivity implements BankCompleteListe
             textGold.setText(String.format("You have\n\n%s\n\ngold", lastGoldValue.equals("")?0.0:lastGoldValue));
             errorMessage("Could not connect to bank");
         }
+    }
+
+    public void realtimeUpdateComplete(List<Message> messageList) {
+        adapter = new BankRecyclerViewAdapter(this, messageList);
+        bankView.setAdapter(adapter);
     }
 
     private void errorMessage(String errorText) {

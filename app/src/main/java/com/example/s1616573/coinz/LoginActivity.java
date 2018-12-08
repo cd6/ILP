@@ -31,9 +31,10 @@ import java.util.Objects;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity{
+public class LoginActivity extends AppCompatActivity implements LoginCompleteListener{
 
     private FirebaseAuth mAuth;
+    private LoginFirestore loginFirestore;
 
     // UI references.
     private AutoCompleteTextView emailView;
@@ -48,6 +49,7 @@ public class LoginActivity extends AppCompatActivity{
     private Switch switchCreate;
 
     private String tag = "LoginActivity";
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +75,7 @@ public class LoginActivity extends AppCompatActivity{
         signInButton = findViewById(R.id.email_sign_in_button);
         signInButton.setOnClickListener(view -> {
             loginError.setVisibility(View.GONE);
+            usernameError.setVisibility(View.GONE);
             attemptLogin();
         });
 
@@ -80,6 +83,7 @@ public class LoginActivity extends AppCompatActivity{
         createAccountButton = findViewById(R.id.create_account_button);
         createAccountButton.setOnClickListener(view -> {
             loginError.setVisibility(View.GONE);
+            usernameError.setVisibility(View.GONE);
             attemptCreateAccount();
         });
 
@@ -101,6 +105,8 @@ public class LoginActivity extends AppCompatActivity{
         usernameError = findViewById(R.id.text_username_taken);
 
         mAuth = FirebaseAuth.getInstance();
+        loginFirestore = new LoginFirestore(mAuth);
+        loginFirestore.loginCompleteListener = this;
 
         showLogin();
     }
@@ -183,13 +189,19 @@ public class LoginActivity extends AppCompatActivity{
         passwordView.setError(null);
 
         // Store values at the time of the create attempt.
-        String username = usernameView.getText().toString();
+        username = usernameView.getText().toString();
+
+        // check there is no user already using username
+        loginFirestore.usernameAvailable(username);
+
+
+    }
+
+    public void checkUsernameComplete(Boolean available) {
         String email = emailView.getText().toString();
         String password = passwordView.getText().toString();
 
-        // check there is no user already using username
-        boolean usernameValid = checkUsername(username);
-        if (usernameValid) {
+        if (available) {
 
             // check that email and password are valid before continuing
             boolean continueCreation = checkCredentials(email, password);
@@ -204,8 +216,8 @@ public class LoginActivity extends AppCompatActivity{
                         // Create account success, update UI with user info
                         Log.d(tag, "[attemptCreation] success");
                         // Add collection for user on Firestore to store their progress
-                        LoginFirestore loginFirestore = new LoginFirestore(mAuth);
-                        loginFirestore.createUser(username);
+                        LoginFirestore loginF = new LoginFirestore(mAuth);
+                        loginF.createUser(username);
                         openMainActivity();
                         this.finish();
                     } else {
@@ -217,8 +229,11 @@ public class LoginActivity extends AppCompatActivity{
                     }
                 });
             }
+        } else {
+            usernameError.setVisibility(View.VISIBLE);
         }
     }
+
 
     private boolean checkCredentials(String email, String password) {
         View focusView = null;
@@ -257,9 +272,6 @@ public class LoginActivity extends AppCompatActivity{
         }
     }
 
-    private boolean checkUsername(String username) {
-        return true;
-    }
 
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic

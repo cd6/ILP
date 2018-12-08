@@ -48,9 +48,7 @@ public abstract class UserFirestore {
     final String PICKED_UP_COINS_FIELD = "pickedUpCoins";
     final String GOLD_FIELD = "gold";
     final String NO_BANKED_FIELD = "noBanked";
-    final String USER_FROM_FIELD = "userFrom";
-
-    public ReceivedCoinsListener receivedCoinsListener = null;
+    final String SENDER_FIELD = "sender";
 
     public UserFirestore(FirebaseAuth mAuth) {
         // Access a Cloud Firestore instance from your Activity
@@ -80,26 +78,5 @@ public abstract class UserFirestore {
         return settings;
     }
 
-    public void realtimeUpdateListener(Context context) {
-        DocumentReference docRefRealtime = db.collection(USER_COLLECTION).document(Objects.requireNonNull(userID));
-        docRefRealtime.collection(SENT_COLLECTION)
-                .addSnapshotListener((snapshots, e) -> {
-                    if (e != null) {
-                        Log.w(tag, "[realtimeUpdateListener] Listen failed.", e);
-                        return;
-                    }
-                    List<DocumentChange> docChanges = snapshots.getDocumentChanges();
-                    List<Message> messageList = new ArrayList<>();
-                    String sender;
-                    double gold;
-                    double totalGold = 0;
-                    for (DocumentChange dc : snapshots.getDocumentChanges()) {
-                        DocumentSnapshot d = dc.getDocument();
-                        sender = d.getString(USER_FROM_FIELD);
-                        gold = d.getDouble(GOLD_FIELD);
-                        totalGold += gold;
-                        messageList.add(new Message(sender, gold));
-                    }
-                });
-    }
+
 }

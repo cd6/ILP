@@ -27,5 +27,6 @@
 
     <string name="action_exchange_rate">Exchange Rates</string>
     <string name="username_taken">Username is already taken</string>
+    <string name="clear_messages">Clear</string>
 
 </resources>

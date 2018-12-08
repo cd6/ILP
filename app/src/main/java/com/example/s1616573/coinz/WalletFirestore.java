@@ -95,10 +95,12 @@ public class WalletFirestore extends UserFirestore {
         WriteBatch batch = db.batch();
 
         DocumentReference sendRef = db.collection(USER_COLLECTION).document(userTo).collection("sent").document();
-        Map<String, Double> sentGold = new HashMap<>();
+
+        Message message = new Message(userID, gold);
+      //  Map<String, Double> sentGold = new HashMap<>();
         // TODO: change to username save in sharedprefs when logging in remove when log out?
-        sentGold.put(userID, gold);
-        batch.set(sendRef,sentGold);
+       // sentGold.put(userID, gold);
+        batch.set(sendRef,message);
 
         for(Coin c : coins) {
             batch.delete(docRef.collection(WALLET_COLLECTION).document(c.getId()));
@@ -158,7 +160,6 @@ public class WalletFirestore extends UserFirestore {
         Button pButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
         pButton.setOnClickListener(view -> {
             String uName = input.getText().toString();
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
             db.collection(USER_COLLECTION)
                     .whereEqualTo("username", uName)
                     .get()

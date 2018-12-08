@@ -9,38 +9,30 @@ import android.os.Build;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
-public class WalletActivity extends AppCompatActivity implements RecyclerViewAdapter.ItemClickListener, WalletCompleteListener {
+public class WalletActivity extends AppCompatActivity implements WalletRecyclerViewAdapter.ItemClickListener, WalletCompleteListener {
 
     private String tag = "WalletActivity";
     private WalletFirestore walletFirestore;
     private FirebaseAuth mAuth;
 
     private RecyclerView walletView;
-    private RecyclerViewAdapter adapter;
+    private WalletRecyclerViewAdapter adapter;
     private FloatingActionButton depositButton;
     private FloatingActionButton sendButton;
     private Toolbar toolbar;
@@ -114,7 +106,7 @@ public class WalletActivity extends AppCompatActivity implements RecyclerViewAda
             double goldValue = value * rates.get(c.getCurrency());
             c.setGoldValue(goldValue);
         }
-        adapter = new RecyclerViewAdapter(this, coins);
+        adapter = new WalletRecyclerViewAdapter(this, coins);
         adapter.setClickListener(this);
         walletView.setAdapter(adapter);
     }
@@ -183,10 +175,10 @@ public class WalletActivity extends AppCompatActivity implements RecyclerViewAda
         if (success) {
             // if coins are deposited at to the number of coins deposited today
             noDeposited = noDeposited <25? noDeposited + selectedCoins.size():25;
-            showButtons();
             adapter.removeItems(selectedCoins.keySet());
             selectedCoins.clear();
             noSelected = 0;
+            showButtons();
         } else {
             errorMessage("Unable to connect to network");
         }

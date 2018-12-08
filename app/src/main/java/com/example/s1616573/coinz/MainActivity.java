@@ -572,7 +572,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         if (id == R.id.exchange_rate_item) {
-
+            try {
+                showExchangeRates();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -604,6 +608,28 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Intent loginIntent = new Intent(this, LoginActivity.class);
         startActivity(loginIntent);
         this.finish();
+    }
+
+    public void showExchangeRates() throws JSONException {
+        AlertDialog.Builder exchangeRateBuilder = new AlertDialog.Builder(this);
+        JSONObject obj = new JSONObject(geoJsonCoins);
+        String[] currencies = new String[]{"SHIL","DOLR","QUID","PENY"};
+        StringBuilder message = new StringBuilder();
+        for (String c : currencies) {
+            String rate = obj.getJSONObject("rates").getString(c);
+            message.append(c).append(":\t").append(rate).append("\n");
+        }
+        exchangeRateBuilder.setMessage(message.toString());
+        exchangeRateBuilder.setCancelable(true);
+
+        exchangeRateBuilder.setPositiveButton(
+                "Close",
+                (dialog, id) -> {
+                    dialog.cancel();
+                });
+
+        AlertDialog alert = exchangeRateBuilder.create();
+        alert.show();
     }
 
     private void errorMessage(String errorText) {

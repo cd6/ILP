@@ -12,20 +12,19 @@
         layout="@layout/content_bank"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:layout_editor_absoluteY="0dp" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/text_gold"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_height="0dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         android:gravity="center"
         android:text=""
         android:textSize="@dimen/goldTextSize"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/rv_messages"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/include2"
         app:layout_constraintTop_toTopOf="@+id/include2" />
@@ -47,5 +46,25 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_messages"
+        android:layout_width="match_parent"
+        android:layout_height="231dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_gold">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <Button
+        android:id="@+id/btn_clear_messages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/clear_messages"
+        app:layout_constraintBottom_toTopOf="@+id/rv_messages"
+        app:layout_constraintEnd_toEndOf="@+id/include2" />
 
 </android.support.constraint.ConstraintLayout>
