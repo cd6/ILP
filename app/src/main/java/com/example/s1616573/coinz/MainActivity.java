@@ -59,11 +59,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private String tag = "MainActivity";
     private MapView mapView;
     private MapboxMap map;
-    private PermissionsManager permissionsManager;
     private LocationEngine locationEngine;
-    private LocationLayerPlugin locationLayerPlugin;
     private Location originLocation;
-    private final String ACCESS_TOKEN = "pk.eyJ1IjoiY2Q2IiwiYSI6ImNqbXowNzYxMDE2bWcza3FsMXRpNG1xaGkifQ.-rbujzxJSMehxZ-v63eULA";
     private String downloadDate = ""; // Format: YYYY/MM/DD
     private final String preferencesFile = "MyPrefsFile"; // for storing preferences
     private String geoJsonCoins;
@@ -75,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private boolean done = false;
     private ArrayList<String> pickedUpCoins = new ArrayList<>();
     private Marker bomb;
-    private MarkerOptions bombOptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        String ACCESS_TOKEN = "pk.eyJ1IjoiY2Q2IiwiYSI6ImNqbXowNzYxMDE2bWcza3FsMXRpNG1xaGkifQ.-rbujzxJSMehxZ-v63eULA";
         Mapbox.getInstance(this, ACCESS_TOKEN);
         mapView = findViewById(R.id.mapboxMapView);
         mapView.onCreate(savedInstanceState);
@@ -217,7 +214,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             initializeLocationLayer();
         } else {
             Log.d(tag, "Permissions are not granted");
-            permissionsManager = new PermissionsManager(this);
+            PermissionsManager permissionsManager = new PermissionsManager(this);
             permissionsManager.requestLocationPermissions(this);
         }
     }
@@ -247,7 +244,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (map == null) {
                 Log.d(tag, "map is null");
             } else {
-                locationLayerPlugin = new LocationLayerPlugin(mapView, map, locationEngine);
+                LocationLayerPlugin locationLayerPlugin = new LocationLayerPlugin(mapView, map, locationEngine);
                 locationLayerPlugin.setLocationLayerEnabled(true);
                 locationLayerPlugin.setCameraMode(CameraMode.TRACKING);
                 locationLayerPlugin.setRenderMode(RenderMode.NORMAL);
@@ -322,7 +319,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         alert.show();
     }
 
-
+    // get the GeoJSON string for today's map
     private void getCoinMap() {
         // download map if it has not already been downloaded
         LocalDate date = LocalDate.now();
@@ -340,7 +337,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         else {
             // if the map has already been downloaded today, go straight to adding coins to the map
             addCoinsToMap();
-
         }
     }
 
@@ -366,8 +362,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         addCoinsToMap();
     }
 
-
-
     private void addCoinsToMap() {
         // don't add coins until map has been downloaded from DownloadFileTask and picked up coins have been gotten from FireStore
         if (done && map.getMarkers().size() == 0) {
@@ -378,7 +372,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     R.drawable.marker2, R.drawable.marker3, R.drawable.marker4, R.drawable.marker5,
                     R.drawable.marker6, R.drawable.marker7, R.drawable.marker8, R.drawable.marker9};
             HashMap<String, String> markerColours = new HashMap<>();
-            // Create hashmap to link coins to their marker
+            // Create HashMap to link coins to their marker
             coinMap = new HashMap<>();
             if (features != null) {
                 for (Feature f : features) {
@@ -421,6 +415,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    // Create an icon for the marker given the coin's marker colour and symbol
     // https://github.com/mapbox/mapbox-gl-native/issues/7897
     private Icon drawableToIcon(String colorRes, int marker) {
         // dynamically change colour of marker
@@ -435,7 +430,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         return IconFactory.getInstance(this).fromBitmap(bitmap);
     }
 
-    // add bomb marker to map
+    // add bomb marker to map which will empty the user's wallet when they pick it up
     private void addBomb(int[] markerImages, HashMap<String, String> markerColours) throws JSONException {
         LatLng coordinates;
         Icon bombIcon;
@@ -482,6 +477,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             storedBomb = "{\"bombMarker\":{\"lat\":\"" + lat + "\",\"lng\":\"" + lng + "\",\"colour\":\""
                     + colour + "\",\"image\":\"" + image + "\",\"value\":\"" + value + "\",\"currency\":\"" + currency +"\"}}";
         } else {
+            // load the properties from shared preferences
             JSONObject obj = new JSONObject(storedBomb);
             JSONObject bombObject = obj.getJSONObject("bombMarker");
             lat = Double.parseDouble(bombObject.getString("lat"));
@@ -491,30 +487,23 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             value = Double.parseDouble(bombObject.getString("value"));
             currency = bombObject.getString("currency");
         }
+        // Add the marker to the map
         coordinates = new LatLng(lat, lng);
         bombIcon = drawableToIcon(colour, image);
-        bombOptions = new MarkerOptions().position(coordinates).icon(bombIcon);
+        MarkerOptions bombOptions = new MarkerOptions().position(coordinates).icon(bombIcon);
         bomb = map.addMarker(bombOptions);
+        // Add the coin and the marker to the coinMap
         coinMap.put(bomb, new Coin("bomb", value, currency));
         Log.d(tag, "[addBomb] Added");
     }
 
+    // pick up coin when the user is within 25 metres
     private void inRangeOfCoin() {
-        // pick up coin when the user is within 25 metres
         List<Marker> markers = map.getMarkers();
-        //double latAngleUser = Math.toRadians(originLocation.getLatitude());
-        //double longAngleUser = Math.toRadians(originLocation.getLongitude());
-        //double radius = 6378100; // radius of the earth
         LatLng latLngUser = new LatLng(originLocation.getLatitude(),originLocation.getLongitude());
 
         for(Marker m:markers) {
             LatLng markerPosition = m.getPosition();
-            // Equirectangular approximation is a suitable formula to find small distances between points on earth
-            //double latAngleMarker = Math.toRadians(markerPosition.getLatitude());
-            //double longAngleMarker = Math.toRadians(markerPosition.getLongitude());
-            //double x = (longAngleUser-longAngleMarker) * Math.cos((latAngleUser+latAngleMarker)/2.0);
-            //double y = latAngleUser - latAngleMarker;
-            //double dist = Math.sqrt(x*x + y*y) * radius;
             double dist = markerPosition.distanceTo(latLngUser);
             if (dist < 25) {
                 Coin c  = coinMap.get(m);
@@ -523,6 +512,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    // Ask the user if they want to pick up the coin
     public void pickUpCoinDialog(Coin c, Marker m) {
         AlertDialog.Builder pickUpCoinBuilder = new AlertDialog.Builder(this);
         pickUpCoinBuilder.setMessage("Pick up " + c.getCurrency() + "\nValue:" + c.getValue());
@@ -543,6 +533,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         alert.show();
     }
 
+    // Pick up coin from map
     public void pickUp(Coin c, Marker m) {
         if(m==bomb) {
             mainFirestore.emptyWallet();
@@ -610,6 +601,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         this.finish();
     }
 
+    // Show a dialog with today's exchange rates
     public void showExchangeRates() throws JSONException {
         AlertDialog.Builder exchangeRateBuilder = new AlertDialog.Builder(this);
         JSONObject obj = new JSONObject(geoJsonCoins);
@@ -624,9 +616,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         exchangeRateBuilder.setPositiveButton(
                 "Close",
-                (dialog, id) -> {
-                    dialog.cancel();
-                });
+                (dialog, id) -> dialog.cancel());
 
         AlertDialog alert = exchangeRateBuilder.create();
         alert.show();

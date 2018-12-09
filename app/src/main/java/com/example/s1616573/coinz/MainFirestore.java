@@ -2,14 +2,12 @@ package com.example.s1616573.coinz;
 
 import android.util.Log;
 
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
@@ -22,30 +20,26 @@ import java.util.Map;
 import java.util.Objects;
 
 // Class to perform all firestore accesses in the MainActivity
-public class MainFirestore extends UserFirestore {
+class MainFirestore extends UserFirestore {
 
-    public DownloadCompleteListener downloadCompleteListener = null;
+    DownloadCompleteListener downloadCompleteListener = null;
 
     private String tag = "MainFirestore";
-    private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private DocumentReference docRef;
-    private String userID;
     private DocumentSnapshot document;
-    private FirebaseFirestoreSettings settings;
 
     private ArrayList<String> pickedUpCoins;
 
-    public MainFirestore(FirebaseAuth mAuth) {
+    MainFirestore(FirebaseAuth mAuth) {
         super(mAuth);
-        this.mAuth = mAuth;
         docRef = getDocRef();
-        userID = getUserID();
         db = getDb();
-        settings = getSettings();
     }
 
-    public void getPickedUpCoins() {
+    // Get a list of coins from today's map that the user has picked up
+    @SuppressWarnings("unchecked")
+    void getPickedUpCoins() {
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 document = task.getResult();
@@ -89,7 +83,7 @@ public class MainFirestore extends UserFirestore {
         docRef.update(updates).addOnCompleteListener(aVoid -> Log.d(tag, "[resetPickedUpCoins] Update successful"));
     }
 
-    public void pickUp(Coin coin) {
+    void pickUp(Coin coin) {
         // pickedUpCoins stores ID of coins for the map of the current day that the user has picked up
         docRef.update(PICKED_UP_COINS_FIELD, FieldValue.arrayUnion(coin.getId()));
         // Store when the coin was collected to order them in wallet by when the coins were picked up
@@ -99,8 +93,9 @@ public class MainFirestore extends UserFirestore {
                 .addOnFailureListener(e -> Log.w(tag, "[pickUp] Error writing document", e));
     }
 
-    public void emptyWallet() {
-        Task qs = docRef.collection(WALLET_COLLECTION)
+    // remove all coin documents from wallet
+    void emptyWallet() {
+        docRef.collection(WALLET_COLLECTION)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

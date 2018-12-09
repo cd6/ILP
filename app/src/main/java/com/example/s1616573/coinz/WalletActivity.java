@@ -39,7 +39,6 @@ public class WalletActivity extends AppCompatActivity implements WalletRecyclerV
     private View progressView;
 
     private final String preferencesFile = "MyPrefsFile";
-    private final String USER_COLLECTION = "users";
     private HashMap<String, Double> rates;
     private HashMap<Integer, Coin> selectedCoins;
 
@@ -65,7 +64,6 @@ public class WalletActivity extends AppCompatActivity implements WalletRecyclerV
         }
 
         progressView = findViewById(R.id.deposit_progress);
-
         selectedCoins = new HashMap<>();
 
         showButtons();

@@ -14,14 +14,14 @@ import java.util.stream.Collectors;
 
 
 public class DownloadFileTask extends AsyncTask<String, Void, String> {
-    public DownloadCompleteListener listener = null;
-    private String tag = "DownloadFileTask";
+    DownloadCompleteListener listener = null;
 
     @Override
     protected String doInBackground(String... urls) {
         try {
             return loadFileFromNetwork(urls[0]);
         } catch (IOException e) {
+            String tag = "DownloadFileTask";
             Log.d(tag,"[doInBackground] Unable to load content. Check your network connection");
             return null;
         }
