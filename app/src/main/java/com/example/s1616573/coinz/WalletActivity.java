@@ -2,6 +2,7 @@ package com.example.s1616573.coinz;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -35,16 +36,16 @@ public class WalletActivity extends AppCompatActivity implements WalletRecyclerV
     private WalletRecyclerViewAdapter adapter;
     private FloatingActionButton depositButton;
     private FloatingActionButton sendButton;
-    private Toolbar toolbar;
     private View progressView;
 
-    private final String preferencesFile = "MyPrefsFile";
     private HashMap<String, Double> rates;
     private HashMap<Integer, Coin> selectedCoins;
 
     private int noSelected;
     private int noDeposited;
+    private String username;
 
+    @SuppressLint("UseSparseArrays")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,10 +56,11 @@ public class WalletActivity extends AppCompatActivity implements WalletRecyclerV
         depositButton.setClickable(false);
         sendButton = findViewById(R.id.fab_send);
         sendButton.setClickable(false);
-        toolbar = findViewById(R.id.toolbar_wallet);
+        Toolbar toolbar = findViewById(R.id.toolbar_wallet);
         setSupportActionBar(toolbar);
         ActionBar aBar = getSupportActionBar();
 
+        // add back button to action bar which takes the user back to the map
         if (aBar != null) {
             aBar.setDisplayHomeAsUpEnabled(true);
         }
@@ -68,13 +70,13 @@ public class WalletActivity extends AppCompatActivity implements WalletRecyclerV
 
         showButtons();
 
-        depositButton.setOnClickListener(view -> {
-            deposit();
-        });
+        depositButton.setOnClickListener(view ->
+            deposit()
+        );
 
-        sendButton.setOnClickListener(view -> {
-            walletFirestore.chooseUser();
-        });
+        sendButton.setOnClickListener(view ->
+            walletFirestore.chooseUser(username)
+        );
     }
 
     @Override
@@ -86,8 +88,18 @@ public class WalletActivity extends AppCompatActivity implements WalletRecyclerV
         walletFirestore.getCoinsInWallet();
 
         // Restore preferences
+        String preferencesFile = "MyPrefsFile";
         SharedPreferences settings = getSharedPreferences(preferencesFile, Context.MODE_PRIVATE);
         String geoJsonCoins = settings.getString("coinMap", "");
+
+        String userPreferencesFile = mAuth.getUid();
+        SharedPreferences userSettings = getSharedPreferences(userPreferencesFile, Context.MODE_PRIVATE);
+        username = userSettings.getString("username", "");
+        Log.d(tag, "[onStart] username is " + username);
+        if(username.equals("")){
+            walletFirestore.getUsername();
+        }
+
         try {
             getRates(geoJsonCoins);
         } catch (JSONException e) {
@@ -98,7 +110,26 @@ public class WalletActivity extends AppCompatActivity implements WalletRecyclerV
         noSelected = 0;
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        if (username != null) {
+            SharedPreferences settings = getSharedPreferences(mAuth.getUid(), Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putString("username", username);
+            editor.apply();
+        }
+    }
+
+    public void getUsernameComplete(String username) {
+        this.username = username;
+        Log.d(tag, "[getUsernameComplete] Username = " + username);
+    }
+
+    // Display coins in recycler view
     public void getCoinsComplete(List<Coin> coins) {
+        // Calculate gold value for every coin using today's exchange rates
         for(Coin c : coins) {
             double value = c.getValue();
             double goldValue = value * rates.get(c.getCurrency());
@@ -110,16 +141,18 @@ public class WalletActivity extends AppCompatActivity implements WalletRecyclerV
     }
 
     @Override
+    // select/deselect coins from recycler view
     public void onItemClick(View view, int position) {
         // toggle selection
         view.setSelected(!view.isSelected());
-        noSelected = view.isSelected()?noSelected+1:noSelected-1;
         Coin clicked = adapter.getItem(position);
+        // add or remove coin from list of selected coins
         if (selectedCoins.containsKey(position)) {
             selectedCoins.remove(position);
         } else {
             selectedCoins.put(position, clicked);
         }
+        noSelected = selectedCoins.size();
         showButtons();
     }
 
@@ -161,11 +194,22 @@ public class WalletActivity extends AppCompatActivity implements WalletRecyclerV
         }
     }
 
+    // Deposit selected coins to the bank
     private void deposit() {
         // TODO: Try to deposit with no internet
         double gold = calculateGold();
         showProgress(true);
         walletFirestore.depositCoins(selectedCoins.values(), gold);
+    }
+
+    // calculate total value of coins selected in gold
+    private double calculateGold() {
+        double gold = 0;
+        for (Integer p : selectedCoins.keySet()) {
+            Coin c = selectedCoins.get(p);
+            gold += c.getGoldValue();
+        }
+        return gold;
     }
 
     public void transactionSucceeded(Boolean success) {
@@ -186,19 +230,8 @@ public class WalletActivity extends AppCompatActivity implements WalletRecyclerV
     public void chooseUserComplete(String userTo) {
         double gold = calculateGold();
         showProgress(true);
-        walletFirestore.sendCoins(userTo, selectedCoins.values(), gold);
+        walletFirestore.sendCoins(username, userTo, selectedCoins.values(), gold);
     }
-
-    // calculate total value of coins selected in gold
-    private double calculateGold() {
-        double gold = 0;
-        for (Integer p : selectedCoins.keySet()) {
-            Coin c = selectedCoins.get(p);
-            gold += c.getGoldValue();
-        }
-        return gold;
-    }
-
 
     private void errorMessage(String errorText) {
         Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), errorText, Snackbar.LENGTH_LONG);

@@ -25,7 +25,6 @@ public class LoginFirestore {
     private final String USER_COLLECTION = "users";
     private final String USER_PRIVATE = "user";
     private final String USER_DOCUMENT = "userDoc";
-    private final String GOLD_FIELD = "gold";
 
 
     public LoginFirestore(FirebaseAuth mAuth) {

@@ -10,4 +10,6 @@ public interface WalletCompleteListener {
     void getNumberDepositedComplete(int result);
 
     void chooseUserComplete(String userTo);
+
+    void getUsernameComplete(String result);
 }

@@ -3,7 +3,9 @@ package com.example.s1616573.coinz;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Build;
@@ -202,7 +204,6 @@ public class LoginActivity extends AppCompatActivity implements LoginCompleteLis
         String password = passwordView.getText().toString();
 
         if (available) {
-
             // check that email and password are valid before continuing
             boolean continueCreation = checkCredentials(email, password);
 
@@ -218,6 +219,12 @@ public class LoginActivity extends AppCompatActivity implements LoginCompleteLis
                         // Add collection for user on Firestore to store their progress
                         LoginFirestore loginF = new LoginFirestore(mAuth);
                         loginF.createUser(username);
+                        // store username in shared prefs for sending coins
+                        SharedPreferences settings = getSharedPreferences(mAuth.getUid(), Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putString("username", username);
+                        editor.apply();
+
                         openMainActivity();
                         this.finish();
                     } else {
