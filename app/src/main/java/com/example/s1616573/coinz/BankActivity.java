@@ -31,6 +31,8 @@ public class BankActivity extends AppCompatActivity implements BankCompleteListe
 
     private String preferencesFile = "";
     private String lastGoldValue = "";
+    private double gold;
+    private String goldText = "You have\n\n%.2f\n\ngold";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,6 @@ public class BankActivity extends AppCompatActivity implements BankCompleteListe
         setContentView(R.layout.activity_bank);
         bankView = findViewById(R.id.rv_messages);
         bankView.setLayoutManager(new LinearLayoutManager(this));
-        btnClear = findViewById(R.id.btn_clear_messages);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -46,10 +47,6 @@ public class BankActivity extends AppCompatActivity implements BankCompleteListe
         aBar.setDisplayHomeAsUpEnabled(true);
 
         textGold = findViewById(R.id.text_gold);
-
-        btnClear.setOnClickListener(view -> {
-            bankFirestore.clearMessages();
-        });
     }
 
     @Override
@@ -80,6 +77,9 @@ public class BankActivity extends AppCompatActivity implements BankCompleteListe
         editor.putString("lastGoldValue", lastGoldValue);
         // Apply the edits
         editor.apply();
+
+        bankFirestore.stopListening();
+        bankFirestore.clearMessages();
     }
 
 
@@ -87,16 +87,24 @@ public class BankActivity extends AppCompatActivity implements BankCompleteListe
     public void getGoldComplete(double gold) {
         if(gold !=-1) {
             // Only show gold to 2 significant figures
-            textGold.setText(String.format("You have\n\n%.2f\n\ngold", gold));
+            this.gold = gold;
+            textGold.setText(String.format(goldText, gold));
             lastGoldValue = "" + gold;
         } else {
-            textGold.setText(String.format("You have\n\n%s\n\ngold", lastGoldValue.equals("")?0.0:lastGoldValue));
+            this.gold = Double.parseDouble(lastGoldValue);
+            textGold.setText(String.format(goldText, lastGoldValue.equals("")?0.0:lastGoldValue));
             errorMessage("Could not connect to bank");
         }
     }
 
-    public void realtimeUpdateComplete(HashMap<String, Message> messages) {
-        adapter = new BankRecyclerViewAdapter(this, new ArrayList<>(messages.values()));
+
+    public void realtimeUpdateComplete(List<Message> messages) {
+        for(Message m : messages) {
+            gold += m.getGold();
+        }
+        textGold.setText(String.format(goldText,gold));
+
+        adapter = new BankRecyclerViewAdapter(this, messages);
         bankView.setAdapter(adapter);
     }
 

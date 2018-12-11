@@ -182,7 +182,7 @@ class WalletFirestore extends UserFirestore {
     void sendCoins(String sender, String userTo, Collection<Coin> coins, double gold) {
         // Get a new write batch
         WriteBatch batch = db.batch();
-        DocumentReference sendRef = db.collection(USER_COLLECTION).document(userTo).collection("sent").document();
+        DocumentReference sendRef = db.collection(USER_COLLECTION).document(userTo).collection(SENT_COLLECTION).document();
 
 
         Message message = new Message(sender, gold);
