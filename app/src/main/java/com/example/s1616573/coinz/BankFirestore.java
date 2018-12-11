@@ -10,10 +10,12 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -69,6 +71,7 @@ public class BankFirestore extends UserFirestore {
 
     public void realtimeUpdateListener() {
         List<Message> messageList = new ArrayList<>();
+        HashMap<String, Message> messages = new HashMap<>();
         messageRef.collection(SENT_COLLECTION)
                 .addSnapshotListener((snapshots, e) -> {
                     if (e != null) {
@@ -77,7 +80,6 @@ public class BankFirestore extends UserFirestore {
                     }
                     db.runTransaction((Transaction.Function<Void>) transaction -> {
                         List<DocumentChange> docChanges = snapshots.getDocumentChanges();
-
                         String sender;
                         double gold;
                         double goldInBank = 0;
@@ -87,20 +89,25 @@ public class BankFirestore extends UserFirestore {
                             goldInBank = transactionSnapshot.getDouble(GOLD_FIELD);
                         }
 
-                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                       for (DocumentChange dc : docChanges) {
                             if(dc.getType() == DocumentChange.Type.ADDED) {
                                 DocumentSnapshot d = dc.getDocument();
                                 sender = d.getString(SENDER_FIELD);
                                 gold = d.getDouble(GOLD_FIELD);
-                                goldInBank += gold;
-                                messageList.add(new Message(sender, gold));
+                                if (!messages.containsKey(d.getId())) {
+                                    goldInBank += gold;
+                                    Message m = new Message(sender, gold);
+                                    messages.put(d.getId(), m);
+                                    //messageList.add(new Message(sender, gold));
+                                    messageRef.collection(SENT_COLLECTION).document(d.getId()).delete();
+                                }
                             }
                         }
                         transaction.update(docRef, GOLD_FIELD, goldInBank);
                         return null;
                     }).addOnSuccessListener(aVoid -> {
                         Log.d(tag, "[realtimeUpdateListener] Transaction succeeded");
-                        bankCompleteListener.realtimeUpdateComplete(messageList);
+                        bankCompleteListener.realtimeUpdateComplete(messages);
                     }).addOnFailureListener(er -> {
                         Log.d(tag, "[realtimeUpdateListener] Transaction failed.", er);
                     });
@@ -121,7 +128,7 @@ public class BankFirestore extends UserFirestore {
                         batch.commit().addOnCompleteListener(task2 -> {
                             if (task2.isSuccessful()) {
                                 Log.d(tag, "[clearMessages] Batch success!");
-                                bankCompleteListener.realtimeUpdateComplete(new ArrayList<>());
+                                bankCompleteListener.realtimeUpdateComplete(new HashMap<>());
                             } else {
                                 Log.w(tag, "[clearMessages] Batch failure.");
                             }

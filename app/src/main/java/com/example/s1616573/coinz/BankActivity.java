@@ -1,5 +1,6 @@
 package com.example.s1616573.coinz;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class BankActivity extends AppCompatActivity implements BankCompleteListener{
@@ -80,9 +83,11 @@ public class BankActivity extends AppCompatActivity implements BankCompleteListe
     }
 
 
+    @SuppressLint("DefaultLocale")
     public void getGoldComplete(double gold) {
         if(gold !=-1) {
-            textGold.setText(String.format("You have\n\n%s\n\ngold", gold));
+            // Only show gold to 2 significant figures
+            textGold.setText(String.format("You have\n\n%.2f\n\ngold", gold));
             lastGoldValue = "" + gold;
         } else {
             textGold.setText(String.format("You have\n\n%s\n\ngold", lastGoldValue.equals("")?0.0:lastGoldValue));
@@ -90,8 +95,8 @@ public class BankActivity extends AppCompatActivity implements BankCompleteListe
         }
     }
 
-    public void realtimeUpdateComplete(List<Message> messageList) {
-        adapter = new BankRecyclerViewAdapter(this, messageList);
+    public void realtimeUpdateComplete(HashMap<String, Message> messages) {
+        adapter = new BankRecyclerViewAdapter(this, new ArrayList<>(messages.values()));
         bankView.setAdapter(adapter);
     }
 
