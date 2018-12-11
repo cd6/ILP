@@ -13,7 +13,6 @@ abstract class UserFirestore {
     private FirebaseFirestore db;
     private DocumentReference docRef;
     private String userID;
-    private FirebaseFirestoreSettings settings;
 
     final String USER_COLLECTION = "users";
     @SuppressWarnings("WeakerAccess")
@@ -31,7 +30,7 @@ abstract class UserFirestore {
         // Access a Cloud Firestore instance from your Activity
         userID = mAuth.getUid();
         db = FirebaseFirestore.getInstance();
-        settings = new FirebaseFirestoreSettings.Builder()
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setTimestampsInSnapshotsEnabled(true)
                 .build();
         db.setFirestoreSettings(settings);
@@ -49,10 +48,4 @@ abstract class UserFirestore {
     FirebaseFirestore getDb() {
         return db;
     }
-
-    FirebaseFirestoreSettings getSettings() {
-        return settings;
-    }
-
-
 }

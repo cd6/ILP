@@ -22,12 +22,25 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         android:gravity="center"
-        android:text=""
         android:textSize="@dimen/goldTextSize"
         app:layout_constraintBottom_toTopOf="@+id/rv_messages"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/include2"
-        app:layout_constraintTop_toTopOf="@+id/include2" />
+        app:layout_constraintTop_toBottomOf="@+id/text_level" />
+
+    <TextView
+        android:id="@+id/text_level"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:textSize="@dimen/goldTextSize"
+        app:layout_constraintBottom_toTopOf="@+id/text_gold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/include2"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBarLayout"

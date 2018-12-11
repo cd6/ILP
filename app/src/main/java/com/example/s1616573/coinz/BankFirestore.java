@@ -2,16 +2,13 @@ package com.example.s1616573.coinz;
 
 import android.util.Log;
 
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
 import com.google.firebase.firestore.WriteBatch;
 
@@ -25,12 +22,9 @@ public class BankFirestore extends UserFirestore {
     public BankCompleteListener bankCompleteListener = null;
 
     private String tag = "BankFirestore";
-    private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     private DocumentReference docRef;
-    private String userID;
     private DocumentSnapshot document;
-    private FirebaseFirestoreSettings settings;
 
     private DocumentReference messageRef;
     private ListenerRegistration registration;
@@ -39,16 +33,15 @@ public class BankFirestore extends UserFirestore {
 
     BankFirestore(FirebaseAuth mAuth) {
         super(mAuth);
-        this.mAuth = mAuth;
         docRef = getDocRef();
-        userID = getUserID();
+        String userID = getUserID();
         db = getDb();
-        settings = getSettings();
 
         messageRef = db.collection(USER_COLLECTION).document(Objects.requireNonNull(userID));
     }
 
     // Get the amount of gold the user has in their bank
+    @SuppressWarnings("ConstantConditions")
     public void getGoldInBank() {
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -73,6 +66,8 @@ public class BankFirestore extends UserFirestore {
         });
     }
 
+    // Check for coins being sent to the user
+    @SuppressWarnings("ConstantConditions")
     public void realtimeUpdateListener() {
         List<Message> messageList = new ArrayList<>();
         registration = messageRef.collection(SENT_COLLECTION)
@@ -93,16 +88,19 @@ public class BankFirestore extends UserFirestore {
                         }
                         messageList.clear();
                         for (DocumentChange dc : docChanges) {
+                            // get the added documents
                             if(dc.getType() == DocumentChange.Type.ADDED) {
                                 DocumentSnapshot d = dc.getDocument();
                                 sender = d.getString(SENDER_FIELD);
                                 gold = d.getDouble(GOLD_FIELD);
+                                // if the user has not already received this message
                                 if (!messages.containsKey(d.getId())) {
+                                    // add the gold in the message to the gold in the user's bank
                                     goldInBank += gold;
                                     Message m = new Message(sender, gold);
                                     messages.put(d.getId(), m);
+                                    // list of messages to display
                                     messageList.add(m);
-                                   // messageRef.collection(SENT_COLLECTION).document(d.getId()).delete();
                                 }
                             }
                         }
@@ -111,20 +109,20 @@ public class BankFirestore extends UserFirestore {
                     }).addOnSuccessListener(aVoid -> {
                         Log.d(tag, "[realtimeUpdateListener] Transaction succeeded");
                         bankCompleteListener.realtimeUpdateComplete(messageList);
-                    }).addOnFailureListener(er -> {
-                        Log.d(tag, "[realtimeUpdateListener] Transaction failed.", er);
-                    });
+                    }).addOnFailureListener(er -> Log.d(tag, "[realtimeUpdateListener] Transaction failed.", er));
 
                 });
 
     }
 
+    // stop listening for updates
     public void stopListening() {
         registration.remove();
     }
 
+    // delete messages
     public void clearMessages() {
-        Task qs = messageRef.collection(SENT_COLLECTION)
+        messageRef.collection(SENT_COLLECTION)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {

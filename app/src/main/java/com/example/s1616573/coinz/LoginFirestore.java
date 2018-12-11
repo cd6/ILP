@@ -20,22 +20,20 @@ public class LoginFirestore {
     private String tag = "LoginFirestore";
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
-    private FirebaseFirestoreSettings settings;
 
     private final String USER_COLLECTION = "users";
-    private final String USER_PRIVATE = "user";
-    private final String USER_DOCUMENT = "userDoc";
 
 
-    public LoginFirestore(FirebaseAuth mAuth) {
+    LoginFirestore(FirebaseAuth mAuth) {
         this.mAuth = mAuth;
         db = FirebaseFirestore.getInstance();
-        settings = new FirebaseFirestoreSettings.Builder()
+        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setTimestampsInSnapshotsEnabled(true)
                 .build();
         db.setFirestoreSettings(settings);
     }
 
+    // create a new document on firestore for the new user
     public void createUser(String username) {
         String userID = mAuth.getUid();
         DocumentReference docRef = db.collection(USER_COLLECTION).document(Objects.requireNonNull(userID));
@@ -44,10 +42,13 @@ public class LoginFirestore {
         docRef.set(m)
                 .addOnSuccessListener(aVoid -> Log.d(tag, "[createUser] DocumentSnapshot successfully written!"))
                 .addOnFailureListener(e -> Log.w(tag, "[createUser] Error writing document", e));
+        String USER_PRIVATE = "user";
+        String USER_DOCUMENT = "userDoc";
         docRef.collection(USER_PRIVATE).document(USER_DOCUMENT).set(new HashMap<>())
                 .addOnCompleteListener(aVoid -> Log.d(tag, "[createUser] Update successful"));
     }
 
+    // check if there is another user with the same username
     public void usernameAvailable(String username) {
         db.collection(USER_COLLECTION)
                 .whereEqualTo("username", username)

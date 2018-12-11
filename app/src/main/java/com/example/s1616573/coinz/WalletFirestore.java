@@ -114,6 +114,7 @@ class WalletFirestore extends UserFirestore {
                     Log.d(tag, "[getNumberDeposited] DocumentSnapshot data: " + document.getData());
                     int noDeposited = 0;
                     if (document.contains(NO_BANKED_FIELD)) {
+                        //noinspection ConstantConditions
                         noDeposited = (int) Math.floor(document.getDouble(NO_BANKED_FIELD));
                     }
                     walletCompleteListener.getNumberDepositedComplete(noDeposited);
@@ -186,7 +187,6 @@ class WalletFirestore extends UserFirestore {
 
 
         Message message = new Message(sender, gold);
-        // TODO: change to username save in sharedprefs when logging in remove when log out?
         batch.set(sendRef, message);
 
         for (Coin c : coins) {

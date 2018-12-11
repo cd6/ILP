@@ -5,7 +5,7 @@ public class Message {
     private String sender;
     private double gold;
 
-    public Message(String sender, double gold) {
+    Message(String sender, double gold) {
         this.sender = sender;
         this.gold = gold;
     }

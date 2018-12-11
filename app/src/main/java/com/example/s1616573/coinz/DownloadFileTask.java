@@ -31,7 +31,7 @@ public class DownloadFileTask extends AsyncTask<String, Void, String> {
         return readStream(downloadUrl(new URL(urlString)));
     }
 
-    // Given a string respresentation of a URL, sets up a connection and gets an input stream.
+    // Given a string representation of a URL, sets up a connection and gets an input stream.
     private InputStream downloadUrl(URL url) throws IOException {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setReadTimeout(10000); // milliseconds

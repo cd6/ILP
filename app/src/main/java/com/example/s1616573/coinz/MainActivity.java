@@ -392,7 +392,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         // Latitude and longitude cannot be null
                         LatLng coordinates = new LatLng(((Point) Objects.requireNonNull(f.geometry())).latitude(), ((Point) Objects.requireNonNull(f.geometry())).longitude());
                         Marker m = map.addMarker(new MarkerOptions().position(coordinates).icon(icon));
-                        // Add marker and coin to hashmap then put marker on map
+                        // Add marker and coin to HashMap then put marker on map
                         coinMap.put(m, new Coin(id, value, currency));
                     }
                 }

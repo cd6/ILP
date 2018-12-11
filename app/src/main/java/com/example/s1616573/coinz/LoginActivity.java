@@ -16,19 +16,12 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * A login screen that offers login via email/password.
@@ -48,7 +41,6 @@ public class LoginActivity extends AppCompatActivity implements LoginCompleteLis
     private TextView usernameError;
     private Button signInButton;
     private Button createAccountButton;
-    private Switch switchCreate;
 
     private String tag = "LoginActivity";
     private String username;
@@ -89,7 +81,7 @@ public class LoginActivity extends AppCompatActivity implements LoginCompleteLis
             attemptCreateAccount();
         });
 
-        switchCreate = findViewById(R.id.switch_create);
+        Switch switchCreate = findViewById(R.id.switch_create);
         switchCreate.setOnCheckedChangeListener((buttonView, isChecked) -> {
             Log.v("[onCreate] Switch State=", ""+isChecked);
             if(isChecked) {
@@ -281,10 +273,8 @@ public class LoginActivity extends AppCompatActivity implements LoginCompleteLis
 
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-
-        // String pattern = (?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\];
-        return email.contains("@");
+        // Email check doesn't exactly match google's standards
+        return email.contains("@") && email.contains(".");
     }
 
     private boolean isPasswordValid(String password) {

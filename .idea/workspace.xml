@@ -6,7 +6,7 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="bomb" />
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="bank" />
     <option name="TOOL_WINDOW_LOG_LEVEL" value="debug" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="No Filters" />
   </component>
@@ -16,15 +16,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b696e559-4106-438b-85d5-50bfa2dd5383" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/app/src/androidTest/java/com/example/s1616573/coinz/Sorry.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/BankCompleteListener.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/BankFirestore.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/LoginFirestore.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/MainFirestore.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/Message.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/WalletCompleteListener.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/WalletFirestore.java" />
+    <list default="true" id="b696e559-4106-438b-85d5-50bfa2dd5383" name="Default" comment="Create account with username">
+      <change beforePath="" afterPath="$PROJECT_DIR$/local.properties" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.6/fileHashes/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/4.6/fileHashes/fileHashes.bin" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.6/fileHashes/fileHashes.lock" afterPath="$PROJECT_DIR$/.gradle/4.6/fileHashes/fileHashes.lock" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.6/javaCompile/classAnalysis.bin" afterPath="$PROJECT_DIR$/.gradle/4.6/javaCompile/classAnalysis.bin" />
@@ -33,12 +26,21 @@
       <change beforePath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.bin" afterPath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.bin" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.lock" afterPath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.lock" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" />
+      <change beforePath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" afterPath="$PROJECT_DIR$/.idea/caches/build_file_checksums.ser" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/BankActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/BankActivity.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/BankFirestore.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/BankFirestore.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/Coin.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/Coin.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/CoinAdapter.java" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/DownloadFileTask.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/DownloadFileTask.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/ExchangeRatesDialogFragment.java" afterPath="" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/LoginActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/LoginActivity.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/LoginFirestore.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/LoginFirestore.java" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/MainActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/MainActivity.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/Message.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/Message.java" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/UserFirestore.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/UserFirestore.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/WalletActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/WalletActivity.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/WalletFirestore.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/WalletFirestore.java" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_bank.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_bank.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -98,94 +100,12 @@
     </system>
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="WalletFirestore.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/WalletFirestore.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="396">
-              <caret line="135" column="38" lean-forward="false" selection-start-line="135" selection-start-column="16" selection-end-line="135" selection-end-column="38" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BankActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/BankActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="LoginActivity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/LoginActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-448">
-              <caret line="102" column="43" lean-forward="false" selection-start-line="102" selection-start-column="43" selection-end-line="102" selection-end-column="43" />
-              <folding>
-                <element signature="e#9103#9104#0" expanded="true" />
-                <element signature="e#9130#9131#0" expanded="true" />
-                <element signature="e#9783#9784#0" expanded="true" />
-                <element signature="e#9827#9828#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="448">
-              <caret line="485" column="0" lean-forward="false" selection-start-line="485" selection-start-column="0" selection-end-line="485" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MyPrefsFile.xml" pinned="false" current-in-tab="true">
-        <entry file="file://$USER_HOME$/AndroidStudio/DeviceExplorer/Nexus_5X_API_26 [emulator-5554]/data/data/com.example.s1616573.coinz/shared_prefs/MyPrefsFile.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3060">
-              <caret line="6" column="0" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-              <folding>
-                <element signature="e#34345#34351#0" expanded="true" />
-                <element signature="e#34353#34359#0" expanded="true" />
-                <element signature="e#34362#34368#0" expanded="true" />
-                <element signature="e#34369#34375#0" expanded="true" />
-                <element signature="e#34392#34398#0" expanded="true" />
-                <element signature="e#34399#34405#0" expanded="true" />
-                <element signature="e#34408#34414#0" expanded="true" />
-                <element signature="e#34415#34421#0" expanded="true" />
-                <element signature="e#34439#34445#0" expanded="true" />
-                <element signature="e#34446#34452#0" expanded="true" />
-                <element signature="e#34458#34464#0" expanded="true" />
-                <element signature="e#34465#34471#0" expanded="true" />
-                <element signature="e#34478#34484#0" expanded="true" />
-                <element signature="e#34485#34491#0" expanded="true" />
-                <element signature="e#34496#34502#0" expanded="true" />
-                <element signature="e#34503#34509#0" expanded="true" />
-                <element signature="e#34519#34525#0" expanded="true" />
-                <element signature="e#34526#34532#0" expanded="true" />
-                <element signature="e#34537#34543#0" expanded="true" />
-                <element signature="e#34544#34550#0" expanded="true" />
-                <element signature="e#34568#34574#0" expanded="true" />
-                <element signature="e#34575#34581#0" expanded="true" />
-                <element signature="e#34589#34595#0" expanded="true" />
-                <element signature="e#34596#34602#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WalletCompleteListener.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/WalletCompleteListener.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+            <state relative-caret-position="-3596">
+              <caret line="400" column="58" lean-forward="false" selection-start-line="400" selection-start-column="58" selection-end-line="400" selection-end-column="58" />
               <folding />
             </state>
           </provider>
@@ -194,8 +114,97 @@
       <file leaf-file-name="WalletActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/WalletActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="72">
-              <caret line="35" column="126" lean-forward="false" selection-start-line="35" selection-start-column="104" selection-end-line="35" selection-end-column="126" />
+            <state relative-caret-position="-173">
+              <caret line="180" column="66" lean-forward="false" selection-start-line="180" selection-start-column="66" selection-end-line="180" selection-end-column="66" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WalletCompleteListener.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/WalletCompleteListener.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="90">
+              <caret line="5" column="44" lean-forward="false" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="44" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WalletFirestore.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/WalletFirestore.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="657">
+              <caret line="188" column="52" lean-forward="false" selection-start-line="188" selection-start-column="52" selection-end-line="188" selection-end-column="52" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WalletRecyclerViewAdapter.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/WalletRecyclerViewAdapter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="657">
+              <caret line="69" column="38" lean-forward="false" selection-start-line="69" selection-start-column="38" selection-end-line="69" selection-end-column="38" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BankActivity.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/BankActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="252">
+              <caret line="32" column="13" lean-forward="true" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="activity_bank.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_bank.xml">
+          <provider editor-type-id="android-designer2">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="162">
+              <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+              <folding>
+                <element signature="e#1515#1536#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MainFirestore.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/MainFirestore.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1170">
+              <caret line="82" column="116" lean-forward="false" selection-start-line="82" selection-start-column="116" selection-end-line="82" selection-end-column="116" />
+              <folding>
+                <marker date="1544459299000" expanded="true" signature="3983:5029" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Message.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/Message.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="126">
+              <caret line="7" column="4" lean-forward="false" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UserFirestore.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/UserFirestore.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="76">
+              <caret line="19" column="37" lean-forward="false" selection-start-line="19" selection-start-column="37" selection-end-line="19" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -207,8 +216,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="resourceFile" />
-        <option value="layoutResourceFile" />
         <option value="Class" />
+        <option value="layoutResourceFile" />
         <option value="Interface" />
       </list>
     </option>
@@ -228,6 +237,8 @@
       <find>userTo</find>
       <find>DownloadCompleteListener</find>
       <find>failed</find>
+      <find>date</find>
+      <find>update</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -2526,12 +2537,9 @@
         <option value="$PROJECT_DIR$/app/src/main/res/drawable/background_selector.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/recyclerview_row.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/RecyclerViewAdapter.java" />
-        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_bank.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/dimens.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/DownloadCompleteRunner.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/DownloadFileTask.java" />
         <option value="$USER_HOME$/AndroidStudio/DeviceExplorer/Nexus_5X_API_26 [emulator-5554]/data/data/com.example.s1616573.coinz/shared_prefs/MyPrefsFile.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/menu/menu.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/rates_popup.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/ExchangeRatesDialogFragment.java" />
@@ -2540,7 +2548,6 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_send_coins.xml" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/send_coins.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/Coin.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/ReceivedCoinsListener.java" />
         <option value="$PROJECT_DIR$/app/src/androidTest/java/com/example/s1616573/coinz/ATest.java" />
         <option value="$PROJECT_DIR$/app/src/androidTest/java/com/example/s1616573/coinz/ExampleInstrumentedTest.java" />
@@ -2548,26 +2555,57 @@
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml" />
         <option value="$PROJECT_DIR$/app/src/androidTest/java/com/example/s1616573/coinz/Sorry.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/Message.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/MainFirestore.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/WalletCompleteListener.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/bank_recyclerview_row.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/WalletRecyclerViewAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/WalletActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/BankRecyclerViewAdapter.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/LoginCompleteListener.java" />
+        <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/local.properties" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/BankCompleteListener.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/WalletFirestore.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/BankFirestore.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/Coin.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/DownloadFileTask.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/LoginActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/LoginFirestore.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/MainFirestore.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/BankCompleteListener.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/BankActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/BankFirestore.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/MainActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/Message.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/UserFirestore.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/WalletFirestore.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/WalletCompleteListener.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/WalletActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/activity_bank.xml" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/BankActivity.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="337" />
+    <option name="x" value="422" />
     <option name="y" value="28" />
     <option name="width" value="940" />
     <option name="height" value="860" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>Java</id>
+          </State>
+          <State>
+            <id>Probable bugsJava</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>ConstantConditions</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -2585,8 +2623,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="ProjectPane" />
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="AndroidView">
         <subPane>
           <expand>
@@ -2608,13 +2646,13 @@
             <path>
               <item name="ILP" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
-              <item name="java" type="edd41e36:AndroidSourceTypeNode" />
-              <item name="coinz" type="cbb59c9e:AndroidPsiDirectoryNode" />
+              <item name="res" type="d4f16f75:AndroidResFolderNode" />
             </path>
             <path>
               <item name="ILP" type="1abcf292:AndroidViewProjectNode" />
               <item name="app" type="feadf853:AndroidModuleNode" />
               <item name="res" type="d4f16f75:AndroidResFolderNode" />
+              <item name="layout" type="ddeffd01:AndroidResFolderTypeNode" />
             </path>
             <path>
               <item name="ILP" type="1abcf292:AndroidViewProjectNode" />
@@ -2625,12 +2663,12 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
-      <pane id="Scratches" />
+      <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="android.sdk.path" value="$USER_HOME$/Android/Sdk" />
-    <property name="device.picker.selection" value="Nexus_5X_API_26" />
+    <property name="device.picker.selection" value="Pixel_2_API_27" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Ignored.Files" />
     <property name="SearchEverywhereHistoryKey" value="cvs&#9;ACTION&#9;ConfigureCvsRoots" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -3107,7 +3145,28 @@
       <option name="project" value="LOCAL" />
       <updated>1543955893641</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="Separate firestore accesses for different activities into different classes">
+      <created>1544286593300</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1544286593300</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Create account with username">
+      <created>1544297440586</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1544297440586</updated>
+    </task>
+    <task id="LOCAL-00031" summary="Receiving coins working">
+      <created>1544556787079</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1544556787079</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -3143,7 +3202,8 @@
     </history-entry>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="28" width="1920" height="1138" extended-state="6" />
+    <frame x="422" y="28" width="1920" height="1138" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32964823" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
@@ -3152,21 +3212,21 @@
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37386936" sideWeight="0.5224359" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.6720086" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.14170854" sideWeight="0.48504272" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3316583" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2361809" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15879397" sideWeight="0.4775641" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24221106" sideWeight="0.4775641" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18803419" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
-      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27336684" sideWeight="0.48504272" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32964823" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22435898" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
+      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.27437186" sideWeight="0.48504272" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32959402" sideWeight="0.49411765" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Device File Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37232906" sideWeight="0.5058824" order="10" side_tool="true" content_ui="tabs" />
+      <window_info id="Device File Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14583333" sideWeight="0.5058824" order="10" side_tool="true" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31859297" sideWeight="0.4903846" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.439196" sideWeight="0.4903846" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -3178,40 +3238,41 @@
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32964823" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="StringPreview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.6720086" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32964823" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
-      <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.32964823" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32964823" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2442211" sideWeight="0.51495725" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37386936" sideWeight="0.47970086" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37386936" sideWeight="0.5224359" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3316583" sideWeight="0.4775641" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="combo" />
       <window_info id="Assistant" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16025642" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31658292" sideWeight="0.48504272" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Build" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.27336684" sideWeight="0.48504272" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32964823" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Device File Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5534188" sideWeight="0.5" order="9" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34673366" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Device File Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37232906" sideWeight="0.5058824" order="10" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.439196" sideWeight="0.4903846" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32964823" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="StringPreview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="StringPreview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.6720086" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.14170854" sideWeight="0.48504272" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3316583" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2442211" sideWeight="0.48504272" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2361809" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1832265" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22435898" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32964823" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32959402" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32959402" sideWeight="0.49411765" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
     </layout-to-restore>
@@ -3250,8 +3311,6 @@
       <path value="$USER_HOME$" />
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
-    <MESSAGE value="Working on user login" />
-    <MESSAGE value="User login and create account with ability to sign out" />
     <MESSAGE value="Login activity is now the first activity to start and pressing back button closes app" />
     <MESSAGE value="Compute distance between user and coins" />
     <MESSAGE value="Fix app crashing when moving and stopping activity, and marker colours. Starting wallet." />
@@ -3275,140 +3334,136 @@
     <MESSAGE value="Working bomb" />
     <MESSAGE value="Working on adding username to LoginActivity" />
     <MESSAGE value="Separate firestore accesses for different activities into different classes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Separate firestore accesses for different activities into different classes" />
+    <MESSAGE value="Create account with username" />
+    <MESSAGE value="Receiving coins working" />
+    <option name="LAST_COMMIT_MESSAGE" value="Receiving coins working" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/MainActivity.java</url>
-          <line>293</line>
-          <properties />
-          <option name="timeStamp" value="163" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/MainActivity.java</url>
-          <line>484</line>
-          <properties />
-          <option name="timeStamp" value="167" />
-        </line-breakpoint>
-      </breakpoints>
-      <option name="time" value="168" />
+      <option name="time" value="180" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/marker6.png">
-      <provider selected="true" editor-type-id="images">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/ReceivedCoinsListener.java" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/content_bank.xml">
+      <provider editor-type-id="android-designer2">
         <state />
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/marker7.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="6" column="46" lean-forward="false" selection-start-line="6" selection-start-column="46" selection-end-line="6" selection-end-column="46" />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/marker9.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
+    <entry file="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/firebase-firestore-17.1.3.aar/9c828aaf511120bb0ce4d79352bf2e6b/jars/classes.jar!/com/google/firebase/firestore/model/DocumentKey.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="54" column="0" lean-forward="false" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/drawable/marker8.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
+    <entry file="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/firebase-firestore-17.1.3.aar/9c828aaf511120bb0ce4d79352bf2e6b/jars/classes.jar!/com/google/firebase/firestore/model/ResourcePath.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="142">
+          <caret line="19" column="0" lean-forward="false" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+        </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AndroidStudio/DeviceExplorer/emulator-5554/data/data/com.example.s1616573.coinz/shared_prefs/85DLcs2JpLPH0OW6tSRK4zdhb432.xml" />
+    <entry file="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/firebase-firestore-17.1.3.aar/9c828aaf511120bb0ce4d79352bf2e6b/jars/classes.jar!/com/google/firebase/firestore/core/Query.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="37" column="0" lean-forward="false" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/firebase-firestore-17.1.3.aar/9c828aaf511120bb0ce4d79352bf2e6b/jars/classes.jar!/com/google/firebase/firestore/model/BasePath.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="142">
+          <caret line="118" column="0" lean-forward="false" selection-start-line="118" selection-start-column="0" selection-end-line="118" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/firebase-firestore-17.1.3.aar/9c828aaf511120bb0ce4d79352bf2e6b/jars/classes.jar!/com/google/firebase/firestore/CollectionReference.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="25" column="0" lean-forward="false" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/firebase-firestore-17.1.3.aar/9c828aaf511120bb0ce4d79352bf2e6b/jars/classes.jar!/com/google/firebase/firestore/DocumentReference.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="146" column="0" lean-forward="false" selection-start-line="146" selection-start-column="0" selection-end-line="146" selection-end-column="0" />
+        <state relative-caret-position="180">
+          <caret line="82" column="0" lean-forward="false" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/Android/Sdk/platforms/android-27/android.jar!/android/app/Instrumentation.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="200" column="72" lean-forward="false" selection-start-line="200" selection-start-column="72" selection-end-line="200" selection-end-column="72" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/Android/Sdk/platforms/android-27/android.jar!/android/app/Activity.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="649">
-          <caret line="1116" column="0" lean-forward="false" selection-start-line="1116" selection-start-column="0" selection-end-line="1116" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mapbox.mapboxsdk/mapbox-android-sdk/6.5.0/3d627ad7cd29bd3af5cce39844faa3cc603d47ea/mapbox-android-sdk-6.5.0-sources.jar!/com/mapbox/mapboxsdk/annotations/Annotation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="148">
-          <caret line="79" column="0" lean-forward="false" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mapbox.mapboxsdk/mapbox-android-sdk/6.5.0/3d627ad7cd29bd3af5cce39844faa3cc603d47ea/mapbox-android-sdk-6.5.0-sources.jar!/com/mapbox/mapboxsdk/annotations/MarkerOptions.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="354">
-          <caret line="88" column="0" lean-forward="false" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mapbox.mapboxsdk/mapbox-android-sdk/6.5.0/3d627ad7cd29bd3af5cce39844faa3cc603d47ea/mapbox-android-sdk-6.5.0-sources.jar!/com/mapbox/mapboxsdk/annotations/Marker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="148">
-          <caret line="164" column="0" lean-forward="false" selection-start-line="164" selection-start-column="0" selection-end-line="164" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/Android/Sdk/platforms/android-27/android.jar!/android/graphics/Bitmap.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="190" column="44" lean-forward="false" selection-start-line="190" selection-start-column="44" selection-end-line="190" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mapbox.mapboxsdk/mapbox-android-sdk/6.5.0/3d627ad7cd29bd3af5cce39844faa3cc603d47ea/mapbox-android-sdk-6.5.0-sources.jar!/com/mapbox/mapboxsdk/annotations/Icon.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="41" column="0" lean-forward="false" selection-start-line="41" selection-start-column="0" selection-end-line="41" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mapbox.mapboxsdk/mapbox-android-sdk/6.5.0/3d627ad7cd29bd3af5cce39844faa3cc603d47ea/mapbox-android-sdk-6.5.0-sources.jar!/com/mapbox/mapboxsdk/maps/IconManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="166">
-          <caret line="49" column="0" lean-forward="false" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mapbox.mapboxsdk/mapbox-android-sdk/6.5.0/3d627ad7cd29bd3af5cce39844faa3cc603d47ea/mapbox-android-sdk-6.5.0-sources.jar!/com/mapbox/mapboxsdk/maps/MarkerContainer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="47" column="0" lean-forward="false" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mapbox.mapboxsdk/mapbox-android-sdk/6.5.0/3d627ad7cd29bd3af5cce39844faa3cc603d47ea/mapbox-android-sdk-6.5.0-sources.jar!/com/mapbox/mapboxsdk/maps/AnnotationManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="172" column="0" lean-forward="false" selection-start-line="172" selection-start-column="0" selection-end-line="172" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mapbox.mapboxsdk/mapbox-android-sdk/6.5.0/3d627ad7cd29bd3af5cce39844faa3cc603d47ea/mapbox-android-sdk-6.5.0-sources.jar!/com/mapbox/mapboxsdk/maps/MapboxMap.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="1133" column="0" lean-forward="false" selection-start-line="1133" selection-start-column="0" selection-end-line="1133" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AndroidStudio/DeviceExplorer/emulator-5554/data/data/com.example.s1616573.coinz/shared_prefs/MapboxSharedPreferences.xml" />
-    <entry file="file://$USER_HOME$/AndroidStudio/DeviceExplorer/emulator-5554/data/data/com.example.s1616573.coinz/shared_prefs/MyPrefsFile.xml" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/RecyclerViewAdapter.java">
+    <entry file="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/firebase-firestore-17.1.3.aar/9c828aaf511120bb0ce4d79352bf2e6b/jars/classes.jar!/com/google/firebase/firestore/MetadataChanges.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="252">
-          <caret line="26" column="53" lean-forward="false" selection-start-line="26" selection-start-column="53" selection-end-line="26" selection-end-column="53" />
+          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/20.0/9c8493c7991464839b612d7547d6c263adf08f75/guava-20.0-sources.jar!/com/google/common/base/Preconditions.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="207">
+          <caret line="788" column="0" lean-forward="false" selection-start-line="788" selection-start-column="0" selection-end-line="788" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/firebase-firestore-17.1.3.aar/9c828aaf511120bb0ce4d79352bf2e6b/jars/classes.jar!/com/google/firebase/firestore/core/EventManager.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="131" column="0" lean-forward="false" selection-start-line="131" selection-start-column="0" selection-end-line="131" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/firebase-firestore-17.1.3.aar/9c828aaf511120bb0ce4d79352bf2e6b/jars/classes.jar!/com/google/firebase/firestore/Query.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="376">
+          <caret line="434" column="0" lean-forward="false" selection-start-line="434" selection-start-column="0" selection-end-line="434" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/firebase-firestore-17.1.3.aar/9c828aaf511120bb0ce4d79352bf2e6b/jars/classes.jar!/com/google/firebase/firestore/util/ExecutorEventListener.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/play-services-tasks-16.0.1.aar/a5b5c4a9cab62c710923b8abbffe45bb/jars/classes.jar!/com/google/android/gms/tasks/zzv.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="21" column="0" lean-forward="false" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/Android/Sdk/platforms/android-27/android.jar!/android/view/Choreographer.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="32" column="0" lean-forward="false" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/wallet_recyclerview_row.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="460">
+          <caret line="31" column="10" lean-forward="false" selection-start-line="31" selection-start-column="10" selection-end-line="31" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/bank_recyclerview_row.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -3419,10 +3474,137 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/androidTest/java/com/example/s1616573/coinz/LoginActivityTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1098">
+          <caret line="88" column="69" lean-forward="false" selection-start-line="88" selection-start-column="69" selection-end-line="88" selection-end-column="69" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/Android/Sdk/platforms/android-27/android.jar!/android/widget/TextView.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="194">
+          <caret line="776" column="34" lean-forward="false" selection-start-line="776" selection-start-column="34" selection-end-line="776" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/Android/Sdk/platforms/android-27/android.jar!/android/view/View.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="86">
+          <caret line="328" column="5" lean-forward="false" selection-start-line="328" selection-start-column="5" selection-end-line="328" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="1" column="26" lean-forward="false" selection-start-line="1" selection-start-column="18" selection-end-line="1" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="22" column="27" lean-forward="false" selection-start-line="22" selection-start-column="27" selection-end-line="28" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-manifest">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AndroidStudio/DeviceExplorer/Nexus_5X_API_26 [emulator-5554]/data/data/com.example.s1616573.coinz/shared_prefs/MyPrefsFile.xml" />
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_wallet.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="759">
+          <caret line="44" column="35" lean-forward="false" selection-start-line="44" selection-start-column="35" selection-end-line="44" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/local.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" column="20" lean-forward="false" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/play-services-tasks-16.0.1.aar/a5b5c4a9cab62c710923b8abbffe45bb/jars/classes.jar!/com/google/android/gms/tasks/zzn.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <folding>
+            <marker date="1540989699000" expanded="false" signature="0:104" ph="/.../" />
+            <marker date="1540989699000" expanded="true" signature="212:269" ph="{...}" />
+            <marker date="1540989699000" expanded="true" signature="299:485" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="jar://$USER_HOME$/Android/Sdk/platforms/android-27/android.jar!/android/os/Handler.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="186">
+        <state relative-caret-position="146">
           <caret line="30" column="46" lean-forward="false" selection-start-line="30" selection-start-column="46" selection-end-line="30" selection-end-column="46" />
+          <folding>
+            <marker date="1537974968000" expanded="false" signature="0:104" ph="/.../" />
+            <marker date="1537974968000" expanded="false" signature="200:211" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="247:253" ph=" }" />
+            <marker date="1537974968000" expanded="false" signature="300:311" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="347:353" ph=" }" />
+            <marker date="1537974968000" expanded="false" signature="388:399" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="435:441" ph=" }" />
+            <marker date="1537974968000" expanded="true" signature="504:556" ph="{...}" />
+            <marker date="1537974968000" expanded="false" signature="600:611" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="647:653" ph=" }" />
+            <marker date="1537974968000" expanded="true" signature="699:710" ph=" { " />
+            <marker date="1537974968000" expanded="true" signature="746:752" ph=" }" />
+            <marker date="1537974968000" expanded="false" signature="803:814" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="850:856" ph=" }" />
+            <marker date="1537974968000" expanded="false" signature="898:909" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="945:951" ph=" }" />
+            <marker date="1537974968000" expanded="false" signature="1001:1012" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="1048:1054" ph=" }" />
+            <marker date="1537974968000" expanded="true" signature="1117:1169" ph="{...}" />
+            <marker date="1537974968000" expanded="true" signature="1240:1292" ph="{...}" />
+            <marker date="1537974968000" expanded="true" signature="1375:1427" ph="{...}" />
+            <marker date="1537974968000" expanded="false" signature="1470:1481" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="1517:1523" ph=" }" />
+            <marker date="1537974968000" expanded="true" signature="1592:1644" ph="{...}" />
+            <marker date="1537974968000" expanded="true" signature="1727:1779" ph="{...}" />
+            <marker date="1537974968000" expanded="true" signature="1848:1900" ph="{...}" />
+            <marker date="1537974968000" expanded="false" signature="1957:1968" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="2004:2010" ph=" }" />
+            <marker date="1537974968000" expanded="false" signature="2061:2072" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="2108:2114" ph=" }" />
+            <marker date="1537974968000" expanded="true" signature="2180:2232" ph="{...}" />
+            <marker date="1537974968000" expanded="false" signature="2283:2294" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="2330:2336" ph=" }" />
+            <marker date="1537974968000" expanded="false" signature="2389:2400" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="2436:2442" ph=" }" />
+            <marker date="1537974968000" expanded="true" signature="2521:2573" ph="{...}" />
+            <marker date="1537974968000" expanded="true" signature="2652:2704" ph="{...}" />
+            <marker date="1537974968000" expanded="true" signature="2781:2833" ph="{...}" />
+            <marker date="1537974968000" expanded="true" signature="2904:2956" ph="{...}" />
+            <marker date="1537974968000" expanded="true" signature="3022:3074" ph="{...}" />
+            <marker date="1537974968000" expanded="false" signature="3122:3133" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="3169:3175" ph=" }" />
+            <marker date="1537974968000" expanded="true" signature="3239:3291" ph="{...}" />
+            <marker date="1537974968000" expanded="true" signature="3356:3408" ph="{...}" />
+            <marker date="1537974968000" expanded="false" signature="3456:3467" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="3503:3509" ph=" }" />
+            <marker date="1537974968000" expanded="true" signature="3573:3625" ph="{...}" />
+            <marker date="1537974968000" expanded="false" signature="3662:3673" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="3709:3715" ph=" }" />
+            <marker date="1537974968000" expanded="false" signature="3770:3781" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="3817:3823" ph=" }" />
+            <marker date="1537974968000" expanded="false" signature="3853:3864" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="3900:3906" ph=" }" />
+            <marker date="1537974968000" expanded="true" signature="3938:3990" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -3430,169 +3612,132 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="26" column="31" lean-forward="false" selection-start-line="26" selection-start-column="31" selection-end-line="26" selection-end-column="31" />
+          <folding>
+            <marker date="1537974968000" expanded="false" signature="0:104" ph="/.../" />
+            <marker date="1537974968000" expanded="false" signature="197:208" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="244:250" ph=" }" />
+            <marker date="1537974968000" expanded="false" signature="284:295" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="331:337" ph=" }" />
+            <marker date="1537974968000" expanded="false" signature="381:392" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="428:434" ph=" }" />
+            <marker date="1537974968000" expanded="false" signature="476:487" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="523:529" ph=" }" />
+            <marker date="1537974968000" expanded="true" signature="560:571" ph=" { " />
+            <marker date="1537974968000" expanded="true" signature="607:613" ph=" }" />
+            <marker date="1537974968000" expanded="false" signature="650:661" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="697:703" ph=" }" />
+            <marker date="1537974968000" expanded="false" signature="745:756" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="792:798" ph=" }" />
+            <marker date="1537974968000" expanded="false" signature="836:847" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="883:889" ph=" }" />
+            <marker date="1537974968000" expanded="false" signature="941:952" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="988:994" ph=" }" />
+            <marker date="1537974968000" expanded="false" signature="1018:1029" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="1065:1071" ph=" }" />
+            <marker date="1537974968000" expanded="false" signature="1101:1112" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="1148:1154" ph=" }" />
+            <marker date="1537974968000" expanded="false" signature="1185:1196" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="1232:1238" ph=" }" />
+            <marker date="1537974968000" expanded="false" signature="1274:1285" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="1321:1327" ph=" }" />
+            <marker date="1537974968000" expanded="false" signature="1376:1387" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="1423:1429" ph=" }" />
+            <marker date="1537974968000" expanded="false" signature="1459:1470" ph=" { " />
+            <marker date="1537974968000" expanded="false" signature="1506:1512" ph=" }" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AndroidStudio/DeviceExplorer/emulator-5554/data/data/com.example.s1616573.coinz/shared_prefs/M9cFGeZTvsdTGVo9XGy9WyFn3iT2.xml" />
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_wallet.xml">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer2">
-        <state />
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mapbox.mapboxsdk/mapbox-android-core/0.2.1/ca3f44e5ca9af684a3e8d8d6f9486da82961b832/mapbox-android-core-0.2.1-sources.jar!/com/mapbox/android/core/location/GoogleLocationEngine.java">
+    <entry file="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/firebase-firestore-17.1.3.aar/9c828aaf511120bb0ce4d79352bf2e6b/jars/classes.jar!/com/google/firebase/firestore/FirebaseFirestore.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="831">
-          <caret line="158" column="0" lean-forward="false" selection-start-line="158" selection-start-column="0" selection-end-line="158" selection-end-column="0" />
+        <state relative-caret-position="527">
+          <caret line="225" column="0" lean-forward="false" selection-start-line="225" selection-start-column="0" selection-end-line="225" selection-end-column="0" />
+          <folding>
+            <marker date="1542996997000" expanded="false" signature="0:104" ph="/.../" />
+            <marker date="1542996997000" expanded="false" signature="153:1417" ph="..." />
+            <marker date="1542996997000" expanded="true" signature="1922:1945" ph="@{...}" />
+            <marker date="1542996997000" expanded="true" signature="1996:2255" ph="{...}" />
+            <marker date="1542996997000" expanded="true" signature="2261:2284" ph="@{...}" />
+            <marker date="1542996997000" expanded="true" signature="2359:2412" ph="{...}" />
+            <marker date="1542996997000" expanded="true" signature="2528:2859" ph="{...}" />
+            <marker date="1542996997000" expanded="true" signature="3038:4033" ph="{...}" />
+            <marker date="1542996997000" expanded="true" signature="4242:4854" ph="{...}" />
+            <marker date="1542996997000" expanded="true" signature="4860:4883" ph="@{...}" />
+            <marker date="1542996997000" expanded="false" signature="4943:4954" ph=" { " />
+            <marker date="1542996997000" expanded="false" signature="4975:4981" ph=" }" />
+            <marker date="1542996997000" expanded="true" signature="5080:5546" ph="{...}" />
+            <marker date="1542996997000" expanded="true" signature="5590:7265" ph="{...}" />
+            <marker date="1542996997000" expanded="true" signature="7271:7294" ph="@{...}" />
+            <marker date="1542996997000" expanded="false" signature="7326:7337" ph=" { " />
+            <marker date="1542996997000" expanded="false" signature="7361:7367" ph=" }" />
+            <marker date="1542996997000" expanded="true" signature="7373:7396" ph="@{...}" />
+            <marker date="1542996997000" expanded="true" signature="7471:7702" ph="{...}" />
+            <marker date="1542996997000" expanded="true" signature="7708:7731" ph="@{...}" />
+            <marker date="1542996997000" expanded="true" signature="7800:8027" ph="{...}" />
+            <marker date="1542996997000" expanded="true" signature="8133:8413" ph="{...}" />
+            <marker date="1542996997000" expanded="true" signature="8419:8442" ph="@{...}" />
+            <marker date="1542996997000" expanded="true" signature="8536:8739" ph="{...}" />
+            <marker date="1542996997000" expanded="true" signature="8745:8768" ph="@{...}" />
+            <marker date="1542996997000" expanded="true" signature="8799:8882" ph="{...}" />
+            <marker date="1542996997000" expanded="true" signature="8933:9033" ph="{...}" />
+            <marker date="1542996997000" expanded="false" signature="9088:9099" ph=" { " />
+            <marker date="1542996997000" expanded="false" signature="9122:9128" ph=" }" />
+            <marker date="1542996997000" expanded="true" signature="9183:9273" ph="{...}" />
+            <marker date="1542996997000" expanded="true" signature="9329:9420" ph="{...}" />
+            <marker date="1542996997000" expanded="true" signature="9502:9656" ph="{...}" />
+            <marker date="1542996997000" expanded="false" signature="9689:9700" ph=" { " />
+            <marker date="1542996997000" expanded="false" signature="9719:9725" ph=" }" />
+            <marker date="1542996997000" expanded="false" signature="9757:9768" ph=" { " />
+            <marker date="1542996997000" expanded="false" signature="9791:9797" ph=" }" />
+            <marker date="1542996997000" expanded="false" signature="9839:9850" ph=" { " />
+            <marker date="1542996997000" expanded="false" signature="9876:9882" ph=" }" />
+            <marker date="1542996997000" expanded="true" signature="9937:10210" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/androidTest/java/com/example/s1616573/coinz/ExampleInstrumentedTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="21" column="71" lean-forward="false" selection-start-line="21" selection-start-column="52" selection-end-line="21" selection-end-column="71" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/androidTest/java/com/example/s1616573/coinz/LoginActivityTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="301">
-          <caret line="88" column="8" lean-forward="false" selection-start-line="88" selection-start-column="8" selection-end-line="88" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/BankCompleteListener.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
-          <caret line="4" column="52" lean-forward="true" selection-start-line="4" selection-start-column="52" selection-end-line="4" selection-end-column="52" />
+          <caret line="4" column="17" lean-forward="false" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/ReceivedCoinsListener.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/BankFirestore.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="120" column="5" lean-forward="true" selection-start-line="120" selection-start-column="5" selection-end-line="120" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#1390#1429#0" expanded="false" />
+            <element signature="e#2516#2555#0" expanded="false" />
+            <element signature="e#5165#5166#0" expanded="false" />
+            <element signature="e#5202#5203#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/BankRecyclerViewAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="52" column="0" lean-forward="false" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/CoinAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
-          <caret line="4" column="23" lean-forward="false" selection-start-line="4" selection-start-column="23" selection-end-line="4" selection-end-column="23" />
+          <caret line="7" column="20" lean-forward="true" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
           <folding />
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="34" column="66" lean-forward="false" selection-start-line="34" selection-start-column="66" selection-end-line="34" selection-end-column="66" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_login.xml">
-      <provider editor-type-id="text-editor">
-        <state relative-caret-position="2250">
-          <caret line="125" column="37" lean-forward="false" selection-start-line="125" selection-start-column="37" selection-end-line="125" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-      <provider selected="true" editor-type-id="android-designer2">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/Coin.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding>
-            <element signature="e#641#642#0" expanded="false" />
-            <element signature="e#669#670#0" expanded="false" />
-            <element signature="e#727#728#0" expanded="false" />
-            <element signature="e#758#759#0" expanded="false" />
-            <element signature="e#790#791#0" expanded="false" />
-            <element signature="e#818#819#0" expanded="false" />
-            <element signature="e#847#848#0" expanded="false" />
-            <element signature="e#872#873#0" expanded="false" />
-            <element signature="e#915#916#0" expanded="false" />
-            <element signature="e#951#952#0" expanded="false" />
-            <element signature="e#994#995#0" expanded="false" />
-            <element signature="e#1030#1031#0" expanded="false" />
-            <element signature="e#1066#1067#0" expanded="false" />
-            <element signature="e#1098#1099#0" expanded="false" />
-            <element signature="e#1148#1149#0" expanded="false" />
-            <element signature="e#1190#1191#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/LoginActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-448">
-          <caret line="102" column="43" lean-forward="false" selection-start-line="102" selection-start-column="43" selection-end-line="102" selection-end-column="43" />
-          <folding>
-            <element signature="e#9103#9104#0" expanded="true" />
-            <element signature="e#9130#9131#0" expanded="true" />
-            <element signature="e#9783#9784#0" expanded="true" />
-            <element signature="e#9827#9828#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/androidTest/java/com/example/s1616573/coinz/Sorry.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="745">
-          <caret line="43" column="21" lean-forward="false" selection-start-line="43" selection-start-column="21" selection-end-line="43" selection-end-column="21" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/androidTest/java/com/example/s1616573/coinz/ATest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="745">
-          <caret line="68" column="61" lean-forward="false" selection-start-line="68" selection-start-column="61" selection-end-line="68" selection-end-column="61" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/Message.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="12" column="27" lean-forward="false" selection-start-line="12" selection-start-column="27" selection-end-line="12" selection-end-column="27" />
-          <folding>
-            <element signature="e#256#257#0" expanded="false" />
-            <element signature="e#285#286#0" expanded="false" />
-            <element signature="e#316#317#0" expanded="false" />
-            <element signature="e#343#344#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/LoginFirestore.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="16" column="4" lean-forward="false" selection-start-line="16" selection-start-column="4" selection-end-line="31" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/DownloadFileTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="15" column="13" lean-forward="false" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
+        <state relative-caret-position="342">
+          <caret line="24" column="21" lean-forward="false" selection-start-line="24" selection-start-column="21" selection-end-line="24" selection-end-column="21" />
           <folding />
         </state>
       </provider>
@@ -3605,122 +3750,136 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/BankActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/MainFirestore.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="407">
-          <caret line="26" column="68" lean-forward="false" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="68" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/BankCompleteListener.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/ExchangeRatesDialogFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="72">
-          <caret line="4" column="26" lean-forward="false" selection-start-line="4" selection-start-column="26" selection-end-line="4" selection-end-column="26" />
+          <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/BankFirestore.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/DownloadFileTask.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="28" column="33" lean-forward="false" selection-start-line="28" selection-start-column="33" selection-end-line="28" selection-end-column="33" />
+        <state relative-caret-position="90">
+          <caret line="34" column="24" lean-forward="true" selection-start-line="34" selection-start-column="24" selection-end-line="34" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/LoginActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-288">
+          <caret line="249" column="9" lean-forward="true" selection-start-line="249" selection-start-column="9" selection-end-line="249" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="false" />
+            <element signature="e#8832#8874#0" expanded="false" />
+            <element signature="e#9900#9901#0" expanded="false" />
+            <element signature="e#9944#9945#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/UserFirestore.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/LoginCompleteListener.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="78" column="6" lean-forward="true" selection-start-line="78" selection-start-column="6" selection-end-line="78" selection-end-column="6" />
-          <folding>
-            <element signature="e#2467#2468#0" expanded="false" />
-            <element signature="e#2496#2497#0" expanded="false" />
-            <element signature="e#2522#2523#0" expanded="false" />
-            <element signature="e#2551#2552#0" expanded="false" />
-            <element signature="e#2584#2585#0" expanded="false" />
-            <element signature="e#2609#2610#0" expanded="false" />
-            <element signature="e#2656#2657#0" expanded="false" />
-            <element signature="e#2687#2688#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/WalletFirestore.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="135" column="38" lean-forward="false" selection-start-line="135" selection-start-column="16" selection-end-line="135" selection-end-column="38" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/WalletActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="72">
-          <caret line="35" column="126" lean-forward="false" selection-start-line="35" selection-start-column="104" selection-end-line="35" selection-end-column="126" />
+        <state relative-caret-position="54">
+          <caret line="3" column="30" lean-forward="false" selection-start-line="3" selection-start-column="9" selection-end-line="3" selection-end-column="30" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/WalletCompleteListener.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/LoginFirestore.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="13" column="0" lean-forward="false" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+        <state relative-caret-position="-72">
+          <caret line="39" column="48" lean-forward="true" selection-start-line="39" selection-start-column="48" selection-end-line="39" selection-end-column="48" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="448">
-          <caret line="485" column="0" lean-forward="false" selection-start-line="485" selection-start-column="0" selection-end-line="485" selection-end-column="0" />
+        <state relative-caret-position="-3596">
+          <caret line="400" column="58" lean-forward="false" selection-start-line="400" selection-start-column="58" selection-end-line="400" selection-end-column="58" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AndroidStudio/DeviceExplorer/Nexus_5X_API_26 [emulator-5554]/data/data/com.example.s1616573.coinz/shared_prefs/MyPrefsFile.xml">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/MainFirestore.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3060">
-          <caret line="6" column="0" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+        <state relative-caret-position="1170">
+          <caret line="82" column="116" lean-forward="false" selection-start-line="82" selection-start-column="116" selection-end-line="82" selection-end-column="116" />
           <folding>
-            <element signature="e#34345#34351#0" expanded="true" />
-            <element signature="e#34353#34359#0" expanded="true" />
-            <element signature="e#34362#34368#0" expanded="true" />
-            <element signature="e#34369#34375#0" expanded="true" />
-            <element signature="e#34392#34398#0" expanded="true" />
-            <element signature="e#34399#34405#0" expanded="true" />
-            <element signature="e#34408#34414#0" expanded="true" />
-            <element signature="e#34415#34421#0" expanded="true" />
-            <element signature="e#34439#34445#0" expanded="true" />
-            <element signature="e#34446#34452#0" expanded="true" />
-            <element signature="e#34458#34464#0" expanded="true" />
-            <element signature="e#34465#34471#0" expanded="true" />
-            <element signature="e#34478#34484#0" expanded="true" />
-            <element signature="e#34485#34491#0" expanded="true" />
-            <element signature="e#34496#34502#0" expanded="true" />
-            <element signature="e#34503#34509#0" expanded="true" />
-            <element signature="e#34519#34525#0" expanded="true" />
-            <element signature="e#34526#34532#0" expanded="true" />
-            <element signature="e#34537#34543#0" expanded="true" />
-            <element signature="e#34544#34550#0" expanded="true" />
-            <element signature="e#34568#34574#0" expanded="true" />
-            <element signature="e#34575#34581#0" expanded="true" />
-            <element signature="e#34589#34595#0" expanded="true" />
-            <element signature="e#34596#34602#0" expanded="true" />
+            <marker date="1544459299000" expanded="true" signature="3983:5029" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/Message.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="126">
+          <caret line="7" column="4" lean-forward="false" selection-start-line="7" selection-start-column="4" selection-end-line="7" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/UserFirestore.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="19" column="37" lean-forward="false" selection-start-line="19" selection-start-column="37" selection-end-line="19" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/WalletActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-173">
+          <caret line="180" column="66" lean-forward="false" selection-start-line="180" selection-start-column="66" selection-end-line="180" selection-end-column="66" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/WalletCompleteListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="5" column="44" lean-forward="false" selection-start-line="5" selection-start-column="25" selection-end-line="5" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/WalletFirestore.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="657">
+          <caret line="188" column="52" lean-forward="false" selection-start-line="188" selection-start-column="52" selection-end-line="188" selection-end-column="52" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/WalletRecyclerViewAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="657">
+          <caret line="69" column="38" lean-forward="false" selection-start-line="69" selection-start-column="38" selection-end-line="69" selection-end-column="38" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/activity_bank.xml">
+      <provider editor-type-id="android-designer2">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding>
+            <element signature="e#1515#1536#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/s1616573/coinz/BankActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="32" column="13" lean-forward="true" selection-start-line="32" selection-start-column="13" selection-end-line="32" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

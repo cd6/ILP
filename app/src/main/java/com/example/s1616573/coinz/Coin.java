@@ -16,17 +16,6 @@ public class Coin {
         this.currency = currency;
     }
 
-    public Coin(String id, double value, String currency, Timestamp dateCollected) {
-        this.id = id;
-        this.value = value;
-        this.currency = currency;
-        this.dateCollected = dateCollected;
-    }
-
-    public Coin(String id) {
-        this.id = id;
-    }
-
     public Coin() { }
 
     public String getCurrency() {
