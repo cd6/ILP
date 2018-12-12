@@ -1,10 +1,12 @@
 package com.example.s1616573.coinz;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -150,7 +152,7 @@ class WalletFirestore extends UserFirestore {
         pButton.setOnClickListener(view -> {
             String uName = input.getText().toString();
             if (uName.equals(username)) {
-                builder.setMessage("[chooseUser] You can't send coins to yourself");
+                Toast.makeText((WalletActivity) walletCompleteListener, "You can't send coins to yourself", Toast.LENGTH_LONG).show();
                 Log.d(tag, "[chooseUser] Send to self");
             } else {
                 db.collection(USER_COLLECTION)
@@ -168,7 +170,7 @@ class WalletFirestore extends UserFirestore {
                                         dialog.dismiss();
                                     }
                                 } else {
-                                    builder.setMessage("[chooseUser] User does not exist");
+                                    Toast.makeText((WalletActivity) walletCompleteListener, "User does not exist", Toast.LENGTH_LONG).show();
                                     Log.d(tag, "[chooseUser] user does not exist");
                                 }
                             } else {
@@ -203,6 +205,7 @@ class WalletFirestore extends UserFirestore {
             }
         });
     }
+
 
 }
 

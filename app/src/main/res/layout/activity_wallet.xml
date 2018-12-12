@@ -43,7 +43,8 @@
         android:id="@+id/rv_coins"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/text_number_deposited"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
 
     </android.support.v7.widget.RecyclerView>
@@ -69,5 +70,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
         app:srcCompat="@drawable/baseline_account_balance_white_18dp" />
+
+    <TextView
+        android:id="@+id/text_number_deposited"
+        android:layout_width="wrap_content"
+        android:layout_height="19dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

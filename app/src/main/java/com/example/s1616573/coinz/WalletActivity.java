@@ -17,6 +17,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -37,6 +38,7 @@ public class WalletActivity extends AppCompatActivity implements WalletRecyclerV
     private FloatingActionButton depositButton;
     private FloatingActionButton sendButton;
     private View progressView;
+    private TextView noDepositedText;
 
     private HashMap<String, Double> rates;
     private HashMap<Integer, Coin> selectedCoins;
@@ -59,6 +61,7 @@ public class WalletActivity extends AppCompatActivity implements WalletRecyclerV
         Toolbar toolbar = findViewById(R.id.toolbar_wallet);
         setSupportActionBar(toolbar);
         ActionBar aBar = getSupportActionBar();
+        noDepositedText = findViewById(R.id.text_number_deposited);
 
         // add back button to action bar which takes the user back to the map
         if (aBar != null) {
@@ -168,11 +171,15 @@ public class WalletActivity extends AppCompatActivity implements WalletRecyclerV
             } else if(noDeposited >= 25){
                 depositButton.hide();
                 sendButton.show();
+            } else {
+                depositButton.hide();
+                sendButton.hide();
             }
         } else {
             depositButton.hide();
             sendButton.hide();
         }
+        noDepositedText.setText(String.format("Deposited %s/25 coins. %s selected", noDeposited, noSelected));
     }
 
     private void getRates(String geoJson) throws JSONException {
