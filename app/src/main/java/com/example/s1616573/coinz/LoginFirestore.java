@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class LoginFirestore {
+class LoginFirestore {
 
     LoginCompleteListener loginCompleteListener = null;
 
@@ -34,7 +34,7 @@ public class LoginFirestore {
     }
 
     // create a new document on firestore for the new user
-    public void createUser(String username) {
+    void createUser(String username) {
         String userID = mAuth.getUid();
         DocumentReference docRef = db.collection(USER_COLLECTION).document(Objects.requireNonNull(userID));
         Map<String, Object> m = new HashMap<>();
@@ -49,7 +49,7 @@ public class LoginFirestore {
     }
 
     // check if there is another user with the same username
-    public void usernameAvailable(String username) {
+    void usernameAvailable(String username) {
         db.collection(USER_COLLECTION)
                 .whereEqualTo("username", username)
                 .get()

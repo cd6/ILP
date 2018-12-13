@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         done = false;
 
         mAuth = FirebaseAuth.getInstance();
-        mainFirestore = new MainFirestore(mAuth);
+        mainFirestore = new MainFirestore(mAuth.getUid());
         mainFirestore.downloadCompleteListener = this;
 
         // check if this is the first time the user has logged in today and get the coins on the map
@@ -353,7 +353,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     // from UserFirestore getPickedUpCoins()
-    // TODO: decide if users can see coins with no internet by loading from shared preferences
     public void downloadComplete(ArrayList<String> result) {
         // gets list of picked up coins when firestore query completes
         if (result != null) {
@@ -362,6 +361,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         addCoinsToMap();
     }
 
+    //
     private void addCoinsToMap() {
         // don't add coins until map has been downloaded from DownloadFileTask and picked up coins have been gotten from FireStore
         if (done && map.getMarkers().size() == 0) {

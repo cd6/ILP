@@ -1,7 +1,7 @@
 package com.example.s1616573.coinz;
 
 
-import android.support.design.widget.TextInputLayout;
+import android.content.Intent;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
@@ -10,13 +10,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
+
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.hamcrest.core.IsInstanceOf;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.Objects;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -39,7 +45,40 @@ public class CreateAccountTest {
     @Rule
     public ActivityTestRule<LoginActivity> mActivityTestRule = new ActivityTestRule<>(LoginActivity.class);
 
+    @Before
+    public void setUp() {
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+        // Delete the user to recreate account
+        mAuth.signInWithEmailAndPassword("newuser@coinz.com","securepassword");
+        try {
+            Thread.sleep(7000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if(mAuth.getCurrentUser() != null) {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
+                    .setTimestampsInSnapshotsEnabled(true)
+                    .build();
+            db.setFirestoreSettings(settings);
+            String userID = mAuth.getCurrentUser().getUid();
+            db.collection("users").document(Objects.requireNonNull(userID)).delete();
+            try {
+                Thread.sleep(7000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            mAuth.getCurrentUser().delete();
+        }
+
+        mAuth.signOut();
+        mActivityTestRule.launchActivity(new Intent());
+    }
+
     @Test
+    // Test creating a new account with username, email and password
     public void createAccountTest() {
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:

@@ -52,7 +52,7 @@ public class BankActivity extends AppCompatActivity implements BankCompleteListe
     public void onStart() {
         super.onStart();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        bankFirestore = new BankFirestore(mAuth);
+        bankFirestore = new BankFirestore(mAuth.getUid());
         bankFirestore.bankCompleteListener = this;
         // get gold
         bankFirestore.getGoldInBank();

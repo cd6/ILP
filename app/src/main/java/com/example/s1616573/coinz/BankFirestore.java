@@ -2,7 +2,6 @@ package com.example.s1616573.coinz;
 
 import android.util.Log;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -17,9 +16,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-public class BankFirestore extends UserFirestore {
+class BankFirestore extends UserFirestore {
 
-    public BankCompleteListener bankCompleteListener = null;
+    BankCompleteListener bankCompleteListener = null;
 
     private String tag = "BankFirestore";
     private FirebaseFirestore db;
@@ -31,8 +30,8 @@ public class BankFirestore extends UserFirestore {
     private HashMap<String, Message> messages = new HashMap<>();
 
 
-    BankFirestore(FirebaseAuth mAuth) {
-        super(mAuth);
+    BankFirestore(String uID) {
+        super(uID);
         docRef = getDocRef();
         String userID = getUserID();
         db = getDb();
@@ -42,7 +41,7 @@ public class BankFirestore extends UserFirestore {
 
     // Get the amount of gold the user has in their bank
     @SuppressWarnings("ConstantConditions")
-    public void getGoldInBank() {
+    void getGoldInBank() {
         docRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 document = task.getResult();
@@ -68,7 +67,7 @@ public class BankFirestore extends UserFirestore {
 
     // Check for coins being sent to the user
     @SuppressWarnings("ConstantConditions")
-    public void realtimeUpdateListener() {
+    void realtimeUpdateListener() {
         List<Message> messageList = new ArrayList<>();
         registration = messageRef.collection(SENT_COLLECTION)
                 .addSnapshotListener((snapshots, e) -> {
@@ -116,12 +115,12 @@ public class BankFirestore extends UserFirestore {
     }
 
     // stop listening for updates
-    public void stopListening() {
+    void stopListening() {
         registration.remove();
     }
 
     // delete messages
-    public void clearMessages() {
+    void clearMessages() {
         messageRef.collection(SENT_COLLECTION)
                 .get()
                 .addOnCompleteListener(task -> {

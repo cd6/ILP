@@ -95,7 +95,6 @@ public class LoginActivity extends AppCompatActivity implements LoginCompleteLis
         progressView = findViewById(R.id.login_progress);
 
         loginError = findViewById(R.id.text_login_error);
-
         usernameError = findViewById(R.id.text_username_taken);
 
         mAuth = FirebaseAuth.getInstance();
@@ -104,7 +103,6 @@ public class LoginActivity extends AppCompatActivity implements LoginCompleteLis
 
         showLogin();
     }
-
 
     @Override
     public void onStart() {
@@ -185,12 +183,15 @@ public class LoginActivity extends AppCompatActivity implements LoginCompleteLis
         // Store values at the time of the create attempt.
         username = usernameView.getText().toString();
 
+        if (TextUtils.isEmpty(username)) {
+            usernameView.setError(getString(R.string.error_field_required));
+            usernameView.requestFocus();
+        }
         // check there is no user already using username
         loginFirestore.usernameAvailable(username);
-
-
     }
 
+    // Continue account creation once the username has been checked
     public void checkUsernameComplete(Boolean available) {
         String email = emailView.getText().toString();
         String password = passwordView.getText().toString();
@@ -233,7 +234,7 @@ public class LoginActivity extends AppCompatActivity implements LoginCompleteLis
         }
     }
 
-
+    // check a valid username and password have been entered
     private boolean checkCredentials(String email, String password) {
         View focusView = null;
         boolean cancel = false;

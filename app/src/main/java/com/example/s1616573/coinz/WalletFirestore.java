@@ -1,6 +1,5 @@
 package com.example.s1616573.coinz;
 
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
 import android.util.Log;
@@ -8,7 +7,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,8 +28,8 @@ class WalletFirestore extends UserFirestore {
     private String userID;
     private DocumentSnapshot document;
 
-    WalletFirestore(FirebaseAuth mAuth) {
-        super(mAuth);
+    WalletFirestore(String uID) {
+        super(uID);
         docRef = getDocRef();
         userID = getUserID();
         db = getDb();
@@ -134,8 +132,6 @@ class WalletFirestore extends UserFirestore {
     //https://stackoverflow.com/questions/10903754/input-text-dialog-android
     // prompt the user to input the username of the player they want to send coins to
     void chooseUser(String username) {
-        AlertDialog.Builder builder = new AlertDialog.Builder((WalletActivity) walletCompleteListener);
-
         // Set up the input
         final EditText input = new EditText((WalletActivity) walletCompleteListener);
         // Specify the type of input expected

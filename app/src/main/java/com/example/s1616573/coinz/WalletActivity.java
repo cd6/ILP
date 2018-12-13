@@ -86,7 +86,7 @@ public class WalletActivity extends AppCompatActivity implements WalletRecyclerV
     public void onStart() {
         super.onStart();
         mAuth = FirebaseAuth.getInstance();
-        walletFirestore = new WalletFirestore(mAuth);
+        walletFirestore = new WalletFirestore(mAuth.getUid());
         walletFirestore.walletCompleteListener = this;
         walletFirestore.getCoinsInWallet();
 
@@ -245,6 +245,7 @@ public class WalletActivity extends AppCompatActivity implements WalletRecyclerV
         snackbar.show();
     }
 
+    // From AndroidStudio (Login Activity)
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
         // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow

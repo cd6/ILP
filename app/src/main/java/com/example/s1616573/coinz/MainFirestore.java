@@ -1,9 +1,9 @@
 package com.example.s1616573.coinz;
 
+import android.support.annotation.VisibleForTesting;
 import android.util.Log;
 
 import com.google.firebase.Timestamp;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -31,8 +31,8 @@ class MainFirestore extends UserFirestore {
 
     private ArrayList<String> pickedUpCoins;
 
-    MainFirestore(FirebaseAuth mAuth) {
-        super(mAuth);
+    MainFirestore(String uID) {
+        super(uID);
         docRef = getDocRef();
         db = getDb();
     }
@@ -71,7 +71,8 @@ class MainFirestore extends UserFirestore {
         this.pickedUpCoins = pickedUpCoins;
     }
 
-    private void resetPickedUpCoins() {
+    @VisibleForTesting
+    void resetPickedUpCoins() {
         // Remove all coin IDs from array of coins picked up from the map
         // Remove the 'capital' field from the document
         Map<String,Object> updates = new HashMap<>();

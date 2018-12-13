@@ -10,7 +10,7 @@ public class Coin {
     private Timestamp dateCollected;
     private double goldValue;
 
-    public Coin(String id, double value, String currency) {
+    Coin(String id, double value, String currency) {
         this.id = id;
         this.value = value;
         this.currency = currency;

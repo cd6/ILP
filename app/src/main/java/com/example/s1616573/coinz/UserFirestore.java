@@ -1,14 +1,11 @@
 package com.example.s1616573.coinz;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import java.util.Objects;
 
 abstract class UserFirestore {
-
-    // TODO: check internet connection before accessing to avoid crash
 
     private FirebaseFirestore db;
     private DocumentReference docRef;
@@ -26,9 +23,9 @@ abstract class UserFirestore {
     final String NO_BANKED_FIELD = "noBanked";
     final String SENDER_FIELD = "sender";
 
-    UserFirestore(FirebaseAuth mAuth) {
+    UserFirestore(String uID) {
         // Access a Cloud Firestore instance from your Activity
-        userID = mAuth.getUid();
+        userID = uID;
         db = FirebaseFirestore.getInstance();
         FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
                 .setTimestampsInSnapshotsEnabled(true)
