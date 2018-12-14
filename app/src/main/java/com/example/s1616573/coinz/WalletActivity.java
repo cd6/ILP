@@ -165,7 +165,7 @@ public class WalletActivity extends AppCompatActivity implements WalletRecyclerV
         Log.d(tag, "[showButtons] noDeposited = " + noDeposited);
         if(noSelected > 0) {
             // show deposit button if some coins are selected and less than 25 have been deposited
-            if(noDeposited + noSelected <= 25) {
+            if(noDeposited + noSelected <= 25) { // noSelected is > 0 so noDeposited is <= 24
                 depositButton.show();
                 sendButton.hide();
             } else if(noDeposited >= 25){

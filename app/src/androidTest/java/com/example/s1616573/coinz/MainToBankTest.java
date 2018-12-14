@@ -55,6 +55,7 @@ public class MainToBankTest {
     @Test
     // test moving between the Main Activity and the Wallet Activity
     // check elements are on the screen
+    // May fail if the app starts in range of a coin because of the dialog //
     public void mainToBankTest() {
         // Added a sleep statement to match the app's execution delay.
         // The recommended way to handle such scenarios is to use Espresso idling resources:
@@ -81,10 +82,11 @@ public class MainToBankTest {
         }
 
         try {
-            Thread.sleep(7000);
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
 
         ViewInteraction floatingActionButton = onView(
                 allOf(withId(R.id.fab_bank),
